@@ -4,7 +4,8 @@ import Footer from './components/Footer'
 import Home from './components/Home';
 import Contact from './components/Contact';
 import Projects from './components/Projects';
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom';
+import './App.css'
 
 const App = () => {
   return (

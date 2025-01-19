@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Card from './Card';
 
 const Projects = () => {
@@ -41,13 +41,14 @@ const Projects = () => {
             link: 'https://github.com/AmanKumar9958/PalindromeChecker/releases/tag/v0.1'
         }
     ]
+    const ref = useRef(null);
 
     return (
-        <div className='w-full min-h-screen p-8 pt-24 bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'>
+        <div ref={ref} className='w-full min-h-screen p-8 pt-24 bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'>
             <h2 className='text-center font-bold text-4xl mb-8  w-fit m-auto mt-3 p-2 rounded-lg'>Projects</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                 {projects.map((eachProject, index) => (
-                    <Card key={index} title={eachProject.title} description={eachProject.description} imageUrl={eachProject.imageUrl} link={eachProject.link}/>
+                    <Card reference={ref} key={index} title={eachProject.title} description={eachProject.description} imageUrl={eachProject.imageUrl} link={eachProject.link}/>
                 ))}
             </div>
         </div>
