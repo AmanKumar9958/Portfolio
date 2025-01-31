@@ -7,7 +7,7 @@ const Projects = () => {
         {
             title: 'KeyClash',
             description: 'A real-time typing speed test application with a user-friendly interface',
-            imageUrl: '/assets/WeatherApp.png', // Update path
+            imageUrl: '/assets/keyClash.png', // Update path
             link: 'https://keyclash.netlify.app/',
         },
         {
