@@ -5,6 +5,12 @@ const Projects = () => {
 
     const projects = [
         {
+            title: 'KeyClash',
+            description: 'A real-time typing speed test application with a user-friendly interface',
+            imageUrl: '/assets/WeatherApp.png', // Update path
+            link: 'https://keyclash.netlify.app/',
+        },
+        {
             title: 'Weather App',
             description: 'A real-time weather application providing city-specific weather updates.',
             imageUrl: '/assets/WeatherApp.png', // Update path
