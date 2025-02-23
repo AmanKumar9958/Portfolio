@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Card = ({ title, description, imageUrl, link }) => {
+const Card = ({ title, description, imageUrl, link, github }) => {
     return (
         <div
             className="max-w-sm rounded-lg overflow-hidden shadow-lg m-4 transform transition-transform duration-300 bg-white"
@@ -21,7 +21,15 @@ const Card = ({ title, description, imageUrl, link }) => {
                     rel="noopener noreferrer"
                     className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mt-2 hover:scale-105 transition-all"
                 >
-                    Link
+                    Demo
+                </a>
+                <a
+                    href={github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mt-2 hover:scale-105 transition-all"
+                >
+                    GitHub
                 </a>
             </div>
         </div>
