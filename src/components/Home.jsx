@@ -16,11 +16,21 @@ const Home = () => {
                 <h2 className='text-4xl font-bold text-center mb-8'>About Me</h2>
                 <div className='max-w-4xl mx-auto'>
                     <p className='text-lg mb-4'>
-                        Hi, I'm Aman Kumar, a passionate Full Stack Developer with experience in building web applications using modern technologies. I love to explore new technologies and continuously improve my skills.
+                        Hi, I'm Aman Kumar, a passionate Full Stack Developer with experience in building <b>Web Applications</b> and <b>Mobile Applications</b> using modern technologies. I love to explore new technologies and continuously improve my skills.
                     </p>
                     <p className='text-lg mb-4'>
                         I have a strong background in both front-end and back-end development, and I enjoy working on projects that challenge me to learn and grow. My goal is to create efficient, scalable, and user-friendly applications.
                     </p>
+                </div>
+            </section>
+
+            {/* Resume Section */}
+            <section id='about' className='py-10 px-8 dark:bg-gray-800'>
+                <h2 className='text-4xl font-bold text-center mb-8'>Resume</h2>
+                <div className='max-w-4xl mx-auto flex flex-col items-center justify-center'>
+                    <a href="resume.pdf" download="Aman_Resume.pdf" className='px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all font-semibold text-lg'>
+                        <button>Download Resume</button>
+                    </a>
                 </div>
             </section>
 
