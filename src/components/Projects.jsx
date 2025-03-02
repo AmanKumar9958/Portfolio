@@ -5,10 +5,16 @@ const Projects = () => {
 
     const projects = [
         {
+            title: 'News-365',
+            description: 'A real time application providing whole world news at one place',
+            imageUrl: '/assets/News-365.png', // Update path
+            link: 'https://news-365.netlify.app/',
+            github: 'https://github.com/AmanKumar9958/News-365',
+        },
+        {
             title: 'KeyClash',
-            description: 'A real-time typing speed test application with a user-friendly interface',
-            imageUrl: '/assets/keyClash.png', // Update path
-            link: 'https://keyclash.netlify.app/',
+            description: "A real-time typing speed test application with a user-friendly interface",
+            imageUrl: '/assets/keyClash.netlify.app/',
             github: 'https://github.com/AmanKumar9958/KeyClash',
         },
         {
