@@ -14,7 +14,8 @@ const Projects = () => {
         {
             title: 'KeyClash',
             description: "A real-time typing speed test application with a user-friendly interface",
-            imageUrl: '/assets/keyClash.netlify.app/',
+            imageUrl: '/assets/keyClash.png/',
+            link: 'https://news-365.netlify.app/',
             github: 'https://github.com/AmanKumar9958/KeyClash',
         },
         {
