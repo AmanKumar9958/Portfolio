@@ -36,6 +36,7 @@ const Navbar = () => {
                     <NavLink to='/' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Home</NavLink>
                     <NavLink to='/projects' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Projects</NavLink>
                     <NavLink to='/contact' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Contact</NavLink>
+                    <NavLink to='/service' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Service</NavLink>
                 </div>
                 <button onClick={toggleMode} className="ml-4 p-2 font-semibold rounded bg-gray-700 text-white hover:bg-gray-600 transition-all">
                     {darkMode ? 'Light Mode' : 'Dark Mode'}
@@ -49,6 +50,7 @@ const Navbar = () => {
                     <NavLink to='/' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Home</NavLink>
                     <NavLink to='/projects' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Projects</NavLink>
                     <NavLink to='/contact' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Contact</NavLink>
+                    <NavLink to='/service' className={({ isActive }) => isActive ? 'p-2 bg-slate-100 rounded-full cursor-pointer text-lg links font-bold text-slate-900' : 'cursor-pointer text-lg font-bold hover:text-gray-500 dark:text-gray-300 transition-all'}>Service</NavLink>
                 </div>
             )}
         </div>
