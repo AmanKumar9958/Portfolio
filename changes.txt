@@ -1,3 +1,193 @@
-Navigation bar change
-Remove animation from the project page.
-Hover effect on Projects
+import React, { useState, useEffect } from 'react';
+import { FiMail, FiTwitter, FiInstagram, FiGithub } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+
+const ComingSoon = () => {
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const launchDate = new Date('2024-12-31T00:00:00').getTime();
+
+    // Countdown timer setup
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            setTimeLeft({
+                days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                seconds: Math.floor((distance % (1000 * 60)) / 1000)
+            });
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    // Particles configuration
+    const particlesInit = async (main) => {
+        await loadFull(main);
+    };
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-[#0a0a2e] to-[#1a1a4a] text-white overflow-hidden relative">
+            {/* Animated Particles Background */}
+            <Particles
+                id="tsparticles"
+                init={particlesInit}
+                options={{
+                    particles: {
+                        number: { value: 50 },
+                        color: { value: "#ffffff" },
+                        opacity: { value: 0.5 },
+                        size: { value: 1 },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false,
+                        }
+                    },
+                    interactivity: {
+                        events: {
+                            onhover: { enable: true, mode: "repulse" }
+                        }
+                    }
+                }}
+                className="absolute inset-0"
+            />
+
+            {/* Floating Elements */}
+            <motion.div 
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="absolute top-1/4 left-1/4 w-48 h-48 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full blur-[80px] opacity-20"
+            />
+            <motion.div 
+                animate={{ x: [0, 40, 0], rotate: [0, 180, 360] }}
+                transition={{ duration: 12, repeat: Infinity }}
+                className="absolute top-1/3 right-20 w-24 h-24 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg blur-[40px] opacity-30"
+            />
+
+            <div className="relative z-10 container mx-auto px-4 py-20">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="max-w-4xl mx-auto text-center"
+                >
+                    {/* Animated Logo */}
+                    <motion.div
+                        animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                        transition={{ duration: 8, repeat: Infinity }}
+                        className="mb-16 inline-block"
+                    >
+                        <img 
+                            src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" 
+                            alt="Rocket"
+                            className="w-32 h-32 animate-pulse"
+                        />
+                    </motion.div>
+
+                    {/* Main Content */}
+                    <motion.h1 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-300 bg-clip-text text-transparent">
+                        Launching Soon
+                    </motion.h1>
+                    
+                    <motion.p 
+                        className="text-xl md:text-2xl text-gray-300 mb-16 max-w-2xl mx-auto leading-relaxed">
+                        We're building something extraordinary! Join our journey to the future of digital innovation.
+                    </motion.p>
+
+                    {/* Countdown Timer */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+                        {Object.entries(timeLeft).map(([unit, value]) => (
+                            <motion.div 
+                                key={unit}
+                                whileHover={{ scale: 1.05 }}
+                                className="p-8 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 relative overflow-hidden"
+                            >
+                                <div className="text-4xl md:text-5xl font-bold mb-2 text-gradient bg-gradient-to-r from-blue-400 to-purple-400">
+                                    {value}
+                                </div>
+                                <div className="text-sm uppercase tracking-wider text-gray-400">
+                                    {unit}
+                                </div>
+                                <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-purple-500/20 rounded-full blur-xl" />
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* Newsletter Form */}
+                    <motion.div 
+                        initial={{ scale: 0.9 }}
+                        animate={{ scale: 1 }}
+                        className="max-w-xl mx-auto mb-20 relative"
+                    >
+                        <div className="flex gap-4 bg-white/10 backdrop-blur-lg rounded-full p-2 border border-white/10">
+                            <input 
+                                type="email" 
+                                placeholder="Enter your email for updates" 
+                                className="w-full px-6 py-4 bg-transparent placeholder-gray-400 focus:outline-none"
+                            />
+                            <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full font-semibold flex items-center gap-2 hover:scale-105 transition-transform">
+                                <FiMail className="text-xl" />
+                                Notify Me
+                            </button>
+                        </div>
+                        <div className="absolute -top-8 -right-8 w-24 h-24 bg-blue-500/20 rounded-full blur-xl" />
+                    </motion.div>
+
+                    {/* Social Links */}
+                    <motion.div 
+                        className="flex justify-center gap-8"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        {[FiTwitter, FiInstagram, FiGithub].map((Icon, index) => (
+                            <motion.a
+                                key={index}
+                                whileHover={{ y: -5, scale: 1.2 }}
+                                className="p-4 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/10 hover:bg-white/20 transition-all"
+                                href="#"
+                            >
+                                <Icon className="text-2xl" />
+                            </motion.a>
+                        ))}
+                    </motion.div>
+
+                    {/* Floating Astronaut */}
+                    <motion.img
+                        src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png"
+                        alt="Astronaut"
+                        className="absolute top-1/2 -right-20 w-48 h-48"
+                        animate={{ y: [-20, 20, -20] }}
+                        transition={{ duration: 6, repeat: Infinity }}
+                    />
+                </motion.div>
+            </div>
+
+            {/* Floating 3D Elements */}
+            <motion.div
+                className="absolute bottom-20 left-20 w-32 h-32"
+                animate={{ rotate: 360, y: [-20, 20] }}
+                transition={{ duration: 8, repeat: Infinity }}
+            >
+                <img 
+                    src="https://cdn-icons-png.flaticon.com/512/1067/1067546.png" 
+                    alt="Floating Planet" 
+                    className="w-full h-full"
+                />
+            </motion.div>
+        </div>
+    );
+};
+
+export default ComingSoon;

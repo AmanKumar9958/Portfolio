@@ -6,6 +6,7 @@ import Contact from './components/Contact';
 import Projects from './components/Projects';
 import { Route, Routes } from 'react-router-dom';
 import Service from './components/Service';
+import ComingSoon from './components/ComingSoon';
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/projects' element={<Projects />} />
-          <Route path='/service' element={<Service />} />
+          <Route path='/service' element={<ComingSoon />} />
         </Routes>
         <Footer />
       </div>
