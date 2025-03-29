@@ -5,6 +5,13 @@ import { motion } from 'framer-motion';
 const Projects = () => {
     const projects = [
         {
+            title: 'Trip Genius',
+            description: 'Plan your next trip with AI powered trip planner',
+            imageUrl: '/assets/Trip-Genius.png',
+            link: 'https://trip-genius.netlify.app/',
+            github: 'https://github.com/AmanKumar9958/Trip-Planner',
+        },
+        {
             title: 'News-365',
             description: 'A real-time application providing whole world news at one place',
             imageUrl: '/assets/News-365.png',
