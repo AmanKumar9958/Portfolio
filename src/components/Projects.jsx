@@ -5,6 +5,13 @@ import { motion } from 'framer-motion';
 const Projects = () => {
     const projects = [
         {
+            title: 'Hirenix',
+            description: 'A full-featured job portal app where recruiters post jobs and candidates apply—built to streamline the hiring process.',
+            imageUrl: '/assets/Hirenix.png',
+            link: 'https://hirenix.netlify.app/',
+            github: 'https://github.com/AmanKumar9958/Hirenix',
+        },
+        {
             title: 'Trip Genius',
             description: 'Plan your next trip with AI powered trip planner',
             imageUrl: '/assets/Trip-Genius.png',
