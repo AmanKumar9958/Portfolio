@@ -7,6 +7,10 @@ import { IoLogoFirebase } from "react-icons/io5";
 import { FaCss3Alt } from "react-icons/fa6";
 import { BiLogoTailwindCss } from "react-icons/bi";
 import { SiAppwrite } from "react-icons/si";
+import { FaNodeJs } from "react-icons/fa";
+import { SiExpress } from "react-icons/si";
+import { SiMongodb } from "react-icons/si";
+import { SiPostgresql } from "react-icons/si";
 
 const Home = () => {
     const typedRef = useRef(null);
@@ -145,8 +149,10 @@ const Home = () => {
                             {
                                 title: "Backend & Databases",
                                 items: [
-                                    { name: "Coming Soon", icon: <span className="text-2xl">🚀</span>, 
-                                        className: "animate-pulse text-purple-500" }
+                                    { name: "Node.js", icon: <FaNodeJs className="w-6 h-6 text-green-500" /> },
+                                    { name: "Express.js", icon: <SiExpress className="w-6 h-6 text-green-500" /> },
+                                    { name: "MongoDB", icon: <SiMongodb className="w-6 h-6 text-green-500" /> },
+                                    { name: "PostgreSQL", icon: <SiPostgresql className="w-6 h-6 text-green-500" /> }
                                 ]
                             },
                             {
@@ -200,7 +206,7 @@ const Home = () => {
                         Let's build something amazing! Check out my resume to see my full experience.
                     </p>
                     <motion.a
-                        href="resume.pdf"
+                        href="public/assets/Aman_Kumar_Resume.pdf"
                         download="Aman_Resume.pdf"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-blue-600 dark:text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
                         whileHover={{ scale: 1.05 }}
