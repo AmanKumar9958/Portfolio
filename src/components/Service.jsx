@@ -1,12 +1,13 @@
 import React from 'react';
 import { FaCode, FaMobileAlt, FaServer } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Service = () => {
     const services = [
         {
             title: "Web Development",
             icon: <FaCode className="w-12 h-12 text-blue-500" />,
-            description: "Crafting modern, responsive websites using cutting-edge technologies like React, Next.js, and Tailwind CSS.",
+            description: "Crafting modern, responsive websites using cutting-edge technologies like MERN, Next JS, Payment Integration, and more.",
             color: "bg-blue-100 dark:bg-blue-900"
         },
         {
@@ -61,6 +62,16 @@ const Service = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            {/* Explore my works */}
+            <div className="text-center mt-16">
+                <Link 
+                    to="/projects" 
+                    className="inline-block px-8 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                    Explore My Works
+                </Link>
             </div>
         </section>
     );
