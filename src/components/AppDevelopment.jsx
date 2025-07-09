@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const AppDevelopment = () => (
     <section className="w-full min-h-screen bg-gray-100 text-gray-800 dark:text-gray-200 dark:bg-gray-900 px-6 py-20 flex flex-col items-center justify-center">
-        <h1 className='text-4xl font-bold mb-4 tracking-wider'>
+        <h1 className='text-4xl font-bold mt-5 md:mt-0 mb-4 tracking-wider'>
             App <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Development</span>
         </h1>
         <p className="max-w-xl text-lg mb-8 text-center leading-relaxed">
