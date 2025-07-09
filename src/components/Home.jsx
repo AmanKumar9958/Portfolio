@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Typed from "typed.js";
-import { FaReact, FaHtml5, FaGithub } from "react-icons/fa";
+import { FaReact, FaHtml5, FaGithub, FaPython } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io";
 import { IoLogoFirebase } from "react-icons/io5";
 import { FaCss3Alt } from "react-icons/fa6";
@@ -11,6 +11,11 @@ import { FaNodeJs } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
 import { SiMongodb } from "react-icons/si";
 import { SiPostgresql } from "react-icons/si";
+import { BiLogoTypescript } from "react-icons/bi";
+import { RiNextjsFill } from "react-icons/ri";
+import { SiPostman } from "react-icons/si";
+import { DiMysql } from "react-icons/di";
+import { TbBrandCpp } from "react-icons/tb";
 
 const Home = () => {
     const typedRef = useRef(null);
@@ -55,7 +60,7 @@ const Home = () => {
                         animate={{ y: 0 }}
                         transition={{ type: "spring", stiffness: 100 }}
                     >
-                        Hi, I'm <span className="wave-animate">Aman Kumar</span> <span className="wave">👋</span>
+                        Hi, I&apos;am <span className="wave-animate">Aman Kumar</span> <span className="wave">👋</span>
                     </motion.h1>
 
                     <motion.p
@@ -106,7 +111,7 @@ const Home = () => {
                     </h2>
                     <div className="space-y-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                         <p>
-                            Hey there! I'm <strong className="text-blue-600 dark:text-blue-400">Aman Kumar</strong>, a 
+                            Hey there! I&apos;am <strong className="text-blue-600 dark:text-blue-400">Aman Kumar</strong>, a 
                             passionate developer specializing in creating beautiful and functional 
                             <span className="text-purple-600 dark:text-purple-400"> Web </span> 
                             and <span className="text-pink-500">Mobile</span> experiences.
@@ -140,10 +145,13 @@ const Home = () => {
                                 title: "Frontend Mastery",
                                 items: [
                                     { name: "React", icon: <FaReact className="w-6 h-6 text-blue-500" /> },
+                                    { name: "Next.js", icon: <RiNextjsFill className="w-6 h-6 text-blue-500"/> },
+                                    { name: "TypeScript", icon: <BiLogoTypescript className="w-6 h-6 text-blue-500" /> },
                                     { name: "JavaScript", icon: <IoLogoJavascript className="w-6 h-6 text-yellow-400" /> },
+                                    { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="w-6 h-6 text-cyan-500" /> },
                                     { name: "HTML5", icon: <FaHtml5 className="w-6 h-6 text-orange-500" /> },
                                     { name: "CSS3", icon: <FaCss3Alt className="w-6 h-6 text-blue-400" /> },
-                                    { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="w-6 h-6 text-cyan-500" /> }
+                                    
                                 ]
                             },
                             {
@@ -152,7 +160,8 @@ const Home = () => {
                                     { name: "Node.js", icon: <FaNodeJs className="w-6 h-6 text-green-500" /> },
                                     { name: "Express.js", icon: <SiExpress className="w-6 h-6 text-green-500" /> },
                                     { name: "MongoDB", icon: <SiMongodb className="w-6 h-6 text-green-500" /> },
-                                    { name: "PostgreSQL", icon: <SiPostgresql className="w-6 h-6 text-green-500" /> }
+                                    { name: "PostgreSQL", icon: <SiPostgresql className="w-6 h-6 text-green-500" /> },
+                                    { name: "MySQL", icon: <DiMysql className="w-6 h-6 text-blue-500" /> }
                                 ]
                             },
                             {
@@ -160,9 +169,18 @@ const Home = () => {
                                 items: [
                                     { name: "Firebase", icon: <IoLogoFirebase className="w-6 h-6 text-yellow-500" /> },
                                     { name: "AppWrite", icon: <SiAppwrite className="w-6 h-6 text-red-500" /> },
-                                    { name: "GitHub", icon: <FaGithub className="w-6 h-6 text-gray-800 dark:text-gray-200" /> }
+                                    { name: "Git & GitHub", icon: <FaGithub className="w-6 h-6 text-gray-800 dark:text-gray-200" /> },
+                                    { name: "Postman", icon: <SiPostman className="w-6 h-6 text-orange-500" /> }
                                 ]
-                            }
+                            },
+                            {
+                                title: "Programming Languages",
+                                items: [
+                                    { name: "JavaScript", icon: <IoLogoJavascript className="w-6 h-6 text-yellow-400" /> },
+                                    { name: "Python", icon: <FaPython className="text-yellow-400 text-xl" /> },
+                                    { name: "C++", icon: <TbBrandCpp className="text-2xl text-blue-500" />}
+                                ]
+                            },
                         ].map((category, idx) => (
                             <motion.div
                                 key={idx}
@@ -203,10 +221,10 @@ const Home = () => {
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-4xl font-bold mb-6">Ready to Work Together?</h2>
                     <p className="text-xl mb-8 opacity-90">
-                        Let's build something amazing! Check out my resume to see my full experience.
+                        Let&apos;s build something amazing! Check out my resume to see my full experience.
                     </p>
                     <motion.a
-                        href="public/assets/Aman_Kumar_Resume.pdf"
+                        href="/assets/Aman_Kumar_Resume.pdf"
                         download="Aman_Resume.pdf"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-blue-600 dark:text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
                         whileHover={{ scale: 1.05 }}
@@ -219,6 +237,19 @@ const Home = () => {
                     </motion.a>
                 </div>
             </motion.section>
+
+            {/* Floating Resume Download Button */}
+            <a
+                href="/assets/Aman_Kumar_Resume.pdf"
+                download="Aman_Resume.pdf"
+                className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2"
+                title="Download Resume"
+            >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="hidden sm:inline font-semibold">Resume</span>
+            </a>
         </div>
     );
 };

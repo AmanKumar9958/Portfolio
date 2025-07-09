@@ -1,5 +1,4 @@
-import React from 'react';
-import { FaCode, FaMobileAlt, FaServer } from 'react-icons/fa';
+import { FaCode, FaMobileAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Service = () => {
@@ -8,13 +7,15 @@ const Service = () => {
             title: "Web Development",
             icon: <FaCode className="w-12 h-12 text-blue-500" />,
             description: "Crafting modern, responsive websites using cutting-edge technologies like MERN, Next JS, Payment Integration, and more.",
-            color: "bg-blue-100 dark:bg-blue-900"
+            color: "bg-blue-100 dark:bg-blue-900",
+            link: "/service-web-development"
         },
         {
             title: "Mobile App Development",
             icon: <FaMobileAlt className="w-12 h-12 text-green-500" />,
             description: "Building cross-platform mobile applications with React Native and Flutter for iOS and Android.",
-            color: "bg-green-100 dark:bg-green-900"
+            color: "bg-green-100 dark:bg-green-900",
+            link: "/service-app-development"
         }
     ];
 
@@ -32,9 +33,10 @@ const Service = () => {
 
                 <div className="relative space-y-28">
                     {services.map((service, index) => (
-                        <div 
+                        <Link
+                            to={service.link}
                             key={index}
-                            className={`relative flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 group`}
+                            className={`relative flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 group focus:outline-none focus:ring-4 focus:ring-blue-300`}
                         >
                             {/* Connector Line */}
                             {index > 0 && (
@@ -42,14 +44,14 @@ const Service = () => {
                             )}
                             
                             {/* Icon with Hover Effect */}
-                            <div className={`${service.color} p-4 rounded-2xl relative z-10 transition-transform duration-300 shadow-md w-full max-w-xs hover:shadow-lg hover:-translate-y-1`}>
+                            <div className={`${service.color} p-4 rounded-2xl relative z-10 transition-transform duration-300 shadow-md w-full max-w-xs group-hover:shadow-lg group-hover:-translate-y-1`}>
                                 <div className="w-24 h-24 flex items-center justify-center rounded-full bg-white dark:bg-gray-800">
                                     {service.icon}
                                 </div>
                             </div>
 
                             {/* Service Details */}
-                            <div className={`${service.color} p-8 rounded-2xl relative z-10 flex-1 transition-transform duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 ${
+                            <div className={`${service.color} p-8 rounded-2xl relative z-10 flex-1 transition-transform duration-300 shadow-md group-hover:shadow-lg group-hover:-translate-y-1 ${
                                 index % 2 === 0 ? 'md:ml-[-30px]' : 'md:mr-[-30px]'
                             }`}>
                                 <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-3">
@@ -59,7 +61,7 @@ const Service = () => {
                                     {service.description}
                                 </p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
