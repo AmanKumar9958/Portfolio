@@ -242,7 +242,7 @@ const Home = () => {
             <a
                 href="/assets/Aman_Kumar_Resume.pdf"
                 download="Aman_Resume.pdf"
-                className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2"
+                className="fixed bottom-20 right-8 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2"
                 title="Download Resume"
             >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
