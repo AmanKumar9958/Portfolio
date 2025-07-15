@@ -8,7 +8,10 @@ Welcome to my **Portfolio**! This is a single-page React application showcasing 
 ## 🚀 Features  
 
 ### 🔧 **Built with React.js**  
-The portfolio leverages the power of **React.js** to deliver dynamic and interactive content.  
+The portfolio leverages the power of **React.js** to deliver dynamic and interactive content.
+
+### 🔧 **Added ChatBot Feature**  
+Added chatbot feature for the services that I can provide to the clients.
 
 ### 🌐 **Deployed on Netlify**  
 Enjoy fast and reliable hosting with Netlify for an excellent user experience.  
