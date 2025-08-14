@@ -1,9 +1,15 @@
-import React from 'react';
 import { FiExternalLink, FiGithub } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const Projects = () => {
     const projects = [
+        {
+            title: 'Postify',
+            description: 'A full-featured post sharing web app, allows user to share their thoughts & ideas',
+            imageUrl: '/assets/Postify.png',
+            link: 'https://postify-d771.onrender.com/',
+            github: 'https://github.com/AmanKumar9958/Postify',
+        },
         {
             title: 'Hirenix',
             description: 'A full-featured job portal app where recruiters post jobs and candidates apply—built to streamline the hiring process.',
