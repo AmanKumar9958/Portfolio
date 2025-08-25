@@ -9,10 +9,12 @@ import WebDevelopment from './components/WebDevelopment';
 import AppDevelopment from './components/AppDevelopment';
 import WebDevelopmentInfo from './components/WebDevelopmentInfo';
 import AppDevelopmentInfo from './components/AppDevelopmentInfo';
+import HandAnimation from './components/HandAnimation'
 
 const App = () => {
   return (
       <div>
+        <HandAnimation delay={2000} />
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
