@@ -11,42 +11,42 @@ const ProjectCard = ({ project }) => {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5 }}
             whileHover={{ y: -4 }}
-            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.08)]"
+            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900"
         >
-            <div className="flex h-36 items-end border-b border-slate-200 bg-[linear-gradient(135deg,#ecfeff_0%,#eff6ff_100%)] p-4">
+            <div className="flex h-36 items-end border-b border-slate-200 bg-[linear-gradient(135deg,#ecfeff_0%,#eff6ff_100%)] p-4 dark:border-slate-800 dark:bg-[linear-gradient(135deg,#0f172a_0%,#1e293b_100%)]">
                 <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Project</p>
-                    <h3 className="mt-1 text-xl font-black uppercase tracking-wide text-slate-900">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Project</p>
+                    <h3 className="mt-1 text-xl font-black uppercase tracking-wide text-slate-900 dark:text-white">
                         {project.title}
                     </h3>
                 </div>
             </div>
 
             <div className="space-y-4 p-4">
-                <p className="text-sm leading-relaxed text-slate-600">{project.shortDescription}</p>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{project.shortDescription}</p>
 
                 <div>
-                    <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">Used tools</h4>
+                    <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Used tools</h4>
                     <div className="flex flex-wrap gap-2">
                         {project.tools.map((tool, i) => (
-                                    <span key={i} className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                                    <span key={i} className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                                         {tool}
                                     </span>
                         ))}
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-slate-200 pt-3">
+                <div className="flex items-center justify-between border-t border-slate-200 pt-3 dark:border-slate-700">
                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Build to launch</p>
-                        <p className="text-base font-black text-slate-900">{project.timeline}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Build to launch</p>
+                        <p className="text-base font-black text-slate-900 dark:text-slate-100">{project.timeline}</p>
                     </div>
 
                     <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-slate-700"
+                        className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                     >
                         View
                         <FaExternalLinkAlt className="text-[10px]" />
@@ -86,7 +86,7 @@ const MobileProjects = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-[linear-gradient(135deg,#f7f9ff_0%,#eefcfa_52%,#f2f9ff_100%)] px-5 pb-14 pt-24 text-slate-900 sm:px-7">
+        <div className="min-h-screen bg-[linear-gradient(135deg,#f7f9ff_0%,#eefcfa_52%,#f2f9ff_100%)] px-5 pb-14 pt-24 text-slate-900 dark:bg-[linear-gradient(135deg,#020617_0%,#0b1320_45%,#111827_100%)] dark:text-slate-100 sm:px-7">
             <div className="mx-auto max-w-5xl" style={{ fontFamily: '"Space Grotesk", "Manrope", sans-serif' }}>
                 <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
                     <motion.div
@@ -95,7 +95,7 @@ const MobileProjects = () => {
                         transition={{ duration: 0.65 }}
                         className="space-y-5"
                     >
-                        <p className="inline-flex rounded-full border border-slate-300 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-600">
+                        <p className="inline-flex rounded-full border border-slate-300 bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                             Mobile Portfolio
                         </p>
 
@@ -106,7 +106,7 @@ const MobileProjects = () => {
                             </span>
                         </h1>
 
-                        <p className="max-w-xl text-sm leading-relaxed text-slate-600">
+                        <p className="max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                             Production-ready mobile apps with stable architecture, smooth UX, and strong retention-focused features.
                         </p>
 
@@ -131,19 +131,19 @@ const MobileProjects = () => {
 
                         <div className="flex items-center gap-5 pt-1">
                             <div>
-                                <p className="text-2xl font-black text-slate-900">5+</p>
-                                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">apps deployed</p>
+                                <p className="text-2xl font-black text-slate-900 dark:text-slate-100">5+</p>
+                                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">apps deployed</p>
                             </div>
-                            <div className="h-10 w-px bg-slate-300" />
+                            <div className="h-10 w-px bg-slate-300 dark:bg-slate-700" />
                             <div>
-                                <p className="text-2xl font-black text-slate-900">4.8/5</p>
-                                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">avg rating</p>
+                                <p className="text-2xl font-black text-slate-900 dark:text-slate-100">4.8/5</p>
+                                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">avg rating</p>
                             </div>
                         </div>
 
                         <Link
                             to="/projects-web-development"
-                            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-slate-700"
+                            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-white transition-colors hover:bg-slate-700 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                         >
                             View Web Projects <FaArrowRight className="text-[10px]" />
                         </Link>
@@ -155,7 +155,7 @@ const MobileProjects = () => {
                         transition={{ duration: 0.65 }}
                         className="flex justify-center items-center relative"
                     >
-                        <div className="absolute h-52 w-52 rounded-full bg-cyan-100" />
+                        <div className="absolute h-52 w-52 rounded-full bg-cyan-100 dark:bg-cyan-900/40" />
                         <motion.img
                             src="/3D_Figure_Mobile.webp"
                             alt="Mobile Development 3D"
@@ -167,7 +167,7 @@ const MobileProjects = () => {
                 </div>
 
                 <div className="mt-10">
-                    <h2 className="mb-7 text-2xl font-black uppercase tracking-wide text-slate-900 sm:text-3xl">
+                    <h2 className="mb-7 text-2xl font-black uppercase tracking-wide text-slate-900 dark:text-slate-100 sm:text-3xl">
                         Featured Mobile Projects
                     </h2>
 
@@ -178,7 +178,7 @@ const MobileProjects = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 border-t border-slate-300 pt-6 text-center text-sm font-bold uppercase tracking-[0.18em] text-slate-500">
+                <div className="mt-8 border-t border-slate-300 pt-6 text-center text-sm font-bold uppercase tracking-[0.18em] text-slate-500 dark:border-slate-700 dark:text-slate-400">
                     More Soon
                 </div>
             </div>

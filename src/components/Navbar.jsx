@@ -10,8 +10,12 @@ const Navbar = () => {
     const location = useLocation();
 
     const toggleMode = () => {
-        setDarkMode(!darkMode);
-        document.documentElement.classList.toggle('dark');
+        setDarkMode((prevMode) => {
+            const nextMode = !prevMode;
+            document.documentElement.classList.toggle('dark', nextMode);
+            localStorage.setItem('theme', nextMode ? 'dark' : 'light');
+            return nextMode;
+        });
     };
 
     const toggleMobileMenu = () => {
@@ -23,6 +27,15 @@ const Navbar = () => {
             setIsMobileMenuOpen(false);
         }
     };
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+
+        setDarkMode(shouldUseDark);
+        document.documentElement.classList.toggle('dark', shouldUseDark);
+    }, []);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);

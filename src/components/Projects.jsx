@@ -39,7 +39,7 @@ const Projects = () => {
     ];
 
     return (
-        <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#f6f7fb_0%,#f1fbff_38%,#fff7ef_100%)] px-5 pb-14 pt-24 text-slate-900 sm:px-7 lg:px-8">
+        <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(135deg,#f6f7fb_0%,#f1fbff_38%,#fff7ef_100%)] px-5 pb-14 pt-24 text-slate-900 dark:bg-[linear-gradient(135deg,#020617_0%,#0f172a_40%,#111827_100%)] dark:text-slate-100 sm:px-7 lg:px-8">
             <div className="pointer-events-none absolute -left-24 top-12 h-80 w-80 rounded-full bg-cyan-300/35 blur-3xl" />
             <div className="pointer-events-none absolute right-0 top-20 h-[28rem] w-[28rem] rounded-full bg-orange-200/45 blur-3xl" />
             <div className="pointer-events-none absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-rose-200/35 blur-3xl" />
@@ -51,23 +51,23 @@ const Projects = () => {
                     transition={{ duration: 0.65 }}
                     className="mb-8"
                 >
-                    <span className="inline-flex items-center rounded-full border border-slate-300/80 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-600 shadow-sm">
+                    <span className="inline-flex items-center rounded-full border border-slate-300/80 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                         Selected Work 2026
                     </span>
 
                     <h1 className="mt-5 max-w-4xl text-4xl font-black uppercase leading-[0.96] tracking-[-0.03em] sm:text-5xl lg:text-[5.6rem]">
                         Projects
-                        <span className="block text-[0.38em] font-semibold uppercase tracking-[0.34em] text-slate-500 sm:text-[0.3em]">
+                        <span className="block text-[0.38em] font-semibold uppercase tracking-[0.34em] text-slate-500 dark:text-slate-400 sm:text-[0.3em]">
                             strategy x engineering x craft
                         </span>
                     </h1>
 
-                    <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-sm">
+                    <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-sm">
                         Inspired by current web trends, this page blends tactile depth, oversized hierarchy, and clean interaction logic without sacrificing usability.
                     </p>
                 </motion.div>
 
-                <div className="relative mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white py-1.5 shadow-[0_8px_30px_rgba(15,23,42,0.08)]">
+                <div className="relative mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white py-1.5 shadow-[0_8px_30px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900">
                     <motion.div
                         animate={{ x: ['0%', '-50%'] }}
                         transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
@@ -75,8 +75,8 @@ const Projects = () => {
                     >
                         {[...tape, ...tape].map((item, i) => (
                             <div key={`${item}-${i}`} className="flex items-center gap-4">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-700">{item}</span>
-                                <span className="h-1 w-1 rounded-full bg-slate-400" />
+                                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-700 dark:text-slate-300">{item}</span>
+                                <span className="h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-600" />
                             </div>
                         ))}
                     </motion.div>
@@ -91,7 +91,7 @@ const Projects = () => {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ duration: 0.55, delay: index * 0.1 }}
                             whileHover={{ y: -7, rotate: index === 0 ? -0.35 : 0.35 }}
-                            className={`group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_16px_45px_rgba(15,23,42,0.1)] ${
+                            className={`group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_16px_45px_rgba(15,23,42,0.1)] dark:border-slate-800 dark:bg-slate-900 ${
                                 index === 0 ? 'lg:col-span-8' : 'lg:col-span-4'
                             }`}
                         >
@@ -147,15 +147,15 @@ const Projects = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.08)] sm:p-6"
+                    className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900 sm:p-6"
                 >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-sm">
+                        <p className="max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-sm">
                             Want your product to feel this intentional? Let us shape your next release with design precision and engineering rigor.
                         </p>
                         <Link
                             to="/contact"
-                            className="inline-flex items-center justify-center rounded-full bg-slate-950 px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white transition-transform hover:scale-105"
+                            className="inline-flex items-center justify-center rounded-full bg-slate-950 px-5 py-2 text-xs font-black uppercase tracking-[0.12em] text-white transition-transform hover:scale-105 dark:bg-white dark:text-slate-900"
                         >
                             Start a Project
                         </Link>
