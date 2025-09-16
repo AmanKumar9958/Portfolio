@@ -1,3 +1,11 @@
+# This rule forces the redirect from the Netlify subdomain to your primary domain
+[[redirects]]
+  from = "https://aman-dev-portfolio.netlify.app/*"
+  to = "https://codewithaman.tech/:splat"
+  status = 301
+  force = true
+
+# Your existing rule for the SPA should be below it
 [[redirects]]
   from = "/*"
   to = "/index.html"
