@@ -11,11 +11,12 @@ const Projects = () => {
             github: 'https://github.com/AmanKumar9958/Postify',
         },
         {
-            title: 'Hirenix',
+            title: 'Applypath',
             description: 'A full-featured job portal app where recruiters post jobs and candidates apply—built to streamline the hiring process.',
             imageUrl: '/assets/Hirenix.png',
-            link: 'https://hirenix.netlify.app/',
-            github: 'https://github.com/AmanKumar9958/Hirenix',
+            link: 'https://applypath.netlify.app/',
+            github: 'https://github.com/AmanKumar9958/Applypath',
+
         },
         {
             title: 'Trip Genius',
