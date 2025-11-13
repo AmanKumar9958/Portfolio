@@ -1,0 +1,5 @@
+# Force redirect Netlify subdomain to primary domain
+https://aman-dev-portfolio.netlify.app/*  https://codewithaman.tech/:splat  301!
+
+# SPA fallback: serve index.html for all routes
+/*  /index.html  200
