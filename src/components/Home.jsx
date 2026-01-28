@@ -145,6 +145,7 @@ const Home = () => {
                                 title: "Frontend Mastery",
                                 items: [
                                     { name: "React", icon: <FaReact className="w-6 h-6 text-blue-500" /> },
+                                    { name: "React Native", icon: <FaReact className="w-6 h-6 text-blue-500" /> },
                                     { name: "Next.js", icon: <RiNextjsFill className="w-6 h-6 text-blue-500"/> },
                                     { name: "TypeScript", icon: <BiLogoTypescript className="w-6 h-6 text-blue-500" /> },
                                     { name: "JavaScript", icon: <IoLogoJavascript className="w-6 h-6 text-yellow-400" /> },
