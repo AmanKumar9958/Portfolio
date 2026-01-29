@@ -16,6 +16,7 @@ import { RiNextjsFill } from "react-icons/ri";
 import { SiPostman } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
 import { TbBrandCpp } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const typedRef = useRef(null);
@@ -45,55 +46,90 @@ const Home = () => {
     return (
         <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-200">
             {/* Hero Section */}
-            <section className="relative flex flex-col items-center justify-center h-screen text-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x" />
+            <section className="relative w-full h-screen overflow-hidden flex items-center bg-transparent">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x pointer-events-none" />
                 
-                <motion.div
-                    className="relative max-w-4xl px-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1 }}
-                >
-                    <motion.h1
-                        className="text-5xl sm:text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent"
-                        initial={{ y: -50 }}
-                        animate={{ y: 0 }}
-                        transition={{ type: "spring", stiffness: 100 }}
+                <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 h-full z-10">
+                    
+                    {/* Left Column: Text Content */}
+                    <motion.div 
+                        className="flex flex-col items-center md:items-start text-center md:text-left space-y-6"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1 }}
                     >
-                        Hi, I&apos;am <span className="wave-animate">Aman Kumar</span> <span className="wave">👋</span>
-                    </motion.h1>
+                        <motion.h1
+                            className="text-5xl sm:text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent leading-tight"
+                            initial={{ y: -50 }}
+                            animate={{ y: 0 }}
+                            transition={{ type: "spring", stiffness: 100 }}
+                        >
+                            Hi, I&apos;am <br className="hidden md:block"/> <span className="wave-animate">Aman Kumar</span> <span className="wave">👋</span>
+                        </motion.h1>
 
-                    <motion.p
-                        className="mt-6 text-xl sm:text-2xl text-gray-700 dark:text-gray-300 font-medium"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                    >
-                        Full Stack Developer & Tech Enthusiast
-                    </motion.p>
+                        <motion.div
+                            className="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-100"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                        >
+                            <span ref={typedRef} className="text-blue-600 dark:text-blue-400" />
+                            <span className="ml-2 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                                Development
+                            </span>
+                        </motion.div>
 
-                    <motion.div
-                        className="mt-8 text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-100"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1 }}
-                    >
-                        <span ref={typedRef} className="text-blue-600 dark:text-blue-400" />
-                        <span className="ml-2 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                            Development
-                        </span>
+                        <motion.p
+                            className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-lg font-medium"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            Full Stack Developer & Tech Enthusiast
+                        </motion.p>
+
+                        <motion.div 
+                            className="flex flex-col sm:flex-row gap-4 mt-8"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 1.5 }}
+                        >
+                             <Link
+                                to="/projects"
+                                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2"
+                            >
+                                Explore Work 
+                            </Link>
+                            <a
+                                href="/assets/Aman_Kumar_Resume.pdf"
+                                download="Aman_Resume.pdf"
+                                className="px-8 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 hover:border-blue-500 dark:hover:border-blue-400"
+                            >
+                                Download Resume
+                            </a>
+                        </motion.div>
                     </motion.div>
 
-                    <motion.a
-                        href="#about"
-                        className="inline-block mt-12 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 1.5 }}
+                    {/* Right Column: 3D Image */}
+                    <motion.div 
+                        className="flex justify-center md:justify-end items-center"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1 }}
                     >
-                        Explore My Work →
-                    </motion.a>
-                </motion.div>
+                         <motion.img 
+                            src="/3D_Figure.webp" 
+                            alt="3D Character" 
+                            className="w-full max-w-md md:max-w-lg object-contain drop-shadow-2xl"
+                            animate={{ y: [0, -20, 0] }}
+                            transition={{ 
+                                duration: 6, 
+                                repeat: Infinity, 
+                                ease: "easeInOut" 
+                            }}
+                        />
+                    </motion.div>
+                </div>
             </section>
 
             {/* About Section */}
