@@ -69,7 +69,7 @@ const Home = () => {
             <section className="relative w-full h-screen overflow-hidden flex items-center bg-transparent">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x pointer-events-none" />
                 
-                <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 h-full z-10">
+                <div className="container mx-auto px-6 pt-28 md:pt-0 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 h-full z-10">
                     
                     {/* Left Column: Text Content */}
                     <motion.div 
@@ -140,7 +140,7 @@ const Home = () => {
                          <motion.img 
                             src="/3D_Figure.webp" 
                             alt="3D Character" 
-                            className="w-full max-w-md md:max-w-lg object-contain drop-shadow-2xl"
+                            className="w-full max-w-md md:max-w-lg object-contain drop-shadow-2xl hidden md:block"
                             animate={{ y: [0, -20, 0] }}
                             transition={{ 
                                 duration: 6, 
@@ -199,7 +199,7 @@ const Home = () => {
                             </div>
 
                             {/* Stats */}
-                            <div className="flex flex-wrap gap-8 md:gap-12 mb-8">
+                            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-8">
                                 <div className="text-center">
                                     <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
                                         <Counter from={0} to={8} />+

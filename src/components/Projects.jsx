@@ -27,7 +27,7 @@ const Projects = () => {
                     <img 
                         src="/Bento_Grid_Mobile.png" 
                         alt="Mobile App Development" 
-                        className="absolute inset-0 h-full object-contain"
+                        className="absolute inset-0 w-full h-full object-cover opacity-60"
                     />
                     <motion.div 
                         initial={{ y: 50, opacity: 0 }}
@@ -35,11 +35,11 @@ const Projects = () => {
                         transition={{ duration: 0.3 }}
                         className="relative z-20 text-center px-4"
                     >
-                        <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
+                        <h2 className="text-3xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
                             Mobile App
-                            <span className="block text-4xl md:text-5xl mt-2 text-blue-400">Development</span>
+                            <span className="block text-2xl md:text-5xl mt-2 text-blue-400">Development</span>
                         </h2>
-                        <Link to="/service-app-development">
+                        <Link to="/projects-app-development">
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.95 }}
@@ -59,7 +59,7 @@ const Projects = () => {
                      <img 
                         src="/Bento_Grid_Web.png" 
                         alt="Web Development" 
-                        className="absolute inset-0 h-full object-contain"
+                        className="absolute inset-0 w-full h-full object-cover opacity-60"
                     />
                 </div>
                 
@@ -69,11 +69,11 @@ const Projects = () => {
                     transition={{ duration: 0.3 }}
                     className="relative z-30 text-center px-4"
                 >
-                     <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
+                     <h2 className="text-3xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
                         Web
-                        <span className="block text-4xl md:text-5xl mt-2 text-orange-400">Development</span>
+                        <span className="block text-2xl md:text-5xl mt-2 text-orange-400">Development</span>
                     </h2>
-                    <Link to="/service-web-development">
+                    <Link to="/projects-web-development">
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}

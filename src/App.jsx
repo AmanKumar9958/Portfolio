@@ -9,6 +9,8 @@ import WebDevelopment from './components/WebDevelopment';
 import AppDevelopment from './components/AppDevelopment';
 import WebDevelopmentInfo from './components/WebDevelopmentInfo';
 import AppDevelopmentInfo from './components/AppDevelopmentInfo';
+import WebProjects from './components/WebProjects';
+import MobileProjects from './components/MobileProjects';
 import HandAnimation from './components/HandAnimation'
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
@@ -34,6 +36,8 @@ const App = () => {
             <Route path='/service-app-development' element={<PageTransition><AppDevelopment /></PageTransition>} />
             <Route path='/web-development-info' element={<PageTransition><WebDevelopmentInfo /></PageTransition>} />
             <Route path='/app-development-info' element={<PageTransition><AppDevelopmentInfo /></PageTransition>} />
+            <Route path='/projects-web-development' element={<PageTransition><WebProjects /></PageTransition>} />
+            <Route path='/projects-app-development' element={<PageTransition><MobileProjects /></PageTransition>} />
           </Routes>
         </AnimatePresence>
         <Footer />

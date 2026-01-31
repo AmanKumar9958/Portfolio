@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { FiSun, FiMoon, FiMenu, FiX, FiChevronRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -7,6 +7,7 @@ const Navbar = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const location = useLocation();
 
     const toggleMode = () => {
         setDarkMode(!darkMode);
@@ -68,14 +69,22 @@ const Navbar = () => {
                         <NavLink 
                             key={item.path}
                             to={item.path} 
-                            className={({ isActive }) => 
-                                `relative px-4 py-2 font-medium transition-all group ${isActive 
+                            className={({ isActive }) => {
+                                const isProjectActive = item.path === '/projects' && (
+                                    location.pathname === '/projects-web-development' || 
+                                    location.pathname === '/projects-app-development'
+                                );
+                                const activeState = isActive || isProjectActive;
+                                
+                                return `relative px-4 py-2 font-medium transition-all group ${activeState 
                                     ? 'text-blue-500 dark:text-purple-400' 
-                                    : 'text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-purple-400'}`
-                            }
+                                    : 'text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-purple-400'}`;
+                            }}
                         >
                             {item.name}
-                            <span className="absolute bottom-0 left-0 h-[2px] bg-blue-500 dark:bg-purple-400 w-0 group-hover:w-full transition-all duration-300"></span>
+                            <span className={`absolute bottom-0 left-0 h-[2px] bg-blue-500 dark:bg-purple-400 transition-all duration-300 ${
+                                (location.pathname === item.path || (item.path === '/projects' && (location.pathname === '/projects-web-development' || location.pathname === '/projects-app-development'))) ? 'w-full' : 'w-0 group-hover:w-full'
+                            }`}></span>
                         </NavLink>
                     ))}
                     
@@ -153,6 +162,7 @@ const Navbar = () => {
                                 >
                                     <NavLink 
                                         to={item.path} 
+                                        onClick={() => setIsMobileMenuOpen(false)}
                                         className={({ isActive }) => 
                                             `flex items-center justify-between px-4 py-3 rounded-lg font-medium ${isActive 
                                                 ? 'bg-blue-50 dark:bg-purple-900/50 text-blue-600 dark:text-purple-400' 
