@@ -23,11 +23,11 @@ const Projects = () => {
                     style={{ scale, opacity }} 
                     className="w-full h-full relative flex items-center justify-center bg-[#1a1a1a]"
                 >
-                    <div className="absolute inset-0 bg-black/40 z-10" />
+                    <div className="absolute inset-0 bg-black/70 z-10" />
                     <img 
-                        src="/assets/WeatherApp.png" 
+                        src="/Bento_Grid_Mobile.png" 
                         alt="Mobile App Development" 
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 h-full object-contain"
                     />
                     <motion.div 
                         initial={{ y: 50, opacity: 0 }}
@@ -35,7 +35,7 @@ const Projects = () => {
                         transition={{ duration: 0.3 }}
                         className="relative z-20 text-center px-4"
                     >
-                        <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-lg">
+                        <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
                             Mobile App
                             <span className="block text-4xl md:text-5xl mt-2 text-blue-400">Development</span>
                         </h2>
@@ -55,11 +55,11 @@ const Projects = () => {
             {/* Section 2: Web Development (Scrolls over) */}
             <div className="relative h-screen z-20 flex items-center justify-center bg-white overflow-hidden">
                 <div className="absolute inset-0 w-full h-full">
-                     <div className="absolute inset-0 bg-black/40 z-10" />
+                     <div className="absolute inset-0 bg-black/70 z-10" />
                      <img 
-                        src="/assets/Postify.png" 
+                        src="/Bento_Grid_Web.png" 
                         alt="Web Development" 
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 h-full object-contain"
                     />
                 </div>
                 
@@ -69,9 +69,9 @@ const Projects = () => {
                     transition={{ duration: 0.3 }}
                     className="relative z-30 text-center px-4"
                 >
-                     <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-lg">
+                     <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 uppercase tracking-wider drop-shadow-2xl">
                         Web
-                        <span className="block text-4xl md:text-5xl mt-2 text-purple-400">Development</span>
+                        <span className="block text-4xl md:text-5xl mt-2 text-orange-400">Development</span>
                     </h2>
                     <Link to="/service-web-development">
                         <motion.button
