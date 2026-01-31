@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 import Typed from "typed.js";
 import { FaReact, FaHtml5, FaGithub, FaPython } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io";
@@ -17,6 +17,26 @@ import { SiPostman } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
 import { TbBrandCpp } from "react-icons/tb";
 import { Link } from "react-router-dom";
+
+const Counter = ({ from, to }) => {
+    const nodeRef = useRef();
+    const isInView = useInView(nodeRef); // Removed once: true to animate every time
+  
+    useEffect(() => {
+      if (isInView) {
+        const node = nodeRef.current;
+        const controls = animate(from, to, {
+          duration: 1.5,
+          onUpdate: (value) => {
+            node.textContent = Math.floor(value).toFixed(0);
+          },
+        });
+        return () => controls.stop();
+      }
+    }, [from, to, isInView]);
+  
+    return <span ref={nodeRef} />;
+};
 
 const Home = () => {
     const typedRef = useRef(null);
@@ -98,7 +118,7 @@ const Home = () => {
                                 to="/projects"
                                 className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2"
                             >
-                                Explore Work 
+                                Explore Work <span aria-hidden="true" className="text-xl">→</span>
                             </Link>
                             <a
                                 href="/assets/Aman_Kumar_Resume.pdf"
@@ -136,28 +156,70 @@ const Home = () => {
             <motion.section 
                 id="about"
                 className="py-20 px-6 sm:px-8 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
-                variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
             >
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent">
-                        About Me
-                    </h2>
-                    <div className="space-y-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                        <p>
-                            Hey there! I&apos;am <strong className="text-blue-600 dark:text-blue-400">Aman Kumar</strong>, a 
-                            passionate developer specializing in creating beautiful and functional 
-                            <span className="text-purple-600 dark:text-purple-400"> Web </span> 
-                            and <span className="text-pink-500">Mobile</span> experiences.
-                        </p>
-                        <p>
-                            With a focus on modern technologies, I build 
-                            <span className="font-semibold text-gradient">
-                                {" "}scalable solutions
-                            </span> that not only look great but also solve real-world problems.
-                        </p>
+                <div className="container mx-auto max-w-6xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        {/* Left Side: Image */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                            className="flex justify-center"
+                        >
+                            <img 
+                                src="/3D_Figure.webp" 
+                                alt="About Me" 
+                                className="w-full max-w-sm drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
+                            />
+                        </motion.div>
+
+                        {/* Right Side: Content */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                                About Me
+                            </h2>
+                            <div className="bg-orange-50 dark:bg-gray-800 p-6 rounded-2xl shadow-sm mb-8">
+                                <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                                    Hey there! I&apos;am <strong className="text-orange-500">Aman Kumar</strong>, a 
+                                    passionate developer specializing in creating beautiful and functional 
+                                    <span className="text-blue-600 dark:text-blue-400"> Web </span> 
+                                    and <span className="text-purple-600">Mobile</span> experiences.
+                                    With a focus on modern technologies, I build
+                                    <span className="font-semibold text-gradient"> scalable solutions</span> that not only look great but also solve real-world problems.
+                                </p>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="flex flex-wrap gap-8 md:gap-12 mb-8">
+                                <div className="text-center">
+                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
+                                        <Counter from={0} to={8} />+
+                                    </h3>
+                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Projects</p>
+                                </div>
+                                <div className="text-center">
+                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
+                                        <Counter from={0} to={5} />+
+                                    </h3>
+                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Clients</p>
+                                </div>
+                                <div className="text-center">
+                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
+                                        <Counter from={0} to={2} />+
+                                    </h3>
+                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Years Experience</p>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </motion.section>
