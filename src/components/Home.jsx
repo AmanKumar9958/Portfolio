@@ -121,7 +121,7 @@ const Home = () => {
                                 Explore Work <span aria-hidden="true" className="text-xl">→</span>
                             </Link>
                             <a
-                                href="/assets/Aman_Kumar_Resume.pdf"
+                                href="/Aman_Kumar_Resume.pdf"
                                 download="Aman_Resume.pdf"
                                 className="px-8 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 hover:border-blue-500 dark:hover:border-blue-400"
                             >
@@ -323,7 +323,7 @@ const Home = () => {
                         Let&apos;s build something amazing! Check out my resume to see my full experience.
                     </p>
                     <motion.a
-                        href="/assets/Aman_Kumar_Resume.pdf"
+                        href="/Aman_Kumar_Resume.pdf"
                         download="Aman_Resume.pdf"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-blue-600 dark:text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
                         whileHover={{ scale: 1.05 }}
@@ -339,7 +339,7 @@ const Home = () => {
 
             {/* Floating Resume Download Button */}
             <a
-                href="/assets/Aman_Kumar_Resume.pdf"
+                href="/Aman_Kumar_Resume.pdf"
                 download="Aman_Resume.pdf"
                 className="fixed bottom-20 right-8 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2"
                 title="Download Resume"
