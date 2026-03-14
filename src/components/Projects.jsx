@@ -5,7 +5,7 @@ const Projects = () => {
     const tape = [
         'Tactile Maximalism',
         'Exaggerated Hierarchy',
-        'Frosted Layers',
+        'Layered Contrast',
         'Human-Crafted Motion',
         'Performance-First Build',
         'Editorial Grid System'
@@ -51,7 +51,7 @@ const Projects = () => {
                     transition={{ duration: 0.65 }}
                     className="mb-8"
                 >
-                    <span className="inline-flex items-center rounded-full border border-slate-300/80 bg-white/80 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-600 shadow-sm backdrop-blur-md">
+                    <span className="inline-flex items-center rounded-full border border-slate-300/80 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-600 shadow-sm">
                         Selected Work 2026
                     </span>
 
@@ -67,7 +67,7 @@ const Projects = () => {
                     </p>
                 </motion.div>
 
-                <div className="relative mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white/75 py-1.5 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-lg">
+                <div className="relative mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white py-1.5 shadow-[0_8px_30px_rgba(15,23,42,0.08)]">
                     <motion.div
                         animate={{ x: ['0%', '-50%'] }}
                         transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
@@ -91,7 +91,7 @@ const Projects = () => {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ duration: 0.55, delay: index * 0.1 }}
                             whileHover={{ y: -7, rotate: index === 0 ? -0.35 : 0.35 }}
-                            className={`group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/55 shadow-[0_16px_45px_rgba(15,23,42,0.1)] backdrop-blur-xl ${
+                            className={`group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_16px_45px_rgba(15,23,42,0.1)] ${
                                 index === 0 ? 'lg:col-span-8' : 'lg:col-span-4'
                             }`}
                         >
@@ -100,8 +100,7 @@ const Projects = () => {
                                 alt={lane.title}
                                 className="absolute inset-0 h-full w-full object-cover opacity-35 transition-transform duration-700 group-hover:scale-110"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-[#0f172a]/50 to-[#020617]/88" />
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.32),transparent_42%)]" />
+                            <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a]/35 via-[#0f172a]/68 to-[#020617]/90" />
 
                             <div className="relative z-10 flex min-h-[340px] flex-col justify-between p-5 sm:p-6">
                                 <div>
@@ -119,7 +118,7 @@ const Projects = () => {
                                 </div>
 
                                 <div className="mt-6 space-y-4">
-                                    <div className="grid grid-cols-2 gap-3 rounded-xl border border-white/20 bg-white/10 p-3 backdrop-blur-md">
+                                    <div className="grid grid-cols-2 gap-3 rounded-xl border border-slate-500/40 bg-slate-900/72 p-3">
                                         <div>
                                             <p className="text-xl font-black sm:text-2xl">{lane.statA}</p>
                                             <p className="text-[10px] uppercase tracking-[0.16em] text-slate-300">{lane.statALabel}</p>
@@ -132,7 +131,7 @@ const Projects = () => {
 
                                     <Link
                                         to={lane.route}
-                                        className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white transition-all duration-300 hover:translate-x-1 hover:border-white hover:bg-white hover:text-slate-900"
+                                        className="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-slate-950 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white transition-all duration-300 hover:translate-x-1 hover:border-slate-900 hover:bg-white hover:text-slate-900"
                                     >
                                         {lane.buttonText}
                                         <span aria-hidden="true" className="text-base">→</span>
@@ -148,7 +147,7 @@ const Projects = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-[0_12px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-6"
+                    className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.08)] sm:p-6"
                 >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-sm">
