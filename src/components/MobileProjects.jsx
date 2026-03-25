@@ -13,16 +13,13 @@ const ProjectCard = ({ project }) => {
             whileHover={{ y: -4 }}
             className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.08)]"
         >
-            <div className="relative h-40 overflow-hidden border-b border-slate-200">
-                <img
-                    src={project.image}
-                    alt={project.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/65 to-transparent" />
-                <h3 className="absolute bottom-3 left-4 right-4 text-xl font-black uppercase tracking-wide text-white">
-                    {project.title}
-                </h3>
+            <div className="flex h-36 items-end border-b border-slate-200 bg-[linear-gradient(135deg,#ecfeff_0%,#eff6ff_100%)] p-4">
+                <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Project</p>
+                    <h3 className="mt-1 text-xl font-black uppercase tracking-wide text-slate-900">
+                        {project.title}
+                    </h3>
+                </div>
             </div>
 
             <div className="space-y-4 p-4">
