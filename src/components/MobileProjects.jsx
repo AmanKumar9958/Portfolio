@@ -65,7 +65,7 @@ const MobileProjects = () => {
             image: "/assets/Chai_Cafeteria.png",
             tools: ["React Native", "Expo", "Node.js", "Express", "MongoDB", "Stripe API"],
             timeline: "4 Weeks",
-            link: "https://play.google.com/store/apps/details?id=com.chaicafeteriaranchi.frontend&pcampaignid=web_share"
+            link: "https://play.google.com/store/apps/details?id=com.solostackdev.chaicafeteria"
         },
         {
             title: "Trip Genius App",
@@ -73,7 +73,7 @@ const MobileProjects = () => {
             image: "/assets/Trip-Genius.png",
             tools: ["React Native", "Expo", "OpenAI API", "Firebase"],
             timeline: "4 Weeks",
-            link: "https://github.com/AmanKumar9958/AI-Trip-Planner-App/releases/tag/v1"
+            link: "https://play.google.com/store/apps/details?id=com.solostackdev.tripgenius"
         },
         {
             title: "Yoga Bar App",
@@ -81,7 +81,7 @@ const MobileProjects = () => {
             image: "/assets/Yoga_Bar_App.png",
             tools: ["React Native", "Expo", "Shopify API"],
             timeline: "1 Weeks",
-            link: "https://github.com/AmanKumar9958/Yogabar-app"
+            link: "https://drive.google.com/file/d/1A8b6Q1OuDjC4I6q6-w9KjXhDOT8pENgi/view"
         }
     ];
 
