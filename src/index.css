@@ -2,23 +2,219 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========== Design System Custom Properties ========== */
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-glass: rgba(18, 18, 26, 0.6);
+  --text-primary: #f0f0f5;
+  --text-secondary: #8a8a9a;
+  --accent-start: #8b5cf6;
+  --accent-end: #06b6d4;
+  --accent-hover: #a78bfa;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --glow: rgba(139, 92, 246, 0.15);
+}
+
+/* ========== Base Resets ========== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+::selection {
+  background-color: rgba(139, 92, 246, 0.3);
+  color: #fff;
+}
+
+/* ========== Custom Scrollbar ========== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent-start), var(--accent-end));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+}
+
+/* ========== Typography Utilities ========== */
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-hover {
+  background: linear-gradient(135deg, var(--accent-hover), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========== Glassmorphism ========== */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass-card {
+  background: rgba(18, 18, 26, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+}
+
+/* ========== Gradient Utilities ========== */
+.bg-accent-gradient {
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+}
+
+.border-accent-gradient {
+  border-image: linear-gradient(135deg, var(--accent-start), var(--accent-end)) 1;
+}
+
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+}
+
+/* ========== Keyframe Animations ========== */
 @keyframes wave-animation {
-    0% { transform: rotate(0deg); }
-    10% { transform: rotate(14deg); }
-    20% { transform: rotate(-8deg); }
-    30% { transform: rotate(14deg); }
-    40% { transform: rotate(-4deg); }
-    50% { transform: rotate(10deg); }
-    60% { transform: rotate(0deg); }
-    100% { transform: rotate(0deg); }
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
 }
 
 .wave {
-    display: inline-block;
-    animation: wave-animation 2s infinite;
-    transform-origin: 70% 70%;
+  display: inline-block;
+  animation: wave-animation 2s infinite;
+  transform-origin: 70% 70%;
 }
 
-*{
-    user-select: none;
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -40px) scale(1.05); }
+  50% { transform: translate(-20px, -60px) scale(0.95); }
+  75% { transform: translate(40px, -20px) scale(1.02); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-40px, 30px) scale(0.98); }
+  50% { transform: translate(30px, 50px) scale(1.04); }
+  75% { transform: translate(-30px, 20px) scale(1); }
+}
+
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -30px) scale(1.06); }
+  66% { transform: translate(-40px, 40px) scale(0.96); }
+}
+
+/* ========== Scroll Progress ========== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ========== Custom Cursor ========== */
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  mix-blend-mode: difference;
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* ========== Interactive Element Hover ========== */
+a, button, [role="button"], input[type="submit"] {
+  cursor: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  a, button, [role="button"], input[type="submit"] {
+    cursor: pointer;
+  }
+}
+
+/* ========== Grid Background Pattern ========== */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ========== Noise Texture Overlay ========== */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }

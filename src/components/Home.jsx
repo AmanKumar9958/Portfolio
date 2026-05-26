@@ -1,354 +1,420 @@
-import { useRef, useEffect } from "react";
-import { motion, useInView, animate } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { motion, useInView, animate, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Typed from "typed.js";
-import { FaReact, FaHtml5, FaGithub, FaPython } from "react-icons/fa";
+import { FaReact, FaHtml5, FaGithub, FaPython, FaNodeJs } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io";
 import { IoLogoFirebase } from "react-icons/io5";
 import { FaCss3Alt } from "react-icons/fa6";
-import { BiLogoTailwindCss } from "react-icons/bi";
-import { SiAppwrite } from "react-icons/si";
-import { FaNodeJs } from "react-icons/fa";
-import { SiExpress } from "react-icons/si";
-import { SiMongodb } from "react-icons/si";
-import { SiPostgresql } from "react-icons/si";
-import { BiLogoTypescript } from "react-icons/bi";
+import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
+import { SiAppwrite, SiExpress, SiMongodb, SiPostgresql, SiPostman } from "react-icons/si";
 import { RiNextjsFill } from "react-icons/ri";
-import { SiPostman } from "react-icons/si";
 import { DiMysql } from "react-icons/di";
 import { TbBrandCpp } from "react-icons/tb";
+import { FiArrowUpRight, FiDownload, FiChevronDown } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import GradientOrbs from "./GradientOrbs";
+import TextReveal from "./TextReveal";
+import MagneticButton from "./MagneticButton";
 
 const Counter = ({ from, to }) => {
     const nodeRef = useRef();
-    const isInView = useInView(nodeRef); // Removed once: true to animate every time
-  
+    const isInView = useInView(nodeRef, { once: false });
+
     useEffect(() => {
-      if (isInView) {
-        const node = nodeRef.current;
-        const controls = animate(from, to, {
-          duration: 1.5,
-          onUpdate: (value) => {
-            node.textContent = Math.floor(value).toFixed(0);
-          },
-        });
-        return () => controls.stop();
-      }
+        if (isInView) {
+            const node = nodeRef.current;
+            const controls = animate(from, to, {
+                duration: 1.5,
+                onUpdate: (value) => {
+                    node.textContent = Math.floor(value).toFixed(0);
+                },
+            });
+            return () => controls.stop();
+        }
     }, [from, to, isInView]);
-  
+
     return <span ref={nodeRef} />;
 };
 
+const SkillCard = ({ icon, name, delay = 0 }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay }}
+        whileHover={{ y: -4, borderColor: 'rgba(139,92,246,0.3)' }}
+        className="flex items-center gap-3 px-4 py-3 rounded-xl glass-card cursor-default"
+    >
+        <span className="text-lg">{icon}</span>
+        <span className="text-sm font-medium text-txt-primary">{name}</span>
+    </motion.div>
+);
+
+const StatCard = ({ value, suffix = '+', label }) => (
+    <motion.div
+        whileHover={{ y: -4 }}
+        className="glass-card px-6 py-5 text-center"
+    >
+        <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-1">
+            <Counter from={0} to={value} />{suffix}
+        </h3>
+        <p className="text-sm text-txt-secondary font-medium">{label}</p>
+    </motion.div>
+);
+
 const Home = () => {
     const typedRef = useRef(null);
+    const heroRef = useRef(null);
+
+    // Parallax for 3D figure
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+    const springConfig = { stiffness: 50, damping: 30 };
+    const figureX = useSpring(useTransform(mouseX, [-500, 500], [20, -20]), springConfig);
+    const figureY = useSpring(useTransform(mouseY, [-500, 500], [20, -20]), springConfig);
+
+    const handleMouseMove = (e) => {
+        const rect = heroRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        mouseX.set(e.clientX - rect.left - rect.width / 2);
+        mouseY.set(e.clientY - rect.top - rect.height / 2);
+    };
 
     useEffect(() => {
         if (typedRef.current) {
-            const options = {
-                strings: ["Mobile ", "Web "],
-                typeSpeed: 100,
-                backSpeed: 50,
-                backDelay: 1000,
+            const typed = new Typed(typedRef.current, {
+                strings: ["Mobile ", "Web ", "Full Stack "],
+                typeSpeed: 80,
+                backSpeed: 40,
+                backDelay: 1500,
                 loop: true,
                 showCursor: true,
                 cursorChar: '|'
-            };
-
-            const typed = new Typed(typedRef.current, options);
+            });
             return () => typed.destroy();
         }
     }, []);
 
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-    };
+    const skillCategories = [
+        {
+            title: "Frontend",
+            skills: [
+                { name: "React / React Native", icon: <FaReact className="text-blue-400" /> },
+                { name: "Next.js", icon: <RiNextjsFill className="text-white" /> },
+                { name: "TypeScript", icon: <BiLogoTypescript className="text-blue-400" /> },
+                { name: "JavaScript", icon: <IoLogoJavascript className="text-yellow-400" /> },
+                { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="text-cyan-400" /> },
+                { name: "HTML5", icon: <FaHtml5 className="text-orange-400" /> },
+                { name: "CSS3", icon: <FaCss3Alt className="text-blue-400" /> },
+            ]
+        },
+        {
+            title: "Backend & DB",
+            skills: [
+                { name: "Node.js", icon: <FaNodeJs className="text-green-400" /> },
+                { name: "Express.js", icon: <SiExpress className="text-white" /> },
+                { name: "MongoDB", icon: <SiMongodb className="text-green-400" /> },
+                { name: "PostgreSQL", icon: <SiPostgresql className="text-blue-300" /> },
+                { name: "MySQL", icon: <DiMysql className="text-blue-400" /> },
+            ]
+        },
+        {
+            title: "Tools & Languages",
+            skills: [
+                { name: "Firebase", icon: <IoLogoFirebase className="text-yellow-400" /> },
+                { name: "AppWrite", icon: <SiAppwrite className="text-pink-400" /> },
+                { name: "Git & GitHub", icon: <FaGithub className="text-white" /> },
+                { name: "Postman", icon: <SiPostman className="text-orange-400" /> },
+                { name: "Python", icon: <FaPython className="text-yellow-300" /> },
+                { name: "C++", icon: <TbBrandCpp className="text-blue-400" /> },
+            ]
+        }
+    ];
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-200">
-            {/* Hero Section */}
-            <section className="relative w-full h-screen overflow-hidden flex items-center bg-transparent">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 dark:from-blue-900/30 dark:to-purple-900/30 animate-gradient-x pointer-events-none" />
-                
-                <div className="container mx-auto px-6 pt-28 md:pt-0 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 h-full z-10">
-                    
-                    {/* Left Column: Text Content */}
-                    <motion.div 
+        <div className="w-full bg-surface">
+            {/* ========== HERO SECTION ========== */}
+            <section
+                ref={heroRef}
+                onMouseMove={handleMouseMove}
+                className="relative w-full min-h-screen overflow-hidden flex items-center"
+            >
+                <GradientOrbs variant="hero" />
+                <div className="absolute inset-0 grid-pattern" />
+
+                <div className="relative z-10 container mx-auto px-6 pt-28 md:pt-0 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 min-h-screen">
+                    {/* Text Content */}
+                    <motion.div
                         className="flex flex-col items-center md:items-start text-center md:text-left space-y-6"
-                        initial={{ opacity: 0, x: -50 }}
+                        initial={{ opacity: 0, x: -40 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1 }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <motion.h1
-                            className="text-5xl sm:text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent leading-tight"
-                            initial={{ y: -50 }}
-                            animate={{ y: 0 }}
-                            transition={{ type: "spring", stiffness: 100 }}
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2"
                         >
-                            Hi, I&apos;am <br className="hidden md:block"/> <span className="wave-animate">Aman Kumar</span> <span className="wave">👋</span>
+                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                            <span className="text-xs font-medium text-txt-secondary tracking-wide">Available for projects</span>
+                        </motion.div>
+
+                        <motion.h1
+                            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4, duration: 0.8 }}
+                        >
+                            <span className="text-txt-primary">Hi, I&apos;m</span>
+                            <br />
+                            <span className="text-gradient">Aman Kumar</span>
+                            {' '}
+                            <span className="wave inline-block">👋</span>
                         </motion.h1>
 
                         <motion.div
-                            className="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-100"
+                            className="font-display text-xl sm:text-2xl font-semibold text-txt-secondary"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
+                            transition={{ delay: 0.8 }}
                         >
-                            <span ref={typedRef} className="text-blue-600 dark:text-blue-400" />
-                            <span className="ml-2 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                                Development
-                            </span>
+                            <span ref={typedRef} className="text-accent-violet" />
+                            <span className="text-gradient">Developer</span>
                         </motion.div>
 
                         <motion.p
-                            className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-lg font-medium"
+                            className="text-base sm:text-lg text-txt-secondary max-w-lg font-body leading-relaxed"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.5 }}
+                            transition={{ delay: 0.6 }}
                         >
-                            Full Stack Developer & Tech Enthusiast
+                            Full Stack Developer & Tech Enthusiast building beautiful, performant web and mobile experiences.
                         </motion.p>
 
-                        <motion.div 
-                            className="flex flex-col sm:flex-row gap-4 mt-8"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 1.5 }}
+                        <motion.div
+                            className="flex flex-col sm:flex-row gap-4 mt-4"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1 }}
                         >
-                             <Link
-                                to="/projects"
-                                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2"
+                            <MagneticButton
+                                as="a"
+                                href="/projects"
+                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
                             >
-                                Explore Work <span aria-hidden="true" className="text-xl">→</span>
-                            </Link>
-                            <a
+                                Explore Work
+                                <FiArrowUpRight className="w-4 h-4" />
+                            </MagneticButton>
+                            <MagneticButton
+                                as="a"
                                 href="/Aman_Kumar_Resume.pdf"
                                 download="Aman_Resume.pdf"
-                                className="px-8 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-200 dark:border-gray-700 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 hover:border-blue-500 dark:hover:border-blue-400"
+                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
                             >
-                                Download Resume
-                            </a>
+                                <FiDownload className="w-4 h-4" />
+                                Resume
+                            </MagneticButton>
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Column: 3D Image */}
-                    <motion.div 
-                        className="flex justify-center md:justify-end items-center"
-                        initial={{ opacity: 0, x: 50 }}
+                    {/* 3D Figure with Parallax */}
+                    <motion.div
+                        className="hidden md:flex justify-center md:justify-end items-center"
+                        initial={{ opacity: 0, x: 40 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1 }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
                     >
-                         <motion.img 
-                            src="/3D_Figure.webp" 
-                            alt="3D Character" 
-                            className="w-full max-w-md md:max-w-lg object-contain drop-shadow-2xl hidden md:block"
-                            animate={{ y: [0, -20, 0] }}
-                            transition={{ 
-                                duration: 6, 
-                                repeat: Infinity, 
-                                ease: "easeInOut" 
-                            }}
-                        />
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* About Section */}
-            <motion.section 
-                id="about"
-                className="py-20 px-6 sm:px-8 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-            >
-                <div className="container mx-auto max-w-6xl">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                        {/* Left Side: Image */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            className="flex justify-center"
+                        <motion.div
+                            style={{ x: figureX, y: figureY }}
+                            className="relative"
                         >
-                            <img 
-                                src="/3D_Figure.webp" 
-                                alt="About Me" 
-                                className="w-full max-w-sm drop-shadow-2xl hover:scale-105 transition-transform duration-300" 
+                            {/* Glow behind figure */}
+                            <div className="absolute inset-0 rounded-full bg-accent-violet/10 blur-3xl scale-75" />
+                            <motion.img
+                                src="/3D_Figure.webp"
+                                alt="3D Character"
+                                className="w-full max-w-md lg:max-w-lg object-contain drop-shadow-2xl relative z-10"
+                                animate={{ y: [0, -15, 0] }}
+                                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                             />
                         </motion.div>
+                    </motion.div>
+                </div>
 
-                        {/* Right Side: Content */}
+                {/* Scroll indicator */}
+                <motion.div
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.5 }}
+                >
+                    <span className="text-xs font-medium text-txt-muted tracking-widest uppercase">Scroll</span>
+                    <motion.div
+                        animate={{ y: [0, 8, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                        <FiChevronDown className="w-5 h-5 text-txt-muted" />
+                    </motion.div>
+                </motion.div>
+            </section>
+
+            {/* ========== ABOUT SECTION ========== */}
+            <section id="about" className="relative py-24 px-6 sm:px-8 overflow-hidden">
+                <GradientOrbs variant="subtle" />
+                <div className="relative z-10 container mx-auto max-w-6xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        {/* Image */}
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
+                            initial={{ opacity: 0, x: -40 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
+                            transition={{ duration: 0.7 }}
+                            className="flex justify-center"
                         >
-                            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                            <div className="relative">
+                                <div className="absolute inset-0 rounded-3xl bg-accent-gradient opacity-10 blur-2xl scale-90" />
+                                <div className="relative glass-card p-4 rounded-3xl">
+                                    <img
+                                        src="/3D_Figure.webp"
+                                        alt="About Me"
+                                        className="w-full max-w-sm object-contain"
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Content */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 40 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.7 }}
+                        >
+                            <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
                                 About Me
-                            </h2>
-                            <div className="bg-orange-50 dark:bg-gray-800 p-6 rounded-2xl shadow-sm mb-8">
-                                <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                                    Hey there! I&apos;am <strong className="text-orange-500">Aman Kumar</strong>, a 
-                                    passionate developer specializing in creating beautiful and functional 
-                                    <span className="text-blue-600 dark:text-blue-400"> Web </span> 
-                                    and <span className="text-purple-600">Mobile</span> experiences.
+                            </span>
+
+                            <TextReveal
+                                as="h2"
+                                className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
+                            >
+                                Crafting digital experiences with passion
+                            </TextReveal>
+
+                            <div className="glass-card p-6 mb-8">
+                                <p className="text-base leading-relaxed text-txt-secondary">
+                                    Hey there! I&apos;m <strong className="text-accent-violet font-semibold">Aman Kumar</strong>, a
+                                    passionate developer specializing in creating beautiful and functional
+                                    <span className="text-accent-cyan"> Web</span> and
+                                    <span className="text-accent-violet"> Mobile</span> experiences.
                                     With a focus on modern technologies, I build
-                                    <span className="font-semibold text-gradient"> scalable solutions</span> that not only look great but also solve real-world problems.
+                                    <span className="text-gradient font-semibold"> scalable solutions</span> that not only look great but also solve real-world problems.
                                 </p>
                             </div>
 
                             {/* Stats */}
-                            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-8">
-                                <div className="text-center">
-                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
-                                        <Counter from={0} to={8} />+
-                                    </h3>
-                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Projects</p>
-                                </div>
-                                <div className="text-center">
-                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
-                                        <Counter from={0} to={5} />+
-                                    </h3>
-                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Clients</p>
-                                </div>
-                                <div className="text-center">
-                                    <h3 className="text-3xl md:text-4xl font-bold dark:text-white mb-2 text-orange-500">
-                                        <Counter from={0} to={2} />+
-                                    </h3>
-                                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">Years Experience</p>
-                                </div>
+                            <div className="grid grid-cols-3 gap-4">
+                                <StatCard value={8} label="Projects" />
+                                <StatCard value={5} label="Clients" />
+                                <StatCard value={2} label="Years Exp" />
                             </div>
                         </motion.div>
                     </div>
                 </div>
-            </motion.section>
+            </section>
 
-            {/* Skills Section */}
-            <motion.section 
-                id="skills"
-                className="py-20 px-6 sm:px-8 bg-gray-50 dark:bg-gray-900"
-                variants={sectionVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-            >
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-                        Technical Arsenal
-                    </h2>
+            {/* ========== SKILLS SECTION ========== */}
+            <section id="skills" className="relative py-24 px-6 sm:px-8 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-radial" />
+
+                <div className="relative z-10 max-w-6xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
+                            Tech Stack
+                        </span>
+                        <TextReveal className="font-display text-3xl sm:text-4xl md:text-5xl font-bold">
+                            Technical Arsenal
+                        </TextReveal>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "Frontend Mastery",
-                                items: [
-                                    { name: "React", icon: <FaReact className="w-6 h-6 text-blue-500" /> },
-                                    { name: "React Native", icon: <FaReact className="w-6 h-6 text-blue-500" /> },
-                                    { name: "Next.js", icon: <RiNextjsFill className="w-6 h-6 text-blue-500"/> },
-                                    { name: "TypeScript", icon: <BiLogoTypescript className="w-6 h-6 text-blue-500" /> },
-                                    { name: "JavaScript", icon: <IoLogoJavascript className="w-6 h-6 text-yellow-400" /> },
-                                    { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="w-6 h-6 text-cyan-500" /> },
-                                    { name: "HTML5", icon: <FaHtml5 className="w-6 h-6 text-orange-500" /> },
-                                    { name: "CSS3", icon: <FaCss3Alt className="w-6 h-6 text-blue-400" /> },
-                                    
-                                ]
-                            },
-                            {
-                                title: "Backend & Databases",
-                                items: [
-                                    { name: "Node.js", icon: <FaNodeJs className="w-6 h-6 text-green-500" /> },
-                                    { name: "Express.js", icon: <SiExpress className="w-6 h-6 text-green-500" /> },
-                                    { name: "MongoDB", icon: <SiMongodb className="w-6 h-6 text-green-500" /> },
-                                    { name: "PostgreSQL", icon: <SiPostgresql className="w-6 h-6 text-green-500" /> },
-                                    { name: "MySQL", icon: <DiMysql className="w-6 h-6 text-blue-500" /> }
-                                ]
-                            },
-                            {
-                                title: "Dev Tools",
-                                items: [
-                                    { name: "Firebase", icon: <IoLogoFirebase className="w-6 h-6 text-yellow-500" /> },
-                                    { name: "AppWrite", icon: <SiAppwrite className="w-6 h-6 text-red-500" /> },
-                                    { name: "Git & GitHub", icon: <FaGithub className="w-6 h-6 text-gray-800 dark:text-gray-200" /> },
-                                    { name: "Postman", icon: <SiPostman className="w-6 h-6 text-orange-500" /> }
-                                ]
-                            },
-                            {
-                                title: "Programming Languages",
-                                items: [
-                                    { name: "JavaScript", icon: <IoLogoJavascript className="w-6 h-6 text-yellow-400" /> },
-                                    { name: "Python", icon: <FaPython className="text-yellow-400 text-xl" /> },
-                                    { name: "C++", icon: <TbBrandCpp className="text-2xl text-blue-500" />}
-                                ]
-                            },
-                        ].map((category, idx) => (
+                        {skillCategories.map((category, idx) => (
                             <motion.div
                                 key={idx}
-                                className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all"
-                                whileHover={{ y: -5 }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                                className="glass-card p-6"
                             >
-                                <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                                <h3 className="font-display text-lg font-bold text-txt-primary mb-5 flex items-center gap-2">
+                                    <span className="w-8 h-[2px] bg-accent-gradient rounded-full" />
                                     {category.title}
                                 </h3>
-                                <ul className="space-y-4">
-                                    {category.items.map((item, i) => (
-                                        <li
+                                <div className="grid grid-cols-1 gap-2.5">
+                                    {category.skills.map((skill, i) => (
+                                        <SkillCard
                                             key={i}
-                                            className={`flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 ${
-                                                item.className || "text-gray-700 dark:text-gray-300"
-                                            }`}
-                                        >
-                                            {item.icon}
-                                            <span className="font-medium">{item.name}</span>
-                                        </li>
+                                            icon={skill.icon}
+                                            name={skill.name}
+                                            delay={i * 0.05}
+                                        />
                                     ))}
-                                </ul>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
                 </div>
-            </motion.section>
+            </section>
 
-            {/* Resume Section */}
-            <motion.section 
-                id="resume"
-                className="py-20 px-6 sm:px-8 bg-gradient-to-br from-blue-500 to-purple-600 text-white"
-                variants={sectionVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-            >
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-4xl font-bold mb-6">Ready to Work Together?</h2>
-                    <p className="text-xl mb-8 opacity-90">
-                        Let&apos;s build something amazing! Check out my resume to see my full experience.
-                    </p>
-                    <motion.a
-                        href="/Aman_Kumar_Resume.pdf"
-                        download="Aman_Resume.pdf"
-                        className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-blue-600 dark:text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <span>Download Resume</span>
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/>
-                        </svg>
-                    </motion.a>
-                </div>
-            </motion.section>
+            {/* ========== RESUME CTA SECTION ========== */}
+            <section id="resume" className="relative py-24 px-6 sm:px-8 overflow-hidden">
+                <div className="absolute inset-0 bg-accent-gradient opacity-[0.03]" />
+                <GradientOrbs variant="subtle" />
 
-            {/* Floating Resume Download Button */}
-            <a
-                href="/Aman_Kumar_Resume.pdf"
-                download="Aman_Resume.pdf"
-                className="fixed bottom-20 right-8 z-50 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2"
-                title="Download Resume"
-            >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                <span className="hidden sm:inline font-semibold">Resume</span>
-            </a>
+                <motion.div
+                    className="relative z-10 max-w-4xl mx-auto text-center"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <div className="glass-card p-10 md:p-16">
+                        <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-6">
+                            Open to Opportunities
+                        </span>
+
+                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                            Ready to <span className="text-gradient">work together?</span>
+                        </h2>
+
+                        <p className="text-lg text-txt-secondary mb-8 max-w-xl mx-auto">
+                            Let&apos;s build something amazing! Check out my resume to see my full experience and skills.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <MagneticButton
+                                as="a"
+                                href="/Aman_Kumar_Resume.pdf"
+                                download="Aman_Resume.pdf"
+                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
+                            >
+                                <FiDownload className="w-5 h-5" />
+                                Download Resume
+                            </MagneticButton>
+
+                            <Link
+                                to="/contact"
+                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
+                            >
+                                Get in Touch
+                                <FiArrowUpRight className="w-4 h-4" />
+                            </Link>
+                        </div>
+                    </div>
+                </motion.div>
+            </section>
         </div>
     );
 };

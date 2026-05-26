@@ -14,6 +14,8 @@ import MobileProjects from './components/MobileProjects';
 import HandAnimation from './components/HandAnimation'
 import ScrollToTop from './components/ScrollToTop';
 import SmoothScroll from './components/SmoothScroll';
+import CustomCursor from './components/CustomCursor';
+import ScrollProgress from './components/ScrollProgress';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/PageTransition';
 
@@ -21,9 +23,11 @@ const App = () => {
   const location = useLocation();
 
   return (
-      <div>
+      <div className="bg-surface min-h-screen">
         <ScrollToTop />
         <SmoothScroll />
+        <CustomCursor />
+        <ScrollProgress />
         <HandAnimation delay={2000} />
         <Navbar />
         <AnimatePresence mode="wait">
