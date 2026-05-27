@@ -1,57 +1,127 @@
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaReact, FaAndroid, FaApple, FaExternalLinkAlt, FaArrowRight } from "react-icons/fa";
+import { FaReact, FaAndroid, FaApple, FaArrowRight } from "react-icons/fa";
 import { SiExpo, SiFirebase } from "react-icons/si";
-import { FiArrowUpRight } from "react-icons/fi";
+import { FiExternalLink, FiClock, FiCode } from "react-icons/fi";
 import GradientOrbs from "./GradientOrbs";
 
-const ProjectCard = ({ project, index }) => {
+/* ────── Tilt Card with cursor-following glow ────── */
+const ProjectCard = ({ project, index, featured = false }) => {
+    const cardRef = useRef(null);
+    const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
+
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+    const springConfig = { stiffness: 150, damping: 20 };
+    const rotateX = useSpring(useTransform(mouseY, [-150, 150], [4, -4]), springConfig);
+    const rotateY = useSpring(useTransform(mouseX, [-150, 150], [-4, 4]), springConfig);
+
+    const handleMouseMove = (e) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        mouseX.set(x);
+        mouseY.set(y);
+        setGlowPos({
+            x: ((e.clientX - rect.left) / rect.width) * 100,
+            y: ((e.clientY - rect.top) / rect.height) * 100,
+        });
+    };
+
+    const handleMouseLeave = () => {
+        mouseX.set(0);
+        mouseY.set(0);
+        setGlowPos({ x: 50, y: 50 });
+    };
+
     return (
         <motion.article
-            initial={{ opacity: 0, y: 30 }}
+            ref={cardRef}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: index * 0.08 }}
-            whileHover={{ y: -4 }}
-            className="group glass-card overflow-hidden"
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55, delay: index * 0.1 }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                rotateX: featured ? rotateX : 0,
+                rotateY: featured ? rotateY : 0,
+                transformPerspective: 800,
+            }}
+            className={`group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-surface-secondary transition-colors duration-500 hover:border-accent-cyan/20 ${
+                featured ? 'md:col-span-2' : ''
+            }`}
         >
-            <div className="flex h-36 items-end border-b border-white/[0.04] bg-gradient-to-br from-accent-cyan/5 to-accent-violet/5 p-5">
-                <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-txt-muted">Project</p>
-                    <h3 className="mt-1 text-xl font-bold tracking-wide text-txt-primary font-display">
-                        {project.title}
-                    </h3>
-                </div>
-            </div>
+            {/* Cursor-following glow */}
+            <div
+                className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                    background: `radial-gradient(600px circle at ${glowPos.x}% ${glowPos.y}%, rgba(6,182,212,0.06), transparent 50%)`,
+                }}
+            />
 
-            <div className="space-y-4 p-5">
-                <p className="text-sm leading-relaxed text-txt-secondary">{project.shortDescription}</p>
-
-                <div>
-                    <h4 className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-txt-muted">Tech Stack</h4>
-                    <div className="flex flex-wrap gap-2">
-                        {project.tools.map((tool, i) => (
-                            <span key={i} className="rounded-full bg-white/[0.04] border border-white/[0.06] px-2.5 py-1 text-[11px] font-semibold text-txt-secondary">
-                                {tool}
+            <div className={`relative z-10 ${featured ? 'grid grid-cols-1 md:grid-cols-2' : 'flex flex-col'}`}>
+                {/* Header area */}
+                <div className={`border-b md:border-b-0 ${featured ? 'md:border-r' : ''} border-white/[0.04] p-6 sm:p-8 flex flex-col justify-between`}>
+                    <div>
+                        <div className="flex items-center justify-between mb-4">
+                            <span className="font-mono text-4xl font-bold text-white/[0.05] select-none leading-none">
+                                0{index + 1}
                             </span>
-                        ))}
+                            {featured && (
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-cyan/10 border border-accent-cyan/20 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-accent-cyan">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+                                    Featured
+                                </span>
+                            )}
+                        </div>
+
+                        <h3 className={`font-display font-bold text-txt-primary mb-2 ${featured ? 'text-3xl sm:text-4xl' : 'text-2xl'}`}>
+                            {project.title}
+                        </h3>
+
+                        <p className="text-sm leading-relaxed text-txt-secondary mb-5">
+                            {project.shortDescription}
+                        </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-txt-muted">
+                            <FiClock className="w-3.5 h-3.5" />
+                            <span className="text-xs font-semibold">{project.timeline}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-white/[0.04] pt-4">
-                    <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-txt-muted">Build to launch</p>
-                        <p className="text-base font-bold text-txt-primary font-mono">{project.timeline}</p>
+                {/* Details area */}
+                <div className="p-6 sm:p-8 flex flex-col justify-between">
+                    <div className="mb-6">
+                        <h4 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-txt-muted mb-3">
+                            <FiCode className="w-3.5 h-3.5" />
+                            Tech Stack
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                            {project.tools.map((tool, i) => (
+                                <span
+                                    key={i}
+                                    className="rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-1.5 text-[11px] font-semibold text-txt-secondary transition-colors duration-300 hover:border-accent-cyan/20 hover:text-txt-primary"
+                                >
+                                    {tool}
+                                </span>
+                            ))}
+                        </div>
                     </div>
 
                     <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-white hover:shadow-glow transition-shadow"
+                        className="inline-flex items-center gap-3 self-start rounded-full bg-white/[0.04] border border-white/[0.08] px-5 py-3 text-sm font-semibold text-txt-primary transition-all duration-300 hover:bg-accent-gradient hover:border-transparent hover:text-white hover:shadow-glow-cyan group/btn"
                     >
-                        View
-                        <FaExternalLinkAlt className="text-[10px]" />
+                        <span>View Project</span>
+                        <FiExternalLink className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                     </a>
                 </div>
             </div>
@@ -63,127 +133,150 @@ const MobileProjects = () => {
     const projects = [
         {
             title: "Chai Cafeteria",
-            shortDescription: "Order your favorite food from the Chai Cafeteria",
+            shortDescription: "Full-featured food ordering app with real-time order tracking, Stripe payment integration, and a beautiful menu UI.",
             tools: ["React Native", "Expo", "Node.js", "Express", "MongoDB", "Stripe API"],
             timeline: "4 Weeks",
             link: "https://play.google.com/store/apps/details?id=com.solostackdev.chaicafeteria"
         },
         {
             title: "Trip Genius App",
-            shortDescription: "AI-powered travel planning made simple.",
+            shortDescription: "AI-powered travel companion that generates personalized itineraries and recommendations using OpenAI.",
             tools: ["React Native", "Expo", "OpenAI API", "Firebase"],
             timeline: "4 Weeks",
             link: "https://play.google.com/store/apps/details?id=com.solostackdev.tripgenius"
         },
         {
             title: "Yoga Bar App",
-            shortDescription: "Healthy snacks at your fingertips.",
+            shortDescription: "Health-focused e-commerce mobile app with Shopify integration for browsing and purchasing healthy snacks.",
             tools: ["React Native", "Expo", "Shopify API"],
             timeline: "1 Week",
             link: "https://drive.google.com/file/d/1A8b6Q1OuDjC4I6q6-w9KjXhDOT8pENgi/view"
         }
     ];
 
-    const techPills = [
+    const techStack = [
         { name: "React Native", icon: <FaReact className="text-blue-400" /> },
         { name: "Expo", icon: <SiExpo className="text-white" /> },
         { name: "Firebase", icon: <SiFirebase className="text-yellow-400" /> },
         { name: "Android", icon: <FaAndroid className="text-green-400" /> },
-        { name: "iOS", icon: <FaApple className="text-white" /> }
+        { name: "iOS", icon: <FaApple className="text-white" /> },
     ];
 
     return (
-        <div className="min-h-screen bg-surface px-5 pb-14 pt-28 sm:px-7">
-            <GradientOrbs variant="default" />
-            <div className="relative z-10 mx-auto max-w-5xl font-display">
-                <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
-                    {/* Left: Header */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -24 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.65 }}
-                        className="space-y-5"
-                    >
-                        <p className="inline-flex rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-txt-secondary">
-                            Mobile Portfolio
-                        </p>
+        <div className="min-h-screen bg-surface overflow-hidden">
+            <GradientOrbs variant="hero" />
+            <div className="absolute inset-0 grid-pattern" />
 
-                        <h1 className="text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl text-txt-primary">
+            {/* ====== HERO ====== */}
+            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-12 sm:pt-40 sm:pb-16">
+                <div className="grid grid-cols-1 md:grid-cols-12 items-end gap-10">
+                    {/* Left: headline */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7 }}
+                        className="md:col-span-7 space-y-5"
+                    >
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-txt-secondary">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+                            Mobile Portfolio
+                        </span>
+
+                        <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold leading-[0.92] tracking-tight text-txt-primary">
                             Mobile
-                            <span className="block text-gradient">Projects</span>
+                            <br />
+                            <span className="text-gradient">Projects</span>
                         </h1>
 
-                        <p className="max-w-xl text-sm leading-relaxed text-txt-secondary">
+                        <p className="max-w-lg text-base leading-relaxed text-txt-secondary">
                             Production-ready mobile apps with stable architecture, smooth UX, and strong retention-focused features.
                         </p>
 
-                        <div className="flex flex-wrap gap-2">
-                            {techPills.map((skill, index) => (
+                        {/* Tech stack pills */}
+                        <div className="flex flex-wrap gap-2 pt-2">
+                            {techStack.map((skill, i) => (
                                 <motion.div
-                                    key={index}
-                                    whileHover={{ y: -2 }}
-                                    className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-xs font-semibold text-txt-secondary"
+                                    key={i}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 + i * 0.06 }}
+                                    whileHover={{ y: -2, borderColor: 'rgba(6,182,212,0.25)' }}
+                                    className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-xs font-semibold text-txt-secondary transition-colors duration-300"
                                 >
                                     {skill.icon}
                                     <span>{skill.name}</span>
                                 </motion.div>
                             ))}
                         </div>
+                    </motion.div>
 
-                        <div className="flex items-center gap-6 pt-2">
-                            <div>
-                                <p className="text-2xl font-bold text-gradient font-display">5+</p>
-                                <p className="text-[11px] uppercase tracking-[0.16em] text-txt-muted">apps deployed</p>
+                    {/* Right: stats + link */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.7 }}
+                        className="md:col-span-5 flex flex-col gap-6"
+                    >
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="glass-card p-5 text-center">
+                                <p className="text-3xl font-bold text-gradient font-display">5+</p>
+                                <p className="text-[11px] uppercase tracking-[0.16em] text-txt-muted mt-1">Apps Deployed</p>
                             </div>
-                            <div className="h-10 w-px bg-white/[0.06]" />
-                            <div>
-                                <p className="text-2xl font-bold text-gradient font-display">4.8/5</p>
-                                <p className="text-[11px] uppercase tracking-[0.16em] text-txt-muted">avg rating</p>
+                            <div className="glass-card p-5 text-center">
+                                <p className="text-3xl font-bold text-gradient font-display">4.8/5</p>
+                                <p className="text-[11px] uppercase tracking-[0.16em] text-txt-muted mt-1">Avg Rating</p>
                             </div>
                         </div>
 
                         <Link
                             to="/projects-web-development"
-                            className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white hover:shadow-glow transition-shadow"
+                            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-6 py-3 text-sm font-semibold text-txt-primary hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
                         >
-                            View Web Projects <FaArrowRight className="text-[10px]" />
+                            Switch to Web Projects
+                            <FaArrowRight className="text-xs text-accent-violet" />
                         </Link>
                     </motion.div>
+                </div>
+            </div>
 
-                    {/* Right: 3D Figure */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 24 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.65 }}
-                        className="flex justify-center items-center relative"
-                    >
-                        <div className="absolute h-52 w-52 rounded-full bg-accent-cyan/10 blur-2xl" />
-                        <motion.img
-                            src="/3D_Figure_Mobile.webp"
-                            alt="Mobile Development 3D"
-                            className="w-full max-w-[260px] object-contain z-10"
-                            animate={{ y: [0, -20, 0] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            {/* ====== DIVIDER ====== */}
+            <div className="relative z-10 max-w-6xl mx-auto px-6">
+                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+            </div>
+
+            {/* ====== PROJECTS ====== */}
+            <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="font-display text-2xl font-bold text-txt-primary mb-10 flex items-center gap-3"
+                >
+                    <span className="w-8 h-[2px] bg-accent-gradient rounded-full" />
+                    Featured Projects
+                    <span className="font-mono text-sm font-normal text-txt-muted">({projects.length})</span>
+                </motion.h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {projects.map((project, index) => (
+                        <ProjectCard
+                            key={index}
+                            project={project}
+                            index={index}
+                            featured={index === 0}
                         />
-                    </motion.div>
+                    ))}
                 </div>
+            </div>
 
-                {/* Projects Grid */}
-                <div className="mt-12">
-                    <h2 className="mb-8 text-2xl font-bold uppercase tracking-wide text-txt-primary sm:text-3xl flex items-center gap-3">
-                        <span className="w-8 h-[2px] bg-accent-gradient rounded-full" />
-                        Featured Mobile Projects
-                    </h2>
-
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                        {projects.map((project, index) => (
-                            <ProjectCard key={index} project={project} index={index} />
-                        ))}
-                    </div>
-                </div>
-
-                <div className="mt-10 border-t border-white/[0.04] pt-6 text-center text-sm font-bold uppercase tracking-[0.18em] text-txt-muted">
-                    More Soon
+            {/* ====== MORE SOON ====== */}
+            <div className="relative z-10 max-w-6xl mx-auto px-6 pb-20">
+                <div className="flex items-center gap-4">
+                    <div className="flex-1 h-px bg-white/[0.04]" />
+                    <span className="text-sm font-bold uppercase tracking-[0.18em] text-txt-muted font-display">
+                        More Soon
+                    </span>
+                    <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
             </div>
         </div>
