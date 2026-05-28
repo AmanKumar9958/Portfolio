@@ -51,9 +51,8 @@ const ProjectCard = ({ project, index, featured = false }) => {
                 rotateY: featured ? rotateY : 0,
                 transformPerspective: 800,
             }}
-            className={`group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-surface-secondary transition-colors duration-500 hover:border-accent-violet/20 ${
-                featured ? 'md:col-span-2' : ''
-            }`}
+            className={`group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-surface-secondary transition-colors duration-500 hover:border-accent-violet/20 ${featured ? 'md:col-span-2' : ''
+                }`}
         >
             {/* Cursor-following glow */}
             <div

@@ -133,118 +133,130 @@ const Home = () => {
 
     return (
         <div className="w-full bg-surface">
-            {/* ========== HERO SECTION ========== */}
+            {/* ========== HERO SECTION — Editorial Overlap ========== */}
             <section
                 ref={heroRef}
                 onMouseMove={handleMouseMove}
-                className="relative w-full min-h-screen overflow-hidden flex items-center"
+                className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center"
             >
                 <GradientOrbs variant="hero" />
                 <div className="absolute inset-0 grid-pattern" />
 
-                <div className="relative z-10 container mx-auto px-6 pt-28 md:pt-0 md:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12 min-h-screen">
-                    {/* Text Content */}
+                <div className="relative z-10 w-full flex flex-col items-center pt-28 md:pt-20">
+                    {/* Available badge */}
                     <motion.div
-                        className="flex flex-col items-center md:items-start text-center md:text-left space-y-6"
-                        initial={{ opacity: 0, x: -40 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2 mb-6"
                     >
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2"
-                        >
-                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                            <span className="text-xs font-medium text-txt-secondary tracking-wide">Available for projects</span>
-                        </motion.div>
-
-                        <motion.h1
-                            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.8 }}
-                        >
-                            <span className="text-txt-primary">Hi, I&apos;m</span>
-                            <br />
-                            <span className="text-gradient">Aman Kumar</span>
-                            {' '}
-                            <span className="wave inline-block">👋</span>
-                        </motion.h1>
-
-                        <motion.div
-                            className="font-display text-xl sm:text-2xl font-semibold text-txt-secondary"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.8 }}
-                        >
-                            <span ref={typedRef} className="text-accent-violet" />
-                            <span className="text-gradient">Developer</span>
-                        </motion.div>
-
-                        <motion.p
-                            className="text-base sm:text-lg text-txt-secondary max-w-lg font-body leading-relaxed"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                        >
-                            Full Stack Developer & Tech Enthusiast building beautiful, performant web and mobile experiences.
-                        </motion.p>
-
-                        <motion.div
-                            className="flex flex-col sm:flex-row gap-4 mt-4"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1 }}
-                        >
-                            <MagneticButton
-                                as="a"
-                                href="/projects"
-                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
-                            >
-                                Explore Work
-                                <FiArrowUpRight className="w-4 h-4" />
-                            </MagneticButton>
-                            <MagneticButton
-                                as="a"
-                                href="/Aman_Kumar_Resume.pdf"
-                                download="Aman_Resume.pdf"
-                                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
-                            >
-                                <FiDownload className="w-4 h-4" />
-                                Resume
-                            </MagneticButton>
-                        </motion.div>
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        <span className="text-xs font-medium text-txt-secondary tracking-wide">Available for projects</span>
                     </motion.div>
 
-                    {/* 3D Figure with Parallax */}
-                    <motion.div
-                        className="hidden md:flex justify-center md:justify-end items-center"
-                        initial={{ opacity: 0, x: 40 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
+                    {/* Intro text */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.35 }}
+                        className="text-center text-base sm:text-lg text-txt-secondary font-body mb-4"
                     >
-                        <motion.div
-                            style={{ x: figureX, y: figureY }}
-                            className="relative"
+                        👋 Hi, I&apos;m Aman Kumar
+                        {/* <span className="text-accent-violet font-semibold"> Full Stack Developer</span> */}
+                    </motion.p>
+
+                    {/* ── Layered Typography + Figure ── */}
+                    <div className="relative flex flex-col items-center w-full">
+                        {/* Background text — "Aman" behind figure */}
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                            className="font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative z-[1] text-txt-primary"
                         >
-                            {/* Glow behind figure */}
-                            <div className="absolute inset-0 rounded-full bg-accent-violet/10 blur-3xl scale-75" />
+                            Developer
+                        </motion.h1>
+
+                        {/* 3D Figure — overlaps text */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.75, delay: 0.35 }}
+                            className="relative z-[2] -mt-20 sm:-mt-28 md:-mt-40 lg:-mt-52"
+                        >
+                            {/* Glow behind */}
+                            <div className="absolute inset-0 bg-accent-violet/10 blur-[80px] rounded-full scale-75 -z-10" />
                             <motion.img
                                 src="/3D_Figure.webp"
-                                alt="3D Character"
-                                className="w-full max-w-md lg:max-w-lg object-contain drop-shadow-2xl relative z-10"
-                                animate={{ y: [0, -15, 0] }}
-                                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                                alt="Aman Kumar — Full Stack Developer"
+                                className="w-52 sm:w-64 md:w-80 lg:w-96 object-contain mx-auto drop-shadow-2xl"
+                                style={{ x: figureX, y: figureY }}
                             />
                         </motion.div>
+
+                        {/* Foreground text — "Kumar" in front of figure */}
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                            className="font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative z-[3] -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 text-gradient"
+                        >
+                            Freelancer
+                        </motion.h1>
+                    </div>
+
+                    {/* Typed role */}
+                    <motion.div
+                        className="font-display text-xl sm:text-2xl font-semibold text-txt-secondary mt-4 sm:mt-6 text-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.9 }}
+                    >
+                        <span ref={typedRef} className="text-accent-violet" />
+                        <span className="text-gradient">Developer</span>
+                    </motion.div>
+
+                    {/* Description */}
+                    <motion.p
+                        className="text-base sm:text-lg text-txt-secondary max-w-lg font-body leading-relaxed text-center mt-4"
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1 }}
+                    >
+                        Full Stack Developer &amp; Tech Enthusiast building beautiful,
+                        performant web and mobile experiences.
+                    </motion.p>
+
+                    {/* CTA Buttons */}
+                    <motion.div
+                        className="flex flex-col sm:flex-row gap-4 mt-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.1 }}
+                    >
+                        <MagneticButton
+                            as="a"
+                            href="/projects"
+                            className="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
+                        >
+                            Explore Work
+                            <FiArrowUpRight className="w-4 h-4" />
+                        </MagneticButton>
+                        <MagneticButton
+                            as="a"
+                            href="/Aman_Kumar_Resume.pdf"
+                            download="Aman_Resume.pdf"
+                            className="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
+                        >
+                            <FiDownload className="w-4 h-4" />
+                            Resume
+                        </MagneticButton>
                     </motion.div>
                 </div>
 
                 {/* Scroll indicator */}
                 <motion.div
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                    className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.5 }}
