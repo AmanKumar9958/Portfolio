@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, animate, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useInView, animate, useMotionValue, useTransform, useSpring, useScroll } from "framer-motion";
 import Typed from "typed.js";
 import { FaReact, FaHtml5, FaGithub, FaPython, FaNodeJs } from "react-icons/fa";
 import { IoLogoJavascript } from "react-icons/io";
@@ -10,7 +10,7 @@ import { SiAppwrite, SiExpress, SiMongodb, SiPostgresql, SiPostman } from "react
 import { RiNextjsFill } from "react-icons/ri";
 import { DiMysql } from "react-icons/di";
 import { TbBrandCpp } from "react-icons/tb";
-import { FiArrowUpRight, FiDownload, FiChevronDown } from "react-icons/fi";
+import { FiArrowUpRight, FiDownload, FiChevronDown, FiSmartphone, FiMonitor } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import GradientOrbs from "./GradientOrbs";
 import TextReveal from "./TextReveal";
@@ -73,6 +73,30 @@ const Home = () => {
     const figureX = useSpring(useTransform(mouseX, [-500, 500], [20, -20]), springConfig);
     const figureY = useSpring(useTransform(mouseY, [-500, 500], [20, -20]), springConfig);
 
+    // Sticky scroll for skills section
+    const skillsSectionRef = useRef(null);
+    const { scrollYProgress: skillsProgress } = useScroll({
+        target: skillsSectionRef,
+        offset: ['start start', 'end end'],
+    });
+    const [activeSkillIndex, setActiveSkillIndex] = useState(0);
+    const headerOpacity = useTransform(skillsProgress, [0, 0.08], [0, 1]);
+
+    useEffect(() => {
+        const unsubscribe = skillsProgress.on('change', (v) => {
+            // Divide progress into equal segments for each category
+            // First 10% is header fade-in, remaining 90% split among categories
+            const adjusted = Math.max(0, (v - 0.1) / 0.9);
+            const totalCategories = 3;
+            const idx = Math.min(
+                Math.floor(adjusted * totalCategories),
+                totalCategories - 1
+            );
+            setActiveSkillIndex(idx);
+        });
+        return unsubscribe;
+    }, [skillsProgress]);
+
     const handleMouseMove = (e) => {
         const rect = heroRef.current?.getBoundingClientRect();
         if (!rect) return;
@@ -99,8 +123,9 @@ const Home = () => {
         {
             title: "Frontend",
             skills: [
-                { name: "React / React Native", icon: <FaReact className="text-blue-400" /> },
-                { name: "Next.js", icon: <RiNextjsFill className="text-white" /> },
+                { name: "React", icon: <FaReact className="text-blue-400" />, badge: <FiMonitor className="text-blue-300/60 w-3.5 h-3.5" /> },
+                { name: "React Native", icon: <FaReact className="text-blue-400" />, badge: <FiSmartphone className="text-blue-300/60 w-3.5 h-3.5" /> },
+                { name: "Next.js", icon: <RiNextjsFill className="text-white" />, badge: <FiMonitor className="text-blue-300/60 w-3.5 h-3.5" /> },
                 { name: "TypeScript", icon: <BiLogoTypescript className="text-blue-400" /> },
                 { name: "JavaScript", icon: <IoLogoJavascript className="text-yellow-400" /> },
                 { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="text-cyan-400" /> },
@@ -336,46 +361,235 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* ========== SKILLS SECTION ========== */}
-            <section id="skills" className="relative py-24 px-6 sm:px-8 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-radial" />
+            {/* ========== SKILLS SECTION — Sticky Scroll ========== */}
+            <section id="skills" className="relative">
+                <div className="absolute inset-0 bg-gradient-radial pointer-events-none" />
 
-                <div className="relative z-10 max-w-6xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
-                            Tech Stack
-                        </span>
-                        <TextReveal className="font-display text-3xl sm:text-4xl md:text-5xl font-bold">
-                            Technical Arsenal
-                        </TextReveal>
-                    </div>
+                {/* Shorter scroll runway — 220vh for snappier transitions */}
+                <div ref={skillsSectionRef} className="relative" style={{ height: '220vh' }}>
+                    {/* Sticky container */}
+                    <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 sm:px-8">
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {skillCategories.map((category, idx) => (
+                        {/* Animated background accent blob — changes color per category */}
+                        <div
+                            className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.07] transition-all duration-1000 ease-out pointer-events-none"
+                            style={{
+                                background: activeSkillIndex === 0
+                                    ? 'radial-gradient(circle, #8b5cf6, transparent 70%)'
+                                    : activeSkillIndex === 1
+                                        ? 'radial-gradient(circle, #06b6d4, transparent 70%)'
+                                        : 'radial-gradient(circle, #f59e0b, transparent 70%)',
+                                transform: `translate(${activeSkillIndex === 0 ? '-20%' : activeSkillIndex === 1 ? '20%' : '0'}, ${activeSkillIndex === 2 ? '-15%' : '10%'})`,
+                            }}
+                        />
+
+                        {/* Floating particles */}
+                        {[...Array(6)].map((_, i) => (
                             <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                className="glass-card p-6"
+                                key={i}
+                                className="absolute w-1 h-1 rounded-full bg-accent-violet/30"
+                                animate={{
+                                    y: [0, -30, 0],
+                                    x: [0, i % 2 === 0 ? 15 : -15, 0],
+                                    opacity: [0.2, 0.6, 0.2],
+                                }}
+                                transition={{
+                                    duration: 3 + i * 0.5,
+                                    repeat: Infinity,
+                                    delay: i * 0.4,
+                                    ease: 'easeInOut',
+                                }}
+                                style={{
+                                    left: `${15 + i * 14}%`,
+                                    top: `${30 + (i % 3) * 20}%`,
+                                }}
+                            />
+                        ))}
+
+                        <div className="relative z-10 max-w-6xl mx-auto w-full">
+                            {/* Header */}
+                            <motion.div
+                                className="text-center mb-8"
+                                style={{ opacity: headerOpacity }}
                             >
-                                <h3 className="font-display text-lg font-bold text-txt-primary mb-5 flex items-center gap-2">
-                                    <span className="w-8 h-[2px] bg-accent-gradient rounded-full" />
-                                    {category.title}
-                                </h3>
-                                <div className="grid grid-cols-1 gap-2.5">
-                                    {category.skills.map((skill, i) => (
-                                        <SkillCard
-                                            key={i}
-                                            icon={skill.icon}
-                                            name={skill.name}
-                                            delay={i * 0.05}
-                                        />
+                                <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
+                                    Tech Stack
+                                </span>
+                                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-txt-primary">
+                                    Technical Arsenal
+                                </h2>
+                            </motion.div>
+
+                            {/* Progress bar + step indicators */}
+                            <div className="flex flex-col items-center gap-3 mb-8">
+                                {/* Progress bar */}
+                                <div className="w-48 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
+                                    <motion.div
+                                        className="h-full bg-accent-gradient rounded-full"
+                                        animate={{ width: `${((activeSkillIndex + 1) / skillCategories.length) * 100}%` }}
+                                        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                    />
+                                </div>
+
+                                {/* Step dots */}
+                                <div className="flex justify-center gap-2">
+                                    {skillCategories.map((cat, idx) => (
+                                        <div key={idx} className="flex items-center gap-2">
+                                            <motion.div
+                                                className="rounded-full"
+                                                animate={{
+                                                    width: activeSkillIndex === idx ? 32 : 8,
+                                                    height: 8,
+                                                    backgroundColor: activeSkillIndex === idx
+                                                        ? idx === 0 ? '#8b5cf6' : idx === 1 ? '#06b6d4' : '#f59e0b'
+                                                        : activeSkillIndex > idx
+                                                            ? idx === 0 ? '#8b5cf680' : idx === 1 ? '#06b6d480' : '#f59e0b80'
+                                                            : 'rgba(255,255,255,0.08)',
+                                                }}
+                                                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                                            />
+                                        </div>
                                     ))}
                                 </div>
+                            </div>
+
+                            {/* Cards — stacked, only active one visible */}
+                            <div className="relative h-[420px] sm:h-[380px]">
+                                {skillCategories.map((category, idx) => {
+                                    const isActive = activeSkillIndex === idx;
+                                    const isPast = activeSkillIndex > idx;
+                                    const accentColor = idx === 0 ? '#8b5cf6' : idx === 1 ? '#06b6d4' : '#f59e0b';
+
+                                    return (
+                                        <motion.div
+                                            key={idx}
+                                            className="absolute inset-0 flex items-start justify-center"
+                                            animate={{
+                                                opacity: isActive ? 1 : 0,
+                                                y: isActive ? 0 : isPast ? -80 : 80,
+                                                scale: isActive ? 1 : 0.88,
+                                                rotateX: isActive ? 0 : isPast ? -5 : 5,
+                                                filter: isActive ? 'blur(0px)' : 'blur(8px)',
+                                            }}
+                                            transition={{
+                                                duration: 0.5,
+                                                ease: [0.22, 1, 0.36, 1],
+                                            }}
+                                            style={{
+                                                pointerEvents: isActive ? 'auto' : 'none',
+                                                perspective: 1000,
+                                            }}
+                                        >
+                                            {/* Animated gradient border wrapper */}
+                                            <div
+                                                className="relative w-full max-w-2xl rounded-3xl p-px overflow-hidden"
+                                                style={{
+                                                    background: isActive
+                                                        ? `conic-gradient(from var(--skill-border-angle, 0deg), transparent 40%, ${accentColor}40, transparent 60%)`
+                                                        : 'transparent',
+                                                }}
+                                            >
+                                                {/* Spinning border animation via inline style */}
+                                                {isActive && (
+                                                    <style>{`
+                                                        @property --skill-border-angle {
+                                                            syntax: '<angle>';
+                                                            initial-value: 0deg;
+                                                            inherits: false;
+                                                        }
+                                                        @keyframes skillBorderSpin {
+                                                            to { --skill-border-angle: 360deg; }
+                                                        }
+                                                    `}</style>
+                                                )}
+                                                <div
+                                                    className="rounded-3xl bg-surface-secondary/95 backdrop-blur-xl p-8 sm:p-10"
+                                                    style={isActive ? {
+                                                        animation: 'skillBorderSpin 4s linear infinite',
+                                                    } : {}}
+                                                >
+                                                    {/* Category header */}
+                                                    <div className="flex items-center justify-between mb-8">
+                                                        <h3 className="font-display text-2xl sm:text-3xl font-bold text-txt-primary flex items-center gap-3">
+                                                            <motion.span
+                                                                className="w-10 h-[2px] rounded-full"
+                                                                animate={{ backgroundColor: accentColor, scaleX: isActive ? 1 : 0 }}
+                                                                transition={{ duration: 0.4 }}
+                                                                style={{ originX: 0 }}
+                                                            />
+                                                            {category.title}
+                                                        </h3>
+                                                        <motion.span
+                                                            className="font-mono text-sm px-3 py-1 rounded-full border"
+                                                            animate={{
+                                                                borderColor: isActive ? `${accentColor}30` : 'rgba(255,255,255,0.04)',
+                                                                color: isActive ? accentColor : 'rgba(255,255,255,0.3)',
+                                                            }}
+                                                        >
+                                                            {String(idx + 1).padStart(2, '0')}/{String(skillCategories.length).padStart(2, '0')}
+                                                        </motion.span>
+                                                    </div>
+
+                                                    {/* Skills grid */}
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                        {category.skills.map((skill, i) => (
+                                                            <motion.div
+                                                                key={i}
+                                                                initial={false}
+                                                                animate={{
+                                                                    opacity: isActive ? 1 : 0,
+                                                                    x: isActive ? 0 : 30,
+                                                                    rotate: isActive ? 0 : 2,
+                                                                }}
+                                                                transition={{
+                                                                    duration: 0.35,
+                                                                    delay: isActive ? i * 0.04 : 0,
+                                                                    ease: [0.22, 1, 0.36, 1],
+                                                                }}
+                                                                whileHover={{ scale: 1.03, x: 4 }}
+                                                                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04] transition-colors duration-300 cursor-default group"
+                                                            >
+                                                                {/* Icon container with glow */}
+                                                                <span
+                                                                    className="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-shadow duration-300"
+                                                                    style={{
+                                                                        backgroundColor: `${accentColor}10`,
+                                                                        boxShadow: `0 0 0px ${accentColor}00`,
+                                                                    }}
+                                                                    onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 0 12px ${accentColor}30`}
+                                                                    onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0px ${accentColor}00`}
+                                                                >
+                                                                    {skill.icon}
+                                                                </span>
+                                                                <span className="text-sm font-medium text-txt-primary group-hover:text-white transition-colors duration-300 flex items-center gap-1.5">
+                                                                    {skill.name}
+                                                                    {skill.badge && skill.badge}
+                                                                </span>
+                                                            </motion.div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Scroll hint */}
+                            <motion.div
+                                className="flex flex-col items-center mt-6 gap-1"
+                                animate={{ opacity: activeSkillIndex < skillCategories.length - 1 ? 0.5 : 0 }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-txt-muted">Scroll to explore</span>
+                                <motion.div
+                                    animate={{ y: [0, 6, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    <FiChevronDown className="w-4 h-4 text-txt-muted" />
+                                </motion.div>
                             </motion.div>
-                        ))}
+                        </div>
                     </div>
                 </div>
             </section>
