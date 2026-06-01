@@ -18,6 +18,7 @@ import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/PageTransition';
+import PrivacyPolicyPashuRaksha from './components/PrivacyPolicyPashuRaksha';
 
 const App = () => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const App = () => {
             <Route path='/app-development-info' element={<PageTransition><AppDevelopmentInfo /></PageTransition>} />
             <Route path='/projects-web-development' element={<PageTransition><WebProjects /></PageTransition>} />
             <Route path='/projects-app-development' element={<PageTransition><MobileProjects /></PageTransition>} />
+            <Route path='/privacy/pashu-raksha' element={<PageTransition><PrivacyPolicyPashuRaksha /></PageTransition>} />
           </Routes>
         </AnimatePresence>
         <Footer />
