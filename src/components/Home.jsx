@@ -65,6 +65,10 @@ const StatCard = ({ value, suffix = '+', label }) => (
 const Home = () => {
     const typedRef = useRef(null);
     const heroRef = useRef(null);
+    const heroImageRef = useRef(null);
+    const developerTextRef = useRef(null);
+    const freelancerTextRef = useRef(null);
+    const maskRafRef = useRef(0);
 
     // Parallax for 3D figure
     const mouseX = useMotionValue(0);
@@ -81,6 +85,7 @@ const Home = () => {
     });
     const [activeSkillIndex, setActiveSkillIndex] = useState(0);
     const headerOpacity = useTransform(skillsProgress, [0, 0.08], [0, 1]);
+    const [activeHeroText, setActiveHeroText] = useState('developer');
 
     useEffect(() => {
         const unsubscribe = skillsProgress.on('change', (v) => {
@@ -97,12 +102,51 @@ const Home = () => {
         return unsubscribe;
     }, [skillsProgress]);
 
+    const updateHeroTextMask = () => {
+        const imageEl = heroImageRef.current;
+        const targets = [developerTextRef.current, freelancerTextRef.current].filter(Boolean);
+        if (!imageEl || targets.length === 0) return;
+        const imageRect = imageEl.getBoundingClientRect();
+
+        targets.forEach((el) => {
+            const textRect = el.getBoundingClientRect();
+            const x = imageRect.left - textRect.left;
+            const y = imageRect.top - textRect.top;
+            el.style.setProperty('--hero-mask-x', `${x}px`);
+            el.style.setProperty('--hero-mask-y', `${y}px`);
+            el.style.setProperty('--hero-mask-w', `${imageRect.width}px`);
+            el.style.setProperty('--hero-mask-h', `${imageRect.height}px`);
+        });
+    };
+
+    const scheduleMaskUpdate = () => {
+        if (maskRafRef.current) return;
+        maskRafRef.current = requestAnimationFrame(() => {
+            maskRafRef.current = 0;
+            updateHeroTextMask();
+        });
+    };
+
     const handleMouseMove = (e) => {
         const rect = heroRef.current?.getBoundingClientRect();
         if (!rect) return;
         mouseX.set(e.clientX - rect.left - rect.width / 2);
         mouseY.set(e.clientY - rect.top - rect.height / 2);
+        scheduleMaskUpdate();
     };
+
+    useEffect(() => {
+        const handleResize = () => scheduleMaskUpdate();
+        window.addEventListener('resize', handleResize);
+        scheduleMaskUpdate();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (maskRafRef.current) {
+                cancelAnimationFrame(maskRafRef.current);
+                maskRafRef.current = 0;
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (typedRef.current) {
@@ -191,13 +235,23 @@ const Home = () => {
                     </motion.p>
 
                     {/* ── Layered Typography + Figure ── */}
-                    <div className="relative flex flex-col items-center w-full">
+                    <div
+                        className="relative flex flex-col items-center w-full"
+                        onMouseLeave={() => setActiveHeroText('developer')}
+                    >
                         {/* Background text — "Aman" behind figure */}
                         <motion.h1
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                            className="font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative z-[1] text-txt-primary"
+                            onMouseEnter={() => setActiveHeroText('developer')}
+                            ref={developerTextRef}
+                            className={`font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative ${
+                                activeHeroText === 'developer'
+                                    ? 'text-gradient-cutout'
+                                    : 'text-outline-hoverable'
+                            }`}
+                            style={{ zIndex: activeHeroText === 'developer' ? 3 : 1 }}
                         >
                             Developer
                         </motion.h1>
@@ -207,15 +261,17 @@ const Home = () => {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.75, delay: 0.35 }}
-                            className="relative z-[2] -mt-20 sm:-mt-28 md:-mt-40 lg:-mt-52"
+                            className="relative z-[2] -mt-20 sm:-mt-28 md:-mt-40 lg:-mt-52 pointer-events-none"
                         >
                             {/* Glow behind */}
                             <div className="absolute inset-0 bg-accent-violet/10 blur-[80px] rounded-full scale-75 -z-10" />
                             <motion.img
-                                src="/3D_Figure.webp"
+                                src="/Aman_DP_2.png"
                                 alt="Aman Kumar — Full Stack Developer"
-                                className="w-52 sm:w-64 md:w-80 lg:w-96 object-contain mx-auto drop-shadow-2xl"
+                                ref={heroImageRef}
+                                className="w-52 sm:w-64 md:w-80 lg:w-96 object-contain mx-auto drop-shadow-2xl image-fade-bottom"
                                 style={{ x: figureX, y: figureY }}
+                                onLoad={scheduleMaskUpdate}
                             />
                         </motion.div>
 
@@ -224,7 +280,14 @@ const Home = () => {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-                            className="font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative z-[3] -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 text-gradient"
+                            onMouseEnter={() => setActiveHeroText('freelancer')}
+                            ref={freelancerTextRef}
+                            className={`font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 ${
+                                activeHeroText === 'freelancer'
+                                    ? 'text-gradient-cutout'
+                                    : 'text-outline-hoverable'
+                            }`}
+                            style={{ zIndex: activeHeroText === 'freelancer' ? 3 : 1 }}
                         >
                             Freelancer
                         </motion.h1>
@@ -313,7 +376,7 @@ const Home = () => {
                                 <div className="absolute inset-0 rounded-3xl bg-accent-gradient opacity-10 blur-2xl scale-90" />
                                 <div className="relative glass-card p-4 rounded-3xl">
                                     <img
-                                        src="/3D_Figure.webp"
+                                        src="/Aman_DP_2.png"
                                         alt="About Me"
                                         className="w-full max-w-sm object-contain"
                                     />
