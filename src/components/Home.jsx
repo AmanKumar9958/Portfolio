@@ -211,7 +211,80 @@ const Home = () => {
                 <GradientOrbs variant="hero" />
                 <div className="absolute inset-0 grid-pattern" />
 
-                <div className="relative z-10 w-full flex flex-col items-center pt-28 md:pt-20">
+                <div className="relative z-10 w-full flex flex-col items-center pt-24 px-6 text-center md:hidden">
+                    <motion.p
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-sm text-txt-secondary font-body"
+                    >
+                        👋 Hi, I&apos;m Aman Kumar
+                    </motion.p>
+
+                    <div className="mt-3">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="font-display text-[3.1rem] leading-[0.9] font-bold text-gradient"
+                        >
+                            Developer
+                        </motion.h1>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="font-display text-[2.6rem] leading-[0.95] font-bold text-outline-hoverable"
+                        >
+                            Freelancer
+                        </motion.h2>
+                    </div>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.5 }}
+                        className="text-sm text-txt-secondary mt-3"
+                    >
+                        Full Stack Developer &amp; Tech Enthusiast building modern web and mobile experiences.
+                    </motion.p>
+
+                    <motion.div
+                        className="flex flex-col items-center gap-3 mt-6 w-full"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                    >
+                        <MagneticButton
+                            as="a"
+                            href="/projects"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300 w-full max-w-[220px]"
+                        >
+                            Explore Work
+                            <FiArrowUpRight className="w-4 h-4" />
+                        </MagneticButton>
+                        <MagneticButton
+                            as="a"
+                            href="/Aman_Kumar_Resume.pdf"
+                            download="Aman_Resume.pdf"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300 w-full max-w-[220px]"
+                        >
+                            <FiDownload className="w-4 h-4" />
+                            Resume
+                        </MagneticButton>
+                    </motion.div>
+
+                    <motion.img
+                        src="/Aman_DP_2.png"
+                        alt="Aman Kumar — Full Stack Developer"
+                        className="mt-8 w-44 sm:w-52 object-contain mx-auto image-fade-bottom"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.7 }}
+                    />
+                </div>
+
+                <div className="relative z-10 w-full flex-col items-center pt-28 md:pt-20 hidden md:flex">
                     {/* Available badge */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -370,7 +443,7 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.7 }}
-                            className="flex justify-center"
+                            className="hidden md:flex justify-center"
                         >
                             <div className="relative">
                                 <div className="absolute inset-0 rounded-3xl bg-accent-gradient opacity-10 blur-2xl scale-90" />
