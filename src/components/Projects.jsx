@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiArrowUpRight, FiMonitor, FiSmartphone, FiLayers, FiZap } from 'react-icons/fi';
 import GradientOrbs from './GradientOrbs';
-import TextReveal from './TextReveal';
 import MagneticButton from './MagneticButton';
 
 const Projects = () => {

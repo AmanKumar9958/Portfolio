@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiSend, FiMail, FiMapPin, FiArrowUpRight } from 'react-icons/fi';
+import { FiSend, FiMail, FiMapPin } from 'react-icons/fi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import GradientOrbs from './GradientOrbs';
 import TextReveal from './TextReveal';

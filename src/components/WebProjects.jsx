@@ -1,11 +1,10 @@
 import { useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaExternalLinkAlt, FaArrowRight } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaArrowRight } from "react-icons/fa";
 import { SiNextdotjs, SiTailwindcss, SiTypescript, SiMongodb } from "react-icons/si";
-import { FiArrowUpRight, FiExternalLink, FiClock, FiCode } from "react-icons/fi";
+import { FiExternalLink, FiClock, FiCode } from "react-icons/fi";
 import GradientOrbs from "./GradientOrbs";
-import TextReveal from "./TextReveal";
 
 /* ────── Tilt Card with cursor-following glow ────── */
 const ProjectCard = ({ project, index, featured = false }) => {

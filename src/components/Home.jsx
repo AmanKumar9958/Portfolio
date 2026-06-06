@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { motion, useInView, animate, useMotionValue, useTransform, useSpring, useScroll } from "framer-motion";
 import Typed from "typed.js";
 import { FaReact, FaHtml5, FaGithub, FaPython, FaNodeJs } from "react-icons/fa";
@@ -35,20 +35,6 @@ const Counter = ({ from, to }) => {
 
     return <span ref={nodeRef} />;
 };
-
-const SkillCard = ({ icon, name, delay = 0 }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay }}
-        whileHover={{ y: -4, borderColor: 'rgba(139,92,246,0.3)' }}
-        className="flex items-center gap-3 px-4 py-3 rounded-xl glass-card cursor-default"
-    >
-        <span className="text-lg">{icon}</span>
-        <span className="text-sm font-medium text-txt-primary">{name}</span>
-    </motion.div>
-);
 
 const StatCard = ({ value, suffix = '+', label }) => (
     <motion.div
@@ -102,7 +88,7 @@ const Home = () => {
         return unsubscribe;
     }, [skillsProgress]);
 
-    const updateHeroTextMask = () => {
+    const updateHeroTextMask = useCallback(() => {
         const imageEl = heroImageRef.current;
         const targets = [developerTextRef.current, freelancerTextRef.current].filter(Boolean);
         if (!imageEl || targets.length === 0) return;
@@ -117,15 +103,15 @@ const Home = () => {
             el.style.setProperty('--hero-mask-w', `${imageRect.width}px`);
             el.style.setProperty('--hero-mask-h', `${imageRect.height}px`);
         });
-    };
+    }, []);
 
-    const scheduleMaskUpdate = () => {
+    const scheduleMaskUpdate = useCallback(() => {
         if (maskRafRef.current) return;
         maskRafRef.current = requestAnimationFrame(() => {
             maskRafRef.current = 0;
             updateHeroTextMask();
         });
-    };
+    }, [updateHeroTextMask]);
 
     const handleMouseMove = (e) => {
         const rect = heroRef.current?.getBoundingClientRect();
@@ -146,7 +132,7 @@ const Home = () => {
                 maskRafRef.current = 0;
             }
         };
-    }, []);
+    }, [scheduleMaskUpdate]);
 
     useEffect(() => {
         if (typedRef.current) {
@@ -319,11 +305,10 @@ const Home = () => {
                             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
                             onMouseEnter={() => setActiveHeroText('developer')}
                             ref={developerTextRef}
-                            className={`font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative ${
-                                activeHeroText === 'developer'
+                            className={`font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative ${activeHeroText === 'developer'
                                     ? 'text-gradient-cutout'
                                     : 'text-outline-hoverable'
-                            }`}
+                                }`}
                             style={{ zIndex: activeHeroText === 'developer' ? 3 : 1 }}
                         >
                             Developer
@@ -355,11 +340,10 @@ const Home = () => {
                             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
                             onMouseEnter={() => setActiveHeroText('freelancer')}
                             ref={freelancerTextRef}
-                            className={`font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 ${
-                                activeHeroText === 'freelancer'
+                            className={`font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 ${activeHeroText === 'freelancer'
                                     ? 'text-gradient-cutout'
                                     : 'text-outline-hoverable'
-                            }`}
+                                }`}
                             style={{ zIndex: activeHeroText === 'freelancer' ? 3 : 1 }}
                         >
                             Freelancer

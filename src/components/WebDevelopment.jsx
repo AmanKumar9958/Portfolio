@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiArrowUpRight } from 'react-icons/fi';
 import GradientOrbs from './GradientOrbs';
-import TextReveal from './TextReveal';
 
 const WebDevelopment = () => {
     const features = [

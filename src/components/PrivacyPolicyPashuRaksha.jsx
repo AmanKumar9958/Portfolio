@@ -29,7 +29,7 @@ const PrivacyPolicyPashuRaksha = () => (
             <div className="space-y-10 text-sm sm:text-base text-txt-secondary leading-relaxed">
                 <div className="space-y-4">
                     <p>
-                        Welcome to PashuRaksha ("we," "our," or "us"). We are committed to protecting your
+                        Welcome to PashuRaksha (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your
                         privacy and ensuring transparency regarding how we handle user data. This Privacy Policy
                         explains how we collect, use, disclose, and safeguard your information when you use our
                         mobile application, which is built on the React Native/Expo ecosystem.
@@ -66,7 +66,7 @@ const PrivacyPolicyPashuRaksha = () => (
                             <li>
                                 <span className="font-semibold text-txt-primary">Purpose:</span> To verify user identities,
                                 prevent fraudulent incident reports, manage dual-role access (Citizen vs. NGO), and
-                                accurately assign community "Karma Points" rewards.
+                                accurately assign community &quot;Karma Points&quot; rewards.
                             </li>
                         </ul>
                     </div>
@@ -165,7 +165,7 @@ const PrivacyPolicyPashuRaksha = () => (
                         </p>
                         <p>
                             To delete your account and wipe all personal identifiers from our Supabase tables, please
-                            navigate to your Profile Settings inside the app and select "Delete Account," or contact our
+                            navigate to your Profile Settings inside the app and select &quot;Delete Account,&quot; or contact our
                             support team directly at [Insert Your Support Email Address]. Upon request, all data not
                             legally required for retention will be permanently erased within 30 days.
                         </p>
@@ -190,7 +190,7 @@ const PrivacyPolicyPashuRaksha = () => (
                     </h2>
                     <p>
                         We may update our Privacy Policy from time to time to align with evolving platform guidelines
-                        or technical infrastructure. We will notify you of any changes by updating the "Last Updated"
+                        or technical infrastructure. We will notify you of any changes by updating the &quot;Last Updated&quot;
                         date at the top of this page.
                     </p>
                 </div>

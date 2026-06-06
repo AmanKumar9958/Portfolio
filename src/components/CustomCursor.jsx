@@ -19,7 +19,7 @@ const CustomCursor = () => {
         const moveCursor = (e) => {
             cursorX.set(e.clientX);
             cursorY.set(e.clientY);
-            if (!isVisible) setIsVisible(true);
+            setIsVisible(true);
         };
 
         const handleMouseEnter = () => setIsHovering(true);
@@ -55,7 +55,7 @@ const CustomCursor = () => {
             });
             observer.disconnect();
         };
-    }, []);
+    }, [cursorX, cursorY]);
 
     if (!isVisible) return null;
 
