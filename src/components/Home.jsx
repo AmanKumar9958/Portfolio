@@ -306,8 +306,8 @@ const Home = () => {
                             onMouseEnter={() => setActiveHeroText('developer')}
                             ref={developerTextRef}
                             className={`font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative ${activeHeroText === 'developer'
-                                    ? 'text-gradient-cutout'
-                                    : 'text-outline-hoverable'
+                                ? 'text-gradient-cutout'
+                                : 'text-outline-hoverable'
                                 }`}
                             style={{ zIndex: activeHeroText === 'developer' ? 3 : 1 }}
                         >
@@ -341,8 +341,8 @@ const Home = () => {
                             onMouseEnter={() => setActiveHeroText('freelancer')}
                             ref={freelancerTextRef}
                             className={`font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 ${activeHeroText === 'freelancer'
-                                    ? 'text-gradient-cutout'
-                                    : 'text-outline-hoverable'
+                                ? 'text-gradient-cutout'
+                                : 'text-outline-hoverable'
                                 }`}
                             style={{ zIndex: activeHeroText === 'freelancer' ? 3 : 1 }}
                         >
@@ -472,9 +472,9 @@ const Home = () => {
 
                             {/* Stats */}
                             <div className="grid grid-cols-3 gap-4">
-                                <StatCard value={8} label="Projects" />
-                                <StatCard value={5} label="Clients" />
-                                <StatCard value={2} label="Years Exp" />
+                                <StatCard value={10} label="Projects" />
+                                <StatCard value={7} label="Clients" />
+                                <StatCard value={3} label="Years Exp" />
                             </div>
                         </motion.div>
                     </div>

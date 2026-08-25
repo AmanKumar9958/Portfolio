@@ -132,6 +132,20 @@ const ProjectCard = ({ project, index, featured = false }) => {
 const MobileProjects = () => {
     const projects = [
         {
+            title: "Pashu Raksha",
+            shortDescription: "An app to help and rescue animals.",
+            tools: ["React Native", "Expo", "Node.js", "Express", "MongoDB"],
+            timeline: "8 Weeks",
+            link: "https://play.google.com/store/apps/details?id=com.solostackdev.pashuraksha"
+        },
+        {
+            title: "GLD Shikshalaya",
+            shortDescription: "Education app featuring video streaming, uploading, and secure payments.",
+            tools: ["React Native", "Expo", "Supabase", "Cashfree Payments", "Bunny.net"],
+            timeline: "2 Months",
+            link: "https://play.google.com/store/apps/details?id=com.solostackdev.gldshikshalaya"
+        },
+        {
             title: "Chai Cafeteria",
             shortDescription: "Full-featured food ordering app with real-time order tracking, Stripe payment integration, and a beautiful menu UI.",
             tools: ["React Native", "Expo", "Node.js", "Express", "MongoDB", "Stripe API"],
