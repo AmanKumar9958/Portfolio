@@ -1,30 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="100%" stop-color="#06b6d4"/>
-    </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
-      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0.08)"/>
-    </linearGradient>
+    <radialGradient id="ambient" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1f2026" />
+      <stop offset="100%" stop-color="#0b0c0e" />
+    </radialGradient>
   </defs>
-  <!-- Rounded square background -->
-  <rect x="16" y="16" width="480" height="480" rx="96" ry="96" fill="url(#bg)"/>
-  <!-- Subtle shine overlay -->
-  <rect x="16" y="16" width="480" height="480" rx="96" ry="96" fill="url(#shine)"/>
-  <!-- "A" letter -->
-  <text
-    x="256"
-    y="340"
-    text-anchor="middle"
-    font-family="'Space Grotesk', 'Segoe UI', 'Arial', sans-serif"
-    font-weight="700"
-    font-size="320"
-    fill="#f0f0f5"
-    letter-spacing="-10"
-  >A</text>
-  <!-- Subtle bottom accent line -->
-  <rect x="140" y="390" width="232" height="6" rx="3" fill="rgba(240,240,245,0.4)"/>
+
+  <!-- Deep Obsidian Rounded Base -->
+  <rect x="0" y="0" width="512" height="512" rx="120" fill="url(#ambient)" />
+  
+  <!-- Architectural Subtle Hairline Border -->
+  <rect x="12" y="12" width="488" height="488" rx="108" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="8" />
+
+  <!-- Geometric Architectural "A" Letterform -->
+  <path
+    d="M 240 100 L 272 100 L 382 400 L 316 400 L 290 326 L 222 326 L 196 400 L 130 400 Z M 238 274 L 274 274 L 256 220 Z"
+    fill="#f4f4f6"
+  />
+
+  <!-- Signature Signal Orange Point Dot -->
+  <circle cx="410" cy="380" r="26" fill="#ff5500" />
 </svg>
