@@ -208,7 +208,7 @@ const PrivacyPolicyPashuRaksha = () => (
                             <span className="font-semibold text-txt-primary">Developer/Entity Name:</span> [Solo Stack Dev]
                         </p>
                         <p>
-                            <span className="font-semibold text-txt-primary">Email Contact:</span> [amancollege04@gmail.com]
+                            <span className="font-semibold text-txt-primary">Email Contact:</span> tech.aman2799@gmail.com
                         </p>
                     </div>
                 </div>

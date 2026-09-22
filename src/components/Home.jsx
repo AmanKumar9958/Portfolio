@@ -216,7 +216,7 @@ const Home = () => {
 
     // Copy email helper
     const handleCopyEmail = () => {
-        navigator.clipboard.writeText("amanchaurasia1652@gmail.com");
+        navigator.clipboard.writeText("tech.aman2799@gmail.com");
         setEmailCopied(true);
         setTimeout(() => setEmailCopied(false), 2400);
     };
@@ -910,7 +910,7 @@ const Home = () => {
                             </span>
                             <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-white/[0.06] bg-surface-tertiary">
                                 <span className="font-mono text-xs sm:text-sm text-txt-primary select-all truncate">
-                                    amanchaurasia1652@gmail.com
+                                    tech.aman2799@gmail.com
                                 </span>
                                 <button
                                     onClick={handleCopyEmail}

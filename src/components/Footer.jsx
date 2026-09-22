@@ -59,10 +59,10 @@ const Footer = () => {
                             / Direct Channels
                         </h3>
                         <a
-                            href="mailto:amanchaurasia1652@gmail.com"
+                            href="mailto:tech.aman2799@gmail.com"
                             className="font-mono text-xs sm:text-sm text-txt-primary hover:text-accent transition-colors block"
                         >
-                            amanchaurasia1652@gmail.com
+                            tech.aman2799@gmail.com
                         </a>
 
                         <div className="flex items-center gap-3 pt-2">
