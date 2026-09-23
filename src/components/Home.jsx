@@ -951,7 +951,7 @@ const Home = () => {
 
                                 <MagneticButton
                                     as="a"
-                                    href="https://linkedin.com/in/aman-kumar-47407823b"
+                                    href="https://www.linkedin.com/in/aman-kumar-39a7b7292/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-surface-secondary px-5 py-2.5 text-xs font-mono text-txt-secondary hover:text-white hover:border-white/20 transition-all"

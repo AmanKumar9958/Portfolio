@@ -51,7 +51,7 @@ This portfolio serves as a personal hub to:
 ## 🤝 Connect with Me  
 Feel free to reach out for feedback, collaboration, or opportunities!  
 - **GitHub**: [AmanKumar9958](https://github.com/AmanKumar9958)  
-- **LinkedIn**: [Your LinkedIn Profile](<your-linkedin-profile>) *(Replace `<your-linkedin-profile>` with your LinkedIn URL.)*  
+- **LinkedIn**: [Aman Kumar](https://www.linkedin.com/in/aman-kumar-39a7b7292/)  
 
 ---
 

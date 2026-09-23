@@ -78,7 +78,7 @@ const Footer = () => {
 
                             <MagneticButton
                                 as="a"
-                                href="https://www.linkedin.com/in/aman-kumar-47407823b"
+                                href="https://www.linkedin.com/in/aman-kumar-39a7b7292/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/[0.1] bg-surface-tertiary flex items-center justify-center text-txt-secondary hover:text-white hover:border-accent transition-all duration-300"
