@@ -357,7 +357,7 @@ const Home = () => {
                     </div>
                     <div>
                         <span className="text-txt-dim block mb-1">04 / EXPERIENCE</span>
-                        <span className="text-txt-primary font-medium">3+ Years Building Products</span>
+                        <span className="text-txt-primary font-medium">2+ Years Building Products</span>
                     </div>
                 </div>
             </section>
@@ -395,7 +395,7 @@ const Home = () => {
 
                     <div className="flex flex-col">
                         <span className="font-display text-4xl sm:text-5xl font-bold text-txt-primary tabular-nums">
-                            03<span className="text-accent">+</span>
+                            02<span className="text-accent">+</span>
                         </span>
                         <span className="font-mono text-xs uppercase tracking-wider text-txt-muted mt-2">
                             Years In Tech
@@ -435,11 +435,10 @@ const Home = () => {
                                     key={tab.id}
                                     onClick={() => setProjectFilter(tab.id)}
                                     data-cursor="pointer"
-                                    className={`px-4 py-1.5 rounded-full font-mono text-xs transition-colors duration-200 ${
-                                        projectFilter === tab.id
-                                            ? "bg-accent text-white font-semibold"
-                                            : "text-txt-secondary hover:text-txt-primary"
-                                    }`}
+                                    className={`px-4 py-1.5 rounded-full font-mono text-xs transition-colors duration-200 ${projectFilter === tab.id
+                                        ? "bg-accent text-white font-semibold"
+                                        : "text-txt-secondary hover:text-txt-primary"
+                                        }`}
                                 >
                                     {tab.label}
                                 </button>
@@ -452,9 +451,8 @@ const Home = () => {
                                 onClick={() => setViewMode("list")}
                                 data-cursor="pointer"
                                 title="List View"
-                                className={`p-2 rounded-full transition-colors ${
-                                    viewMode === "list" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
-                                }`}
+                                className={`p-2 rounded-full transition-colors ${viewMode === "list" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
+                                    }`}
                             >
                                 <FiList className="w-4 h-4" />
                             </button>
@@ -462,9 +460,8 @@ const Home = () => {
                                 onClick={() => setViewMode("bento")}
                                 data-cursor="pointer"
                                 title="Bento Grid View"
-                                className={`p-2 rounded-full transition-colors ${
-                                    viewMode === "bento" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
-                                }`}
+                                className={`p-2 rounded-full transition-colors ${viewMode === "bento" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
+                                    }`}
                             >
                                 <FiGrid className="w-4 h-4" />
                             </button>
