@@ -1,15 +1,51 @@
+import { useState } from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { FiArrowUp } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiArrowUp, FiInfo, FiCode, FiLayers, FiType, FiCpu, FiGlobe, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import MagneticButton from './MagneticButton';
 
 const Footer = () => {
+    const [isColophonOpen, setIsColophonOpen] = useState(false);
+
     const quickLinks = [
         { name: 'Index', path: '/' },
         { name: 'Selected Work', path: '/projects' },
         { name: 'Services', path: '/service' },
         { name: 'Contact', path: '/contact' },
+    ];
+
+    const colophonSpecs = [
+        {
+            label: "Framework & Core",
+            value: "React 18.3 • Vite 6.2",
+            icon: <FiCode className="w-3.5 h-3.5 text-accent" />
+        },
+        {
+            label: "Motion & Smooth Scroll",
+            value: "Framer Motion 12.4 • Lenis 1.3",
+            icon: <FiCpu className="w-3.5 h-3.5 text-accent" />
+        },
+        {
+            label: "Styling Architecture",
+            value: "Tailwind CSS 3.4 • Custom CSS Variables",
+            icon: <FiLayers className="w-3.5 h-3.5 text-accent" />
+        },
+        {
+            label: "Typography System",
+            value: "Space Grotesk • Inter • JetBrains Mono",
+            icon: <FiType className="w-3.5 h-3.5 text-accent" />
+        },
+        {
+            label: "Design Ethos",
+            value: "Swiss Industrial Grid • Obsidian & Signal Orange",
+            icon: <FiInfo className="w-3.5 h-3.5 text-accent" />
+        },
+        {
+            label: "Infrastructure",
+            value: "Production Edge Network • Lighthouse 95+",
+            icon: <FiGlobe className="w-3.5 h-3.5 text-accent" />
+        }
     ];
 
     const scrollToTop = () => {
@@ -72,6 +108,7 @@ const Footer = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/[0.1] bg-surface-tertiary flex items-center justify-center text-txt-secondary hover:text-white hover:border-accent transition-all duration-300"
+                                title="GitHub"
                             >
                                 <FaGithub className="w-4 h-4" />
                             </MagneticButton>
@@ -82,6 +119,7 @@ const Footer = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/[0.1] bg-surface-tertiary flex items-center justify-center text-txt-secondary hover:text-white hover:border-accent transition-all duration-300"
+                                title="LinkedIn"
                             >
                                 <FaLinkedin className="w-4 h-4 text-sky-400" />
                             </MagneticButton>
@@ -98,8 +136,72 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Bottom Legal / Colophon Bar */}
-                <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-txt-muted">
+                {/* Interactive Colophon Note Section */}
+                <div className="py-6 border-b border-white/[0.08]">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <span className="font-mono text-xs uppercase tracking-widest text-txt-muted">
+                                // Colophon
+                            </span>
+                            <span className="font-mono text-[11px] text-txt-dim hidden sm:inline">
+                                Architecture, Typography &amp; Toolchain Specifications
+                            </span>
+                        </div>
+
+                        <button
+                            onClick={() => setIsColophonOpen(!isColophonOpen)}
+                            data-cursor="pointer"
+                            className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-surface-tertiary px-3.5 py-1.5 font-mono text-[11px] text-txt-secondary hover:text-white hover:border-accent transition-all duration-200"
+                        >
+                            <span>{isColophonOpen ? "Hide Specs" : "View System Specs"}</span>
+                            {isColophonOpen ? (
+                                <FiChevronUp className="w-3.5 h-3.5 text-accent" />
+                            ) : (
+                                <FiChevronDown className="w-3.5 h-3.5 text-accent" />
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Expandable Specifications Tray */}
+                    <AnimatePresence>
+                        {isColophonOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                className="overflow-hidden"
+                            >
+                                <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                                    {colophonSpecs.map((spec, i) => (
+                                        <div
+                                            key={i}
+                                            className="p-3.5 rounded-xl border border-white/[0.06] bg-surface-tertiary/60 flex items-start gap-3"
+                                        >
+                                            <div className="p-2 rounded-lg bg-white/[0.03] border border-white/[0.04] mt-0.5">
+                                                {spec.icon}
+                                            </div>
+                                            <div>
+                                                <span className="font-mono text-[10px] uppercase tracking-wider text-txt-muted block">
+                                                    {spec.label}
+                                                </span>
+                                                <span className="font-mono text-xs text-txt-primary font-medium block mt-0.5">
+                                                    {spec.value}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="font-mono text-[11px] text-txt-dim pt-4">
+                                    * Designed with architectural precision. No generic AI templates or unoptimized assets.
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Bottom Legal Bar */}
+                <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-txt-muted">
                     <div>
                         &copy; {new Date().getFullYear()} Aman Kumar • All Rights Reserved
                     </div>
