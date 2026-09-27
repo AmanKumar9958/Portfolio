@@ -15,7 +15,9 @@ import {
     FiGrid,
     FiList,
     FiMail,
-    FiSend
+    FiSend,
+    FiBriefcase,
+    FiMapPin
 } from "react-icons/fi";
 import {
     FaReact,
@@ -155,6 +157,62 @@ const TECH_GROUPS = [
             { name: "Postman / API Design", icon: <SiPostman className="text-orange-400" /> },
             { name: "Git & CI/CD", icon: <FaGithub className="text-white" /> },
         ]
+    }
+];
+
+// Career Journey & Milestones (Curated from Resume)
+const CAREER_MILESTONES = [
+    {
+        period: "Mar 2026 – Sep 2026",
+        badge: "Contract",
+        role: "Full Stack Software Engineer",
+        organization: "Zebrold IHL",
+        location: "Remote",
+        summary: "Developed and delivered 2 end-to-end production platforms using React, Next.js, Firebase, and Supabase, owning frontend development, authentication, database workflows, dashboards, and integrations.",
+        highlights: [
+            "Instructis: Built an education management platform supporting students, faculty, course assignments, class scheduling, assessments, results, and secure course-based access to dynamically generated Google Meet sessions.",
+            "ConsultYourDoctor: Built a healthcare platform with RBAC across 6 user roles, OTP authentication, appointment booking, doctor scheduling, prescriptions, patient check-in, diagnostic reports, revenue tracking, and role-specific dashboards."
+        ],
+        technologies: ["React", "Next.js", "Firebase", "Supabase", "6-Role RBAC", "Google Meet API"]
+    },
+    {
+        period: "2024 – 2026",
+        badge: "Client Platforms",
+        role: "Freelance Software Engineer",
+        organization: "Selected Client Projects",
+        location: "Remote",
+        summary: "Architected, engineered, and deployed end-to-end client applications with offline-first mobile architecture, high-frequency rendering, and integrated payment flows.",
+        highlights: [
+            "Chai Cafeteria: Architected and deployed an end-to-end food delivery platform with React Native, backend services, admin panel, real-time inventory and order workflows, RBAC, Razorpay integration, and Google Play production release.",
+            "GLD Institution: Architected an end-to-end educational mobile platform featuring payment integration, HD video streaming, course purchases, downloadable notes, push notifications, and role-based content management.",
+            "Engineered high-performance React Native architecture using MMKV, TanStack Query, and query-sync-storage-persister, reducing redundant API calls by ~40% with sub-millisecond local data retrieval.",
+            "Optimized large-list rendering by migrating to Shopify FlashList, eliminating blank states and maintaining consistent 60 FPS scrolling while rendering complex lists of 1,000+ course items."
+        ],
+        technologies: ["React Native", "Expo", "MMKV", "TanStack Query", "Shopify FlashList", "Razorpay", "Cashfree"]
+    },
+    {
+        period: "May 2026",
+        badge: "Production Release",
+        role: "Lead Mobile Engineer",
+        organization: "Pashu Raksha",
+        location: "Google Play Store",
+        summary: "Built and published a community-driven animal-rescue platform with GPS-based incident reporting, secure authentication, real-time NGO response workflows, and verified-organization management.",
+        highlights: [
+            "Part of 4 production mobile applications successfully engineered and released to the Google Play Store."
+        ],
+        technologies: ["React Native", "Expo", "Node.js", "Express.js", "MongoDB", "Google Play"]
+    },
+    {
+        period: "Sep 2023 – Jun 2026",
+        badge: "Education",
+        role: "Bachelor of Computer Applications (BCA)",
+        organization: "Institute of Information Technology & Management (IITM)",
+        location: "New Delhi, India",
+        summary: "Core foundations in Software Engineering, Data Structures & Algorithms, Object-Oriented Programming, and Distributed Systems.",
+        highlights: [
+            "State-level competitive athlete in Kabaddi with 5 years of competitive experience, bringing athletic discipline and team leadership to engineering projects."
+        ],
+        technologies: ["Computer Science", "Data Structures", "Algorithms", "System Architecture", "DBMS"]
     }
 ];
 
@@ -875,6 +933,90 @@ const Home = () => {
                                 GitHub Profile
                             </MagneticButton>
                         </div>
+                    </div>
+                </div>
+
+                {/* ========== CAREER JOURNEY & MILESTONES (COMPACT SWISS TIMELINE) ========== */}
+                <div id="experience" className="mt-20 pt-16 border-t border-white/[0.08]">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                        <div>
+                            <span className="font-mono text-xs uppercase tracking-widest text-accent mb-2 block">
+                                // Career Chronology &amp; Milestones
+                            </span>
+                            <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-txt-primary">
+                                Experience &amp; Track Record
+                            </h3>
+                        </div>
+                        <p className="font-mono text-xs text-txt-muted max-w-md">
+                            Full-stack and mobile engineering across production client platforms, offline-first architectures, and published applications.
+                        </p>
+                    </div>
+
+                    <div className="relative border-l border-white/[0.08] ml-2 sm:ml-4 space-y-10 sm:space-y-12">
+                        {CAREER_MILESTONES.map((item, index) => (
+                            <div
+                                key={index}
+                                className="relative pl-6 sm:pl-9 group"
+                            >
+                                {/* Milestone Dot on the Line */}
+                                <span
+                                    className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-surface border border-white/30 group-hover:border-accent group-hover:bg-accent transition-all duration-300 ring-4 ring-surface"
+                                    aria-hidden="true"
+                                />
+
+                                {/* Meta Header */}
+                                <div className="flex flex-wrap items-center justify-between gap-2 mb-2 font-mono text-xs">
+                                    <div className="flex items-center gap-2.5">
+                                        <span className="text-txt-primary font-medium">{item.period}</span>
+                                        <span className="px-2 py-0.5 rounded text-[10px] uppercase tracking-wider text-accent border border-accent/25 bg-accent/5">
+                                            {item.badge}
+                                        </span>
+                                    </div>
+                                    <span className="text-txt-dim text-[11px] font-mono flex items-center gap-1.5">
+                                        <FiMapPin className="w-3 h-3 text-txt-dim" />
+                                        {item.location}
+                                    </span>
+                                </div>
+
+                                {/* Title & Organization */}
+                                <div className="mb-2">
+                                    <h4 className="font-display text-lg sm:text-xl font-bold text-txt-primary group-hover:text-accent transition-colors duration-200">
+                                        {item.role}
+                                    </h4>
+                                    <div className="flex items-center gap-2 mt-1 font-mono text-xs sm:text-sm text-txt-secondary">
+                                        <FiBriefcase className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+                                        <span>{item.organization}</span>
+                                    </div>
+                                </div>
+
+                                {/* Summary */}
+                                <p className="text-xs sm:text-sm text-txt-secondary font-body leading-relaxed mt-2.5">
+                                    {item.summary}
+                                </p>
+
+                                {/* Highlights Bullet List */}
+                                <ul className="mt-3.5 space-y-2 text-xs sm:text-sm text-txt-muted font-body">
+                                    {item.highlights.map((point, pIdx) => (
+                                        <li key={pIdx} className="flex items-start gap-2.5">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-white/30 mt-2 flex-shrink-0 group-hover:bg-accent transition-colors" />
+                                            <span className="leading-relaxed">{point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {/* Tech Tags */}
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {item.technologies.map((tech, tIdx) => (
+                                        <span
+                                            key={tIdx}
+                                            className="font-mono text-[11px] px-2.5 py-0.5 rounded border border-white/[0.06] bg-white/[0.02] text-txt-muted group-hover:border-white/[0.14] transition-colors"
+                                        >
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
