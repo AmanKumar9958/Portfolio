@@ -17,7 +17,9 @@ import {
     FiMail,
     FiSend,
     FiBriefcase,
-    FiMapPin
+    FiMapPin,
+    FiChevronDown,
+    FiChevronUp
 } from "react-icons/fi";
 import {
     FaReact,
@@ -221,6 +223,7 @@ const Home = () => {
     const [currentTime, setCurrentTime] = useState("");
     const [projectFilter, setProjectFilter] = useState("all");
     const [viewMode, setViewMode] = useState("list"); // 'list' | 'bento'
+    const [showAllProjects, setShowAllProjects] = useState(false);
 
     // Dennis Snellenberg Floating Preview State
     const [activeProject, setActiveProject] = useState(null);
@@ -266,11 +269,13 @@ const Home = () => {
         e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
     };
 
-    // Filtered projects
+    // Filtered projects (limited to 4 on homepage unless expanded)
     const filteredProjects = ALL_PROJECTS.filter((p) => {
         if (projectFilter === "all") return true;
         return p.type === projectFilter;
     });
+
+    const displayedProjects = showAllProjects ? filteredProjects : filteredProjects.slice(0, 4);
 
     // Copy email helper
     const handleCopyEmail = () => {
@@ -491,7 +496,10 @@ const Home = () => {
                             ].map((tab) => (
                                 <button
                                     key={tab.id}
-                                    onClick={() => setProjectFilter(tab.id)}
+                                    onClick={() => {
+                                        setProjectFilter(tab.id);
+                                        setShowAllProjects(false);
+                                    }}
                                     data-cursor="pointer"
                                     className={`px-4 py-1.5 rounded-full font-mono text-xs transition-colors duration-200 ${projectFilter === tab.id
                                         ? "bg-accent text-white font-semibold"
@@ -530,7 +538,7 @@ const Home = () => {
                 {/* --- A. LIST VIEW (DENNIS SNELLENBERG STYLE) --- */}
                 {viewMode === "list" && (
                     <div className="divide-y divide-white/[0.08]">
-                        {filteredProjects.map((project, idx) => (
+                        {displayedProjects.map((project, idx) => (
                             <div
                                 key={project.id}
                                 onMouseEnter={() => setActiveProject(project)}
@@ -588,7 +596,7 @@ const Home = () => {
                 {/* --- B. BENTO CARD VIEW --- */}
                 {viewMode === "bento" && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
-                        {filteredProjects.map((project, idx) => (
+                        {displayedProjects.map((project, idx) => (
                             <motion.article
                                 key={project.id}
                                 onMouseMove={handleSpotlightMove}
@@ -676,6 +684,29 @@ const Home = () => {
                     )}
                 </AnimatePresence>
 
+                {/* More Projects Action Button */}
+                <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    {/* <MagneticButton
+                        as={Link}
+                        to="/projects"
+                        className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white hover:bg-accent-hover transition-all duration-300 shadow-accent-soft"
+                    >
+                        <span>More Projects ({ALL_PROJECTS.length})</span>
+                        <FiArrowUpRight className="w-4 h-4" />
+                    </MagneticButton> */}
+
+                    {filteredProjects.length > 4 && (
+                        <button
+                            onClick={() => setShowAllProjects(!showAllProjects)}
+                            data-cursor="pointer"
+                            className="inline-flex items-center gap-2 rounded-full border border-accent bg-surface-secondary px-6 py-3.5 text-xs sm:text-sm font-mono text-txt-secondary hover:text-accent hover:border-accent/30 transition-all duration-300"
+                        >
+                            <span>{showAllProjects ? "Show Fewer Works" : `Show More Inline (+${filteredProjects.length - 4})`}</span>
+                            {showAllProjects ? <FiChevronUp className="w-4 h-4" /> : <FiChevronDown className="w-4 h-4" />}
+                        </button>
+                    )}
+                </div>
+
                 {/* Deep Dive Subpage Links */}
                 <div className="mt-14 pt-8 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
                     <p className="text-xs sm:text-sm text-txt-muted font-mono">
@@ -685,7 +716,7 @@ const Home = () => {
                         <Link
                             to="/projects-web-development"
                             data-cursor="pointer"
-                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-white px-4 py-2 rounded-full border border-white/[0.08] bg-surface-secondary hover:border-white/20 transition-all"
+                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-accent hover:border-accent/30 px-4 py-2 rounded-full border border-accent bg-surface-secondary hover:border-accent/30 transition-all"
                         >
                             Web Case Studies
                             <FiArrowUpRight className="w-3.5 h-3.5" />
@@ -693,7 +724,7 @@ const Home = () => {
                         <Link
                             to="/projects-app-development"
                             data-cursor="pointer"
-                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-white px-4 py-2 rounded-full border border-white/[0.08] bg-surface-secondary hover:border-white/20 transition-all"
+                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-white px-4 py-2 rounded-full border border-accent bg-surface-secondary hover:border-accent/30 transition-all"
                         >
                             Mobile Case Studies
                             <FiArrowUpRight className="w-3.5 h-3.5" />
