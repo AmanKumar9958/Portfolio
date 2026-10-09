@@ -1,766 +1,1049 @@
-import { useRef, useEffect, useState, useCallback } from "react";
-import { motion, useInView, animate, useMotionValue, useTransform, useSpring, useScroll } from "framer-motion";
-import Typed from "typed.js";
-import { FaReact, FaHtml5, FaGithub, FaPython, FaNodeJs } from "react-icons/fa";
-import { IoLogoJavascript } from "react-icons/io";
-import { IoLogoFirebase } from "react-icons/io5";
-import { FaCss3Alt } from "react-icons/fa6";
-import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
-import { SiAppwrite, SiExpress, SiMongodb, SiPostgresql, SiPostman } from "react-icons/si";
-import { RiNextjsFill } from "react-icons/ri";
-import { DiMysql } from "react-icons/di";
-import { TbBrandCpp } from "react-icons/tb";
-import { FiArrowUpRight, FiDownload, FiChevronDown, FiSmartphone, FiMonitor } from "react-icons/fi";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
 import { Link } from "react-router-dom";
-import GradientOrbs from "./GradientOrbs";
-import TextReveal from "./TextReveal";
+import {
+    FiArrowUpRight,
+    FiDownload,
+    FiExternalLink,
+    FiCopy,
+    FiCheck,
+    FiClock,
+    FiCode,
+    FiSmartphone,
+    FiMonitor,
+    FiDatabase,
+    FiGrid,
+    FiList,
+    FiMail,
+    FiSend
+} from "react-icons/fi";
+import {
+    FaReact,
+    FaNodeJs,
+    FaGithub,
+    FaLinkedin,
+    FaPython
+} from "react-icons/fa";
+import {
+    SiNextdotjs,
+    SiTypescript,
+    SiTailwindcss,
+    SiMongodb,
+    SiPostgresql,
+    SiFirebase,
+    SiSupabase,
+    SiExpo,
+    SiExpress,
+    SiPostman
+} from "react-icons/si";
+import { IoLogoJavascript } from "react-icons/io";
+import { TbBrandCpp } from "react-icons/tb";
 import MagneticButton from "./MagneticButton";
 
-const Counter = ({ from, to }) => {
-    const nodeRef = useRef();
-    const isInView = useInView(nodeRef, { once: false });
+// Projects Data (Unified Web & Mobile)
+const ALL_PROJECTS = [
+    {
+        id: "pashu-raksha",
+        title: "Pashu Raksha",
+        category: "Mobile App",
+        badge: "Play Store",
+        type: "mobile",
+        description: "Community animal rescue and welfare application connecting volunteers, reporting distress cases, and tracking emergency rescues in real time.",
+        tags: ["React Native", "Expo", "Node.js", "Express", "MongoDB"],
+        timeline: "8 Weeks",
+        link: "https://play.google.com/store/apps/details?id=com.solostackdev.pashuraksha",
+        image: "/Bento_Grid_Mobile.png",
+        stats: "4.8★ Rating"
+    },
+    {
+        id: "omnitools",
+        title: "OmniTools Suite",
+        category: "Web System",
+        badge: "Production",
+        type: "web",
+        description: "All-in-one developer and creator productivity suite with authentication, modular utility libraries, and responsive state management.",
+        tags: ["Next.js", "TypeScript", "Tailwind CSS", "Clerk Auth"],
+        timeline: "3 Weeks",
+        link: "https://omnitools-beta.vercel.app/",
+        image: "/Bento_Grid_Web.png",
+        stats: "100% Lighthouse"
+    },
+    {
+        id: "gld-shikshalaya",
+        title: "GLD Shikshalaya",
+        category: "Mobile App",
+        badge: "Play Store",
+        type: "mobile",
+        description: "Full-scale educational platform offering adaptive video streaming, digital assignments, and integrated Cashfree payment gateways.",
+        tags: ["React Native", "Expo", "Supabase", "Cashfree", "Bunny.net"],
+        timeline: "2 Months",
+        link: "https://play.google.com/store/apps/details?id=com.solostackdev.gldshikshalaya",
+        image: "/Bento_Grid_Mobile.png",
+        stats: "Active Users"
+    },
+    {
+        id: "applypath",
+        title: "ApplyPath",
+        category: "Web Platform",
+        badge: "Live App",
+        type: "web",
+        description: "Streamlined job application tracker designed with status kanban boards, search filters, and actionable pipeline analytics.",
+        tags: ["React", "Node.js", "Express.js", "MongoDB", "Tailwind"],
+        timeline: "5 Weeks",
+        link: "https://applypath.netlify.app/",
+        image: "/Bento_Grid_Web.png",
+        stats: "Full Stack"
+    },
+    {
+        id: "chai-cafeteria",
+        title: "Chai Cafeteria",
+        category: "Mobile App",
+        badge: "Play Store",
+        type: "mobile",
+        description: "Food and beverage ordering application featuring live order status notifications, real-time item catalog, and Stripe checkout.",
+        tags: ["React Native", "Expo", "Node.js", "Stripe API"],
+        timeline: "4 Weeks",
+        link: "https://play.google.com/store/apps/details?id=com.solostackdev.chaicafeteria",
+        image: "/Bento_Grid_Mobile.png",
+        stats: "Stripe Powered"
+    },
+    {
+        id: "keyclash",
+        title: "KeyClash",
+        category: "Web Application",
+        badge: "Live App",
+        type: "web",
+        description: "Real-time competitive typing speed test engine measuring Words Per Minute (WPM), stroke accuracy, and error distribution.",
+        tags: ["React", "JavaScript", "REST API", "Tailwind"],
+        timeline: "2 Weeks",
+        link: "https://keyclash.netlify.app/",
+        image: "/Bento_Grid_Web.png",
+        stats: "Real-time WPM"
+    }
+];
 
-    useEffect(() => {
-        if (isInView) {
-            const node = nodeRef.current;
-            const controls = animate(from, to, {
-                duration: 1.5,
-                onUpdate: (value) => {
-                    node.textContent = Math.floor(value).toFixed(0);
-                },
-            });
-            return () => controls.stop();
-        }
-    }, [from, to, isInView]);
-
-    return <span ref={nodeRef} />;
-};
-
-const StatCard = ({ value, suffix = '+', label }) => (
-    <motion.div
-        whileHover={{ y: -4 }}
-        className="glass-card px-6 py-5 text-center"
-    >
-        <h3 className="font-display text-3xl md:text-4xl font-bold text-gradient mb-1">
-            <Counter from={0} to={value} />{suffix}
-        </h3>
-        <p className="text-sm text-txt-secondary font-medium">{label}</p>
-    </motion.div>
-);
+// Tech Stack by Domain
+const TECH_GROUPS = [
+    {
+        domain: "Frontend Architecture",
+        skills: [
+            { name: "React / React Native", icon: <FaReact className="text-sky-400" /> },
+            { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
+            { name: "TypeScript", icon: <SiTypescript className="text-blue-400" /> },
+            { name: "JavaScript (ES6+)", icon: <IoLogoJavascript className="text-yellow-400" /> },
+            { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-400" /> },
+        ]
+    },
+    {
+        domain: "Backend & Systems",
+        skills: [
+            { name: "Node.js", icon: <FaNodeJs className="text-emerald-400" /> },
+            { name: "Express.js", icon: <SiExpress className="text-neutral-200" /> },
+            { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
+            { name: "PostgreSQL", icon: <SiPostgresql className="text-sky-300" /> },
+            { name: "Supabase", icon: <SiSupabase className="text-emerald-400" /> },
+            { name: "Firebase", icon: <SiFirebase className="text-amber-400" /> },
+        ]
+    },
+    {
+        domain: "Mobile & Engineering",
+        skills: [
+            { name: "Expo CLI", icon: <SiExpo className="text-white" /> },
+            { name: "Mobile UI / UX", icon: <FiSmartphone className="text-accent" /> },
+            { name: "Python", icon: <FaPython className="text-yellow-300" /> },
+            { name: "C++", icon: <TbBrandCpp className="text-blue-400" /> },
+            { name: "Postman / API Design", icon: <SiPostman className="text-orange-400" /> },
+            { name: "Git & CI/CD", icon: <FaGithub className="text-white" /> },
+        ]
+    }
+];
 
 const Home = () => {
-    const typedRef = useRef(null);
-    const heroRef = useRef(null);
-    const heroImageRef = useRef(null);
-    const developerTextRef = useRef(null);
-    const freelancerTextRef = useRef(null);
-    const maskRafRef = useRef(0);
+    // Current IST Time Clock
+    const [currentTime, setCurrentTime] = useState("");
+    const [projectFilter, setProjectFilter] = useState("all");
+    const [viewMode, setViewMode] = useState("list"); // 'list' | 'bento'
 
-    // Parallax for 3D figure
+    // Dennis Snellenberg Floating Preview State
+    const [activeProject, setActiveProject] = useState(null);
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const springConfig = { stiffness: 50, damping: 30 };
-    const figureX = useSpring(useTransform(mouseX, [-500, 500], [20, -20]), springConfig);
-    const figureY = useSpring(useTransform(mouseY, [-500, 500], [20, -20]), springConfig);
+    const springConfig = { damping: 20, stiffness: 200, mass: 0.15 };
+    const previewX = useSpring(mouseX, springConfig);
+    const previewY = useSpring(mouseY, springConfig);
 
-    // Sticky scroll for skills section
-    const skillsSectionRef = useRef(null);
-    const { scrollYProgress: skillsProgress } = useScroll({
-        target: skillsSectionRef,
-        offset: ['start start', 'end end'],
-    });
-    const [activeSkillIndex, setActiveSkillIndex] = useState(0);
-    const headerOpacity = useTransform(skillsProgress, [0, 0.08], [0, 1]);
-    const [activeHeroText, setActiveHeroText] = useState('developer');
+    // Contact form states
+    const [formStatus, setFormStatus] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [emailCopied, setEmailCopied] = useState(false);
 
+    // Update real-time clock
     useEffect(() => {
-        const unsubscribe = skillsProgress.on('change', (v) => {
-            // Divide progress into equal segments for each category
-            // First 10% is header fade-in, remaining 90% split among categories
-            const adjusted = Math.max(0, (v - 0.1) / 0.9);
-            const totalCategories = 3;
-            const idx = Math.min(
-                Math.floor(adjusted * totalCategories),
-                totalCategories - 1
-            );
-            setActiveSkillIndex(idx);
-        });
-        return unsubscribe;
-    }, [skillsProgress]);
-
-    const updateHeroTextMask = useCallback(() => {
-        const imageEl = heroImageRef.current;
-        const targets = [developerTextRef.current, freelancerTextRef.current].filter(Boolean);
-        if (!imageEl || targets.length === 0) return;
-        const imageRect = imageEl.getBoundingClientRect();
-
-        targets.forEach((el) => {
-            const textRect = el.getBoundingClientRect();
-            const x = imageRect.left - textRect.left;
-            const y = imageRect.top - textRect.top;
-            el.style.setProperty('--hero-mask-x', `${x}px`);
-            el.style.setProperty('--hero-mask-y', `${y}px`);
-            el.style.setProperty('--hero-mask-w', `${imageRect.width}px`);
-            el.style.setProperty('--hero-mask-h', `${imageRect.height}px`);
-        });
+        const updateClock = () => {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString("en-US", {
+                timeZone: "Asia/Kolkata",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            });
+            setCurrentTime(timeStr);
+        };
+        updateClock();
+        const interval = setInterval(updateClock, 1000);
+        return () => clearInterval(interval);
     }, []);
 
-    const scheduleMaskUpdate = useCallback(() => {
-        if (maskRafRef.current) return;
-        maskRafRef.current = requestAnimationFrame(() => {
-            maskRafRef.current = 0;
-            updateHeroTextMask();
-        });
-    }, [updateHeroTextMask]);
-
-    const handleMouseMove = (e) => {
-        const rect = heroRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        mouseX.set(e.clientX - rect.left - rect.width / 2);
-        mouseY.set(e.clientY - rect.top - rect.height / 2);
-        scheduleMaskUpdate();
+    // Handle project hover tracking for Dennis Snellenberg floating preview
+    const handleProjectMouseMove = (e) => {
+        mouseX.set(e.clientX + 24);
+        mouseY.set(e.clientY + 24);
     };
 
-    useEffect(() => {
-        const handleResize = () => scheduleMaskUpdate();
-        window.addEventListener('resize', handleResize);
-        scheduleMaskUpdate();
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            if (maskRafRef.current) {
-                cancelAnimationFrame(maskRafRef.current);
-                maskRafRef.current = 0;
-            }
-        };
-    }, [scheduleMaskUpdate]);
+    // Card spotlight mouse movement tracker
+    const handleSpotlightMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+        e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+    };
 
-    useEffect(() => {
-        if (typedRef.current) {
-            const typed = new Typed(typedRef.current, {
-                strings: ["Mobile ", "Web ", "Full Stack "],
-                typeSpeed: 80,
-                backSpeed: 40,
-                backDelay: 1500,
-                loop: true,
-                showCursor: true,
-                cursorChar: '|'
+    // Filtered projects
+    const filteredProjects = ALL_PROJECTS.filter((p) => {
+        if (projectFilter === "all") return true;
+        return p.type === projectFilter;
+    });
+
+    // Copy email helper
+    const handleCopyEmail = () => {
+        navigator.clipboard.writeText("amanchaurasia1652@gmail.com");
+        setEmailCopied(true);
+        setTimeout(() => setEmailCopied(false), 2400);
+    };
+
+    // Contact Form Submission (Web3Forms)
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setFormStatus("Sending message...");
+
+        try {
+            const formData = new FormData(e.target);
+            formData.append("access_key", "cc329a4e-142d-45e5-90c3-b964aa88f312");
+
+            const res = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
             });
-            return () => typed.destroy();
-        }
-    }, []);
 
-    const skillCategories = [
-        {
-            title: "Frontend",
-            skills: [
-                { name: "React", icon: <FaReact className="text-blue-400" />, badge: <FiMonitor className="text-blue-300/60 w-3.5 h-3.5" /> },
-                { name: "React Native", icon: <FaReact className="text-blue-400" />, badge: <FiSmartphone className="text-blue-300/60 w-3.5 h-3.5" /> },
-                { name: "Next.js", icon: <RiNextjsFill className="text-white" />, badge: <FiMonitor className="text-blue-300/60 w-3.5 h-3.5" /> },
-                { name: "TypeScript", icon: <BiLogoTypescript className="text-blue-400" /> },
-                { name: "JavaScript", icon: <IoLogoJavascript className="text-yellow-400" /> },
-                { name: "Tailwind CSS", icon: <BiLogoTailwindCss className="text-cyan-400" /> },
-                { name: "HTML5", icon: <FaHtml5 className="text-orange-400" /> },
-                { name: "CSS3", icon: <FaCss3Alt className="text-blue-400" /> },
-            ]
-        },
-        {
-            title: "Backend & DB",
-            skills: [
-                { name: "Node.js", icon: <FaNodeJs className="text-green-400" /> },
-                { name: "Express.js", icon: <SiExpress className="text-white" /> },
-                { name: "MongoDB", icon: <SiMongodb className="text-green-400" /> },
-                { name: "PostgreSQL", icon: <SiPostgresql className="text-blue-300" /> },
-                { name: "MySQL", icon: <DiMysql className="text-blue-400" /> },
-            ]
-        },
-        {
-            title: "Tools & Languages",
-            skills: [
-                { name: "Firebase", icon: <IoLogoFirebase className="text-yellow-400" /> },
-                { name: "AppWrite", icon: <SiAppwrite className="text-pink-400" /> },
-                { name: "Git & GitHub", icon: <FaGithub className="text-white" /> },
-                { name: "Postman", icon: <SiPostman className="text-orange-400" /> },
-                { name: "Python", icon: <FaPython className="text-yellow-300" /> },
-                { name: "C++", icon: <TbBrandCpp className="text-blue-400" /> },
-            ]
+            const data = await res.json();
+            if (data.success) {
+                setFormStatus("Message received! I will reply shortly.");
+                e.target.reset();
+            } else {
+                setFormStatus(data.message || "Failed to submit. Please email directly.");
+            }
+        } catch (err) {
+            setFormStatus("Something went wrong. Please email directly.");
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => setFormStatus(""), 4500);
         }
-    ];
+    };
 
     return (
-        <div className="w-full bg-surface">
-            {/* ========== HERO SECTION — Editorial Overlap ========== */}
+        <div className="w-full bg-surface text-txt-primary selection:bg-accent selection:text-white">
+
+            {/* ========== 1. HERO SECTION ========== */}
             <section
-                ref={heroRef}
-                onMouseMove={handleMouseMove}
-                className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center"
+                id="hero"
+                className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-between pt-28 sm:pt-36 pb-12 px-6 sm:px-10 max-w-7xl mx-auto border-b border-white/[0.08]"
             >
-                <GradientOrbs variant="hero" />
-                <div className="absolute inset-0 grid-pattern" />
+                {/* Subtle Architectural Crosshairs */}
+                <div className="absolute top-8 left-6 font-mono text-xs text-txt-dim select-none hidden md:block">+ 28°36&apos;N / 77°12&apos;E</div>
+                <div className="absolute top-8 right-6 font-mono text-xs text-txt-dim select-none hidden md:block">+ PORTFOLIO / 2026</div>
 
-                <div className="relative z-10 w-full flex flex-col items-center pt-24 px-6 text-center md:hidden">
-                    <motion.p
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-sm text-txt-secondary font-body"
-                    >
-                        👋 Hi, I&apos;m Aman Kumar
-                    </motion.p>
-
-                    <div className="mt-3">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            className="font-display text-[3.1rem] leading-[0.9] font-bold text-gradient"
-                        >
-                            Developer
-                        </motion.h1>
-                        <motion.h2
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="font-display text-[2.6rem] leading-[0.95] font-bold text-outline-hoverable"
-                        >
-                            Freelancer
-                        </motion.h2>
+                {/* Top Status Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs uppercase tracking-wider text-txt-muted">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-surface-secondary/60">
+                        <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                        <span className="text-txt-primary font-medium">Available for select projects</span>
                     </div>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.5 }}
-                        className="text-sm text-txt-secondary mt-3"
-                    >
-                        Full Stack Developer &amp; Tech Enthusiast building modern web and mobile experiences.
-                    </motion.p>
-
-                    <motion.div
-                        className="flex flex-col items-center gap-3 mt-6 w-full"
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                    >
-                        <MagneticButton
-                            as="a"
-                            href="/projects"
-                            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300 w-full max-w-[220px]"
-                        >
-                            Explore Work
-                            <FiArrowUpRight className="w-4 h-4" />
-                        </MagneticButton>
-                        <MagneticButton
-                            as="a"
-                            href="/Aman_Kumar_Resume.pdf"
-                            download="Aman_Resume.pdf"
-                            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300 w-full max-w-[220px]"
-                        >
-                            <FiDownload className="w-4 h-4" />
-                            Resume
-                        </MagneticButton>
-                    </motion.div>
-
-                    <motion.img
-                        src="/Aman_DP_2.png"
-                        alt="Aman Kumar — Full Stack Developer"
-                        className="mt-8 w-44 sm:w-52 object-contain mx-auto image-fade-bottom"
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.7 }}
-                    />
-                </div>
-
-                <div className="relative z-10 w-full flex-col items-center pt-28 md:pt-20 hidden md:flex">
-                    {/* Available badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2 mb-6"
-                    >
-                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-xs font-medium text-txt-secondary tracking-wide">Available for projects</span>
-                    </motion.div>
-
-                    {/* Intro text */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.35 }}
-                        className="text-center text-base sm:text-lg text-txt-secondary font-body mb-4"
-                    >
-                        👋 Hi, I&apos;m Aman Kumar
-                        {/* <span className="text-accent-violet font-semibold"> Full Stack Developer</span> */}
-                    </motion.p>
-
-                    {/* ── Layered Typography + Figure ── */}
-                    <div
-                        className="relative flex flex-col items-center w-full"
-                        onMouseLeave={() => setActiveHeroText('developer')}
-                    >
-                        {/* Background text — "Aman" behind figure */}
-                        <motion.h1
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                            onMouseEnter={() => setActiveHeroText('developer')}
-                            ref={developerTextRef}
-                            className={`font-display text-[4rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative ${activeHeroText === 'developer'
-                                ? 'text-gradient-cutout'
-                                : 'text-outline-hoverable'
-                                }`}
-                            style={{ zIndex: activeHeroText === 'developer' ? 3 : 1 }}
-                        >
-                            Developer
-                        </motion.h1>
-
-                        {/* 3D Figure — overlaps text */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.75, delay: 0.35 }}
-                            className="relative z-[2] -mt-20 sm:-mt-28 md:-mt-40 lg:-mt-52 pointer-events-none"
-                        >
-                            {/* Glow behind */}
-                            <div className="absolute inset-0 bg-accent-violet/10 blur-[80px] rounded-full scale-75 -z-10" />
-                            <motion.img
-                                src="/Aman_DP_2.png"
-                                alt="Aman Kumar — Full Stack Developer"
-                                ref={heroImageRef}
-                                className="w-52 sm:w-64 md:w-80 lg:w-96 object-contain mx-auto drop-shadow-2xl image-fade-bottom"
-                                style={{ x: figureX, y: figureY }}
-                                onLoad={scheduleMaskUpdate}
-                            />
-                        </motion.div>
-
-                        {/* Foreground text — "Kumar" in front of figure */}
-                        <motion.h1
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-                            onMouseEnter={() => setActiveHeroText('freelancer')}
-                            ref={freelancerTextRef}
-                            className={`font-display text-[3rem] sm:text-[5rem] md:text-[8rem] lg:text-[11rem] font-bold leading-[0.82] tracking-[7px] text-center select-none relative -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-32 ${activeHeroText === 'freelancer'
-                                ? 'text-gradient-cutout'
-                                : 'text-outline-hoverable'
-                                }`}
-                            style={{ zIndex: activeHeroText === 'freelancer' ? 3 : 1 }}
-                        >
-                            Freelancer
-                        </motion.h1>
-                    </div>
-
-                    {/* Typed role */}
-                    <motion.div
-                        className="font-display text-xl sm:text-2xl font-semibold text-txt-secondary mt-4 sm:mt-6 text-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.9 }}
-                    >
-                        <span ref={typedRef} className="text-accent-violet" />
-                        <span className="text-gradient">Developer</span>
-                    </motion.div>
-
-                    {/* Description */}
-                    <motion.p
-                        className="text-base sm:text-lg text-txt-secondary max-w-lg font-body leading-relaxed text-center mt-4"
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1 }}
-                    >
-                        Full Stack Developer &amp; Tech Enthusiast building beautiful,
-                        performant web and mobile experiences.
-                    </motion.p>
-
-                    {/* CTA Buttons */}
-                    <motion.div
-                        className="flex flex-col sm:flex-row gap-4 mt-8"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.1 }}
-                    >
-                        <MagneticButton
-                            as="a"
-                            href="/projects"
-                            className="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
-                        >
-                            Explore Work
-                            <FiArrowUpRight className="w-4 h-4" />
-                        </MagneticButton>
-                        <MagneticButton
-                            as="a"
-                            href="/Aman_Kumar_Resume.pdf"
-                            download="Aman_Resume.pdf"
-                            className="inline-flex items-center justify-center gap-2 px-7 py-2.5 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
-                        >
-                            <FiDownload className="w-4 h-4" />
-                            Resume
-                        </MagneticButton>
-                    </motion.div>
-                </div>
-
-                {/* Scroll indicator */}
-                <motion.div
-                    className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5 }}
-                >
-                    <span className="text-xs font-medium text-txt-muted tracking-widest uppercase">Scroll</span>
-                    <motion.div
-                        animate={{ y: [0, 8, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                        <FiChevronDown className="w-5 h-5 text-txt-muted" />
-                    </motion.div>
-                </motion.div>
-            </section>
-
-            {/* ========== ABOUT SECTION ========== */}
-            <section id="about" className="relative py-24 px-6 sm:px-8 overflow-hidden">
-                <GradientOrbs variant="subtle" />
-                <div className="relative z-10 container mx-auto max-w-6xl">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                        {/* Image */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -40 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.7 }}
-                            className="hidden md:flex justify-center"
-                        >
-                            <div className="relative">
-                                <div className="absolute inset-0 rounded-3xl bg-accent-gradient opacity-10 blur-2xl scale-90" />
-                                <div className="relative glass-card p-4 rounded-3xl">
-                                    <img
-                                        src="/Aman_DP_2.png"
-                                        alt="About Me"
-                                        className="w-full max-w-sm object-contain"
-                                    />
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Content */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 40 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.7 }}
-                        >
-                            <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
-                                About Me
-                            </span>
-
-                            <TextReveal
-                                as="h2"
-                                className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-6"
-                            >
-                                Crafting digital experiences with passion
-                            </TextReveal>
-
-                            <div className="glass-card p-6 mb-8">
-                                <p className="text-base leading-relaxed text-txt-secondary">
-                                    Hey there! I&apos;m <strong className="text-accent-violet font-semibold">Aman Kumar</strong>, a
-                                    passionate developer specializing in creating beautiful and functional
-                                    <span className="text-accent-cyan"> Web</span> and
-                                    <span className="text-accent-violet"> Mobile</span> experiences.
-                                    With a focus on modern technologies, I build
-                                    <span className="text-gradient font-semibold"> scalable solutions</span> that not only look great but also solve real-world problems.
-                                </p>
-                            </div>
-
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-4">
-                                <StatCard value={10} label="Projects" />
-                                <StatCard value={7} label="Clients" />
-                                <StatCard value={3} label="Years Exp" />
-                            </div>
-                        </motion.div>
+                    <div className="flex items-center gap-4">
+                        <span>New Delhi, IN</span>
+                        <span className="text-txt-dim">•</span>
+                        <span className="text-txt-primary tabular-nums flex items-center gap-1.5">
+                            <FiClock className="w-3.5 h-3.5 text-accent" />
+                            {currentTime || "04:30 PM IST"}
+                        </span>
                     </div>
                 </div>
-            </section>
 
-            {/* ========== SKILLS SECTION — Sticky Scroll ========== */}
-            <section id="skills" className="relative">
-                <div className="absolute inset-0 bg-gradient-radial pointer-events-none" />
-
-                {/* Shorter scroll runway — 220vh for snappier transitions */}
-                <div ref={skillsSectionRef} className="relative" style={{ height: '220vh' }}>
-                    {/* Sticky container */}
-                    <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden px-6 sm:px-8">
-
-                        {/* Animated background accent blob — changes color per category */}
-                        <div
-                            className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.07] transition-all duration-1000 ease-out pointer-events-none"
-                            style={{
-                                background: activeSkillIndex === 0
-                                    ? 'radial-gradient(circle, #8b5cf6, transparent 70%)'
-                                    : activeSkillIndex === 1
-                                        ? 'radial-gradient(circle, #06b6d4, transparent 70%)'
-                                        : 'radial-gradient(circle, #f59e0b, transparent 70%)',
-                                transform: `translate(${activeSkillIndex === 0 ? '-20%' : activeSkillIndex === 1 ? '20%' : '0'}, ${activeSkillIndex === 2 ? '-15%' : '10%'})`,
-                            }}
-                        />
-
-                        {/* Floating particles */}
-                        {[...Array(6)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute w-1 h-1 rounded-full bg-accent-violet/30"
-                                animate={{
-                                    y: [0, -30, 0],
-                                    x: [0, i % 2 === 0 ? 15 : -15, 0],
-                                    opacity: [0.2, 0.6, 0.2],
-                                }}
-                                transition={{
-                                    duration: 3 + i * 0.5,
-                                    repeat: Infinity,
-                                    delay: i * 0.4,
-                                    ease: 'easeInOut',
-                                }}
-                                style={{
-                                    left: `${15 + i * 14}%`,
-                                    top: `${30 + (i % 3) * 20}%`,
-                                }}
-                            />
-                        ))}
-
-                        <div className="relative z-10 max-w-6xl mx-auto w-full">
-                            {/* Header */}
-                            <motion.div
-                                className="text-center mb-8"
-                                style={{ opacity: headerOpacity }}
-                            >
-                                <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
-                                    Tech Stack
-                                </span>
-                                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-txt-primary">
-                                    Technical Arsenal
-                                </h2>
-                            </motion.div>
-
-                            {/* Progress bar + step indicators */}
-                            <div className="flex flex-col items-center gap-3 mb-8">
-                                {/* Progress bar */}
-                                <div className="w-48 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
-                                    <motion.div
-                                        className="h-full bg-accent-gradient rounded-full"
-                                        animate={{ width: `${((activeSkillIndex + 1) / skillCategories.length) * 100}%` }}
-                                        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                                    />
-                                </div>
-
-                                {/* Step dots */}
-                                <div className="flex justify-center gap-2">
-                                    {skillCategories.map((cat, idx) => (
-                                        <div key={idx} className="flex items-center gap-2">
-                                            <motion.div
-                                                className="rounded-full"
-                                                animate={{
-                                                    width: activeSkillIndex === idx ? 32 : 8,
-                                                    height: 8,
-                                                    backgroundColor: activeSkillIndex === idx
-                                                        ? idx === 0 ? '#8b5cf6' : idx === 1 ? '#06b6d4' : '#f59e0b'
-                                                        : activeSkillIndex > idx
-                                                            ? idx === 0 ? '#8b5cf680' : idx === 1 ? '#06b6d480' : '#f59e0b80'
-                                                            : 'rgba(255,255,255,0.08)',
-                                                }}
-                                                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Cards — stacked, only active one visible */}
-                            <div className="relative h-[420px] sm:h-[380px]">
-                                {skillCategories.map((category, idx) => {
-                                    const isActive = activeSkillIndex === idx;
-                                    const isPast = activeSkillIndex > idx;
-                                    const accentColor = idx === 0 ? '#8b5cf6' : idx === 1 ? '#06b6d4' : '#f59e0b';
-
-                                    return (
-                                        <motion.div
-                                            key={idx}
-                                            className="absolute inset-0 flex items-start justify-center"
-                                            animate={{
-                                                opacity: isActive ? 1 : 0,
-                                                y: isActive ? 0 : isPast ? -80 : 80,
-                                                scale: isActive ? 1 : 0.88,
-                                                rotateX: isActive ? 0 : isPast ? -5 : 5,
-                                                filter: isActive ? 'blur(0px)' : 'blur(8px)',
-                                            }}
-                                            transition={{
-                                                duration: 0.5,
-                                                ease: [0.22, 1, 0.36, 1],
-                                            }}
-                                            style={{
-                                                pointerEvents: isActive ? 'auto' : 'none',
-                                                perspective: 1000,
-                                            }}
-                                        >
-                                            {/* Animated gradient border wrapper */}
-                                            <div
-                                                className="relative w-full max-w-2xl rounded-3xl p-px overflow-hidden"
-                                                style={{
-                                                    background: isActive
-                                                        ? `conic-gradient(from var(--skill-border-angle, 0deg), transparent 40%, ${accentColor}40, transparent 60%)`
-                                                        : 'transparent',
-                                                }}
-                                            >
-                                                {/* Spinning border animation via inline style */}
-                                                {isActive && (
-                                                    <style>{`
-                                                        @property --skill-border-angle {
-                                                            syntax: '<angle>';
-                                                            initial-value: 0deg;
-                                                            inherits: false;
-                                                        }
-                                                        @keyframes skillBorderSpin {
-                                                            to { --skill-border-angle: 360deg; }
-                                                        }
-                                                    `}</style>
-                                                )}
-                                                <div
-                                                    className="rounded-3xl bg-surface-secondary/95 backdrop-blur-xl p-8 sm:p-10"
-                                                    style={isActive ? {
-                                                        animation: 'skillBorderSpin 4s linear infinite',
-                                                    } : {}}
-                                                >
-                                                    {/* Category header */}
-                                                    <div className="flex items-center justify-between mb-8">
-                                                        <h3 className="font-display text-2xl sm:text-3xl font-bold text-txt-primary flex items-center gap-3">
-                                                            <motion.span
-                                                                className="w-10 h-[2px] rounded-full"
-                                                                animate={{ backgroundColor: accentColor, scaleX: isActive ? 1 : 0 }}
-                                                                transition={{ duration: 0.4 }}
-                                                                style={{ originX: 0 }}
-                                                            />
-                                                            {category.title}
-                                                        </h3>
-                                                        <motion.span
-                                                            className="font-mono text-sm px-3 py-1 rounded-full border"
-                                                            animate={{
-                                                                borderColor: isActive ? `${accentColor}30` : 'rgba(255,255,255,0.04)',
-                                                                color: isActive ? accentColor : 'rgba(255,255,255,0.3)',
-                                                            }}
-                                                        >
-                                                            {String(idx + 1).padStart(2, '0')}/{String(skillCategories.length).padStart(2, '0')}
-                                                        </motion.span>
-                                                    </div>
-
-                                                    {/* Skills grid */}
-                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                        {category.skills.map((skill, i) => (
-                                                            <motion.div
-                                                                key={i}
-                                                                initial={false}
-                                                                animate={{
-                                                                    opacity: isActive ? 1 : 0,
-                                                                    x: isActive ? 0 : 30,
-                                                                    rotate: isActive ? 0 : 2,
-                                                                }}
-                                                                transition={{
-                                                                    duration: 0.35,
-                                                                    delay: isActive ? i * 0.04 : 0,
-                                                                    ease: [0.22, 1, 0.36, 1],
-                                                                }}
-                                                                whileHover={{ scale: 1.03, x: 4 }}
-                                                                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:border-white/[0.1] hover:bg-white/[0.04] transition-colors duration-300 cursor-default group"
-                                                            >
-                                                                {/* Icon container with glow */}
-                                                                <span
-                                                                    className="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-shadow duration-300"
-                                                                    style={{
-                                                                        backgroundColor: `${accentColor}10`,
-                                                                        boxShadow: `0 0 0px ${accentColor}00`,
-                                                                    }}
-                                                                    onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 0 12px ${accentColor}30`}
-                                                                    onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0px ${accentColor}00`}
-                                                                >
-                                                                    {skill.icon}
-                                                                </span>
-                                                                <span className="text-sm font-medium text-txt-primary group-hover:text-white transition-colors duration-300 flex items-center gap-1.5">
-                                                                    {skill.name}
-                                                                    {skill.badge && skill.badge}
-                                                                </span>
-                                                            </motion.div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Scroll hint */}
-                            <motion.div
-                                className="flex flex-col items-center mt-6 gap-1"
-                                animate={{ opacity: activeSkillIndex < skillCategories.length - 1 ? 0.5 : 0 }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-txt-muted">Scroll to explore</span>
-                                <motion.div
-                                    animate={{ y: [0, 6, 0] }}
-                                    transition={{ duration: 1.5, repeat: Infinity }}
-                                >
-                                    <FiChevronDown className="w-4 h-4 text-txt-muted" />
-                                </motion.div>
-                            </motion.div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ========== RESUME CTA SECTION ========== */}
-            <section id="resume" className="relative py-24 px-6 sm:px-8 overflow-hidden">
-                <div className="absolute inset-0 bg-accent-gradient opacity-[0.03]" />
-                <GradientOrbs variant="subtle" />
-
-                <motion.div
-                    className="relative z-10 max-w-4xl mx-auto text-center"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className="glass-card p-10 md:p-16">
-                        <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-6">
-                            Open to Opportunities
+                {/* Central Editorial Statement */}
+                <div className="my-auto py-12 sm:py-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                        className="max-w-4xl"
+                    >
+                        <span className="font-mono text-xs sm:text-sm uppercase tracking-widest text-accent mb-4 block">
+                            // Aman Kumar — Software Engineer &amp; Designer
                         </span>
 
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                            Ready to <span className="text-gradient">work together?</span>
-                        </h2>
+                        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[5.4rem] font-bold tracking-tight leading-[0.98] text-txt-primary">
+                            Full-Stack Engineer &amp; Mobile Architect.
+                        </h1>
 
-                        <p className="text-lg text-txt-secondary mb-8 max-w-xl mx-auto">
-                            Let&apos;s build something amazing! Check out my resume to see my full experience and skills.
+                        <p className="mt-8 max-w-2xl text-base sm:text-lg text-txt-secondary leading-relaxed font-body">
+                            Engineering robust web architectures and high-retention mobile products.
+                            Focused on performance, clean maintainable code, and high-impact digital experiences.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        {/* Quick Action Buttons */}
+                        <div className="mt-10 flex flex-wrap items-center gap-4">
+                            <MagneticButton
+                                as="a"
+                                href="#projects"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-hover shadow-accent-soft"
+                            >
+                                Explore Selected Work
+                                <FiArrowUpRight className="w-4 h-4" />
+                            </MagneticButton>
+
                             <MagneticButton
                                 as="a"
                                 href="/Aman_Kumar_Resume.pdf"
-                                download="Aman_Resume.pdf"
-                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-shadow duration-300"
+                                download="Aman_Kumar_Resume.pdf"
+                                className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-surface-secondary/70 px-6 py-3 text-sm font-semibold text-txt-primary transition-all duration-300 hover:border-white/30 hover:bg-surface-elevated"
                             >
-                                <FiDownload className="w-5 h-5" />
-                                Download Resume
+                                <FiDownload className="w-4 h-4 text-accent" />
+                                Resume
                             </MagneticButton>
 
-                            <Link
-                                to="/contact"
-                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/[0.1] bg-white/[0.03] text-txt-primary font-semibold hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
+                            <MagneticButton
+                                as="a"
+                                href="#contact"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] px-6 py-3 text-sm font-semibold text-txt-secondary hover:text-txt-primary hover:border-white/20 transition-all duration-300"
                             >
-                                Get in Touch
-                                <FiArrowUpRight className="w-4 h-4" />
+                                Get In Touch
+                            </MagneticButton>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Bottom Architectural Info Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/[0.08] font-mono text-xs text-txt-muted">
+                    <div>
+                        <span className="text-txt-dim block mb-1">01 / STACK</span>
+                        <span className="text-txt-primary font-medium">React • Next.js • React Native</span>
+                    </div>
+                    <div>
+                        <span className="text-txt-dim block mb-1">02 / BACKEND</span>
+                        <span className="text-txt-primary font-medium">Node.js • Express • Supabase</span>
+                    </div>
+                    <div>
+                        <span className="text-txt-dim block mb-1">03 / SPECIALTY</span>
+                        <span className="text-txt-primary font-medium">Full-Stack &amp; Mobile Apps</span>
+                    </div>
+                    <div>
+                        <span className="text-txt-dim block mb-1">04 / EXPERIENCE</span>
+                        <span className="text-txt-primary font-medium">3+ Years Building Products</span>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ========== 2. METRICS & IMPACT TICKER ========== */}
+            <section className="border-b border-white/[0.08] bg-surface-secondary/30">
+                <div className="max-w-7xl mx-auto px-6 sm:px-10 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="flex flex-col">
+                        <span className="font-display text-4xl sm:text-5xl font-bold text-txt-primary tabular-nums">
+                            25<span className="text-accent">+</span>
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-wider text-txt-muted mt-2">
+                            Web Releases
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <span className="font-display text-4xl sm:text-5xl font-bold text-txt-primary tabular-nums">
+                            05<span className="text-accent">+</span>
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-wider text-txt-muted mt-2">
+                            Mobile Apps Shipped
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <span className="font-display text-4xl sm:text-5xl font-bold text-txt-primary tabular-nums">
+                            100<span className="text-accent">%</span>
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-wider text-txt-muted mt-2">
+                            Client Satisfaction
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <span className="font-display text-4xl sm:text-5xl font-bold text-txt-primary tabular-nums">
+                            03<span className="text-accent">+</span>
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-wider text-txt-muted mt-2">
+                            Years In Tech
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ========== 3. SELECTED WORK (DENNIS SNELLENBERG HOVER INTERACTION) ========== */}
+            <section
+                id="projects"
+                onMouseMove={handleProjectMouseMove}
+                className="relative py-24 sm:py-32 px-6 sm:px-10 max-w-7xl mx-auto border-b border-white/[0.08]"
+            >
+                {/* Header & Controls */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/[0.08]">
+                    <div>
+                        <span className="font-mono text-xs uppercase tracking-widest text-accent mb-3 block">
+                            / Selected Works 2024 — 2026
+                        </span>
+                        <h2 className="font-display text-3xl sm:text-5xl font-bold text-txt-primary">
+                            Crafted Projects
+                        </h2>
+                    </div>
+
+                    {/* Filter & View Controls */}
+                    <div className="flex flex-wrap items-center gap-3">
+                        {/* Filter Tabs */}
+                        <div className="inline-flex rounded-full border border-white/[0.08] p-1 bg-surface-secondary">
+                            {[
+                                { id: "all", label: "All Works" },
+                                { id: "web", label: "Web Systems" },
+                                { id: "mobile", label: "Mobile Apps" }
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setProjectFilter(tab.id)}
+                                    data-cursor="pointer"
+                                    className={`px-4 py-1.5 rounded-full font-mono text-xs transition-colors duration-200 ${
+                                        projectFilter === tab.id
+                                            ? "bg-accent text-white font-semibold"
+                                            : "text-txt-secondary hover:text-txt-primary"
+                                    }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* View Switcher: List vs Bento */}
+                        <div className="hidden sm:inline-flex rounded-full border border-white/[0.08] p-1 bg-surface-secondary">
+                            <button
+                                onClick={() => setViewMode("list")}
+                                data-cursor="pointer"
+                                title="List View"
+                                className={`p-2 rounded-full transition-colors ${
+                                    viewMode === "list" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
+                                }`}
+                            >
+                                <FiList className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => setViewMode("bento")}
+                                data-cursor="pointer"
+                                title="Bento Grid View"
+                                className={`p-2 rounded-full transition-colors ${
+                                    viewMode === "bento" ? "bg-white/10 text-white" : "text-txt-muted hover:text-white"
+                                }`}
+                            >
+                                <FiGrid className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* --- A. LIST VIEW (DENNIS SNELLENBERG STYLE) --- */}
+                {viewMode === "list" && (
+                    <div className="divide-y divide-white/[0.08]">
+                        {filteredProjects.map((project, idx) => (
+                            <div
+                                key={project.id}
+                                onMouseEnter={() => setActiveProject(project)}
+                                onMouseLeave={() => setActiveProject(null)}
+                                data-cursor="view"
+                                data-cursor-text="VISIT"
+                                className="group relative py-7 sm:py-9 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all duration-300 hover:pl-3"
+                            >
+                                <div className="flex items-baseline gap-4 sm:gap-6">
+                                    <span className="font-mono text-xs sm:text-sm text-txt-dim tabular-nums">
+                                        0{idx + 1}
+                                    </span>
+                                    <div>
+                                        <h3 className="font-display text-2xl sm:text-4xl font-bold text-txt-primary group-hover:text-accent transition-colors duration-300">
+                                            {project.title}
+                                        </h3>
+                                        <p className="text-xs sm:text-sm text-txt-muted max-w-xl mt-1.5 line-clamp-1">
+                                            {project.description}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4 sm:gap-8 self-end md:self-auto font-mono text-xs">
+                                    <div className="flex flex-wrap gap-1.5 hidden lg:flex">
+                                        {project.tags.slice(0, 3).map((t, i) => (
+                                            <span
+                                                key={i}
+                                                className="px-2.5 py-1 rounded-md border border-white/[0.06] bg-white/[0.02] text-txt-secondary text-[11px]"
+                                            >
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <span className="px-3 py-1 rounded-full border border-white/[0.08] text-txt-secondary uppercase tracking-wider text-[11px]">
+                                        {project.category}
+                                    </span>
+
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        data-cursor="pointer"
+                                        aria-label={`Open ${project.title}`}
+                                        className="w-10 h-10 rounded-full border border-white/[0.12] flex items-center justify-center text-txt-secondary group-hover:text-white group-hover:border-accent group-hover:bg-accent transition-all duration-300"
+                                    >
+                                        <FiArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* --- B. BENTO CARD VIEW --- */}
+                {viewMode === "bento" && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
+                        {filteredProjects.map((project, idx) => (
+                            <motion.article
+                                key={project.id}
+                                onMouseMove={handleSpotlightMove}
+                                data-cursor="view"
+                                data-cursor-text="OPEN"
+                                className="spotlight-card p-6 flex flex-col justify-between group"
+                            >
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <span className="font-mono text-xs text-txt-dim">0{idx + 1}</span>
+                                        <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full border border-white/[0.08] bg-white/[0.02] text-accent uppercase">
+                                            {project.badge}
+                                        </span>
+                                    </div>
+
+                                    <h3 className="font-display text-2xl font-bold text-txt-primary mb-2 group-hover:text-accent transition-colors">
+                                        {project.title}
+                                    </h3>
+
+                                    <p className="text-xs sm:text-sm text-txt-secondary leading-relaxed mb-6">
+                                        {project.description}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <div className="flex flex-wrap gap-1.5 mb-6">
+                                        {project.tags.map((tag, i) => (
+                                            <span
+                                                key={i}
+                                                className="text-[10px] font-mono px-2 py-0.5 rounded border border-white/[0.06] bg-white/[0.02] text-txt-muted"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                                        <span className="font-mono text-xs text-txt-muted">
+                                            {project.stats}
+                                        </span>
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-primary hover:text-accent transition-colors font-medium"
+                                        >
+                                            View Project
+                                            <FiArrowUpRight className="w-3.5 h-3.5" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </motion.article>
+                        ))}
+                    </div>
+                )}
+
+                {/* Dennis Snellenberg Floating Preview Element (Follows cursor smoothly) */}
+                <AnimatePresence>
+                    {activeProject && (
+                        <motion.div
+                            style={{
+                                x: previewX,
+                                y: previewY,
+                            }}
+                            initial={{ opacity: 0, scale: 0.85 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.85 }}
+                            transition={{ duration: 0.2 }}
+                            className="pointer-events-none fixed top-0 left-0 z-40 hidden lg:block w-72 rounded-xl overflow-hidden border border-white/20 bg-surface-tertiary shadow-2xl"
+                        >
+                            <img
+                                src={activeProject.image}
+                                alt={activeProject.title}
+                                className="w-full h-44 object-cover object-top"
+                            />
+                            <div className="p-3 bg-surface-secondary/95 border-t border-white/10 flex items-center justify-between">
+                                <span className="font-display text-xs font-bold text-white">
+                                    {activeProject.title}
+                                </span>
+                                <span className="font-mono text-[10px] text-accent uppercase">
+                                    {activeProject.stats}
+                                </span>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Deep Dive Subpage Links */}
+                <div className="mt-14 pt-8 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+                    <p className="text-xs sm:text-sm text-txt-muted font-mono">
+                        Looking for granular case studies or specific technologies?
+                    </p>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            to="/projects-web-development"
+                            data-cursor="pointer"
+                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-white px-4 py-2 rounded-full border border-white/[0.08] bg-surface-secondary hover:border-white/20 transition-all"
+                        >
+                            Web Case Studies
+                            <FiArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                        <Link
+                            to="/projects-app-development"
+                            data-cursor="pointer"
+                            className="inline-flex items-center gap-1.5 font-mono text-xs text-txt-secondary hover:text-white px-4 py-2 rounded-full border border-white/[0.08] bg-surface-secondary hover:border-white/20 transition-all"
+                        >
+                            Mobile Case Studies
+                            <FiArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ========== 4. SERVICES & CAPABILITIES ========== */}
+            <section
+                id="services"
+                className="py-24 sm:py-32 px-6 sm:px-10 max-w-7xl mx-auto border-b border-white/[0.08]"
+            >
+                <div className="mb-14">
+                    <span className="font-mono text-xs uppercase tracking-widest text-accent mb-3 block">
+                        / Engineering Capabilities
+                    </span>
+                    <h2 className="font-display text-3xl sm:text-5xl font-bold text-txt-primary max-w-2xl">
+                        Comprehensive solutions from concept to deployment.
+                    </h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Service 01: Web Engineering */}
+                    <div
+                        onMouseMove={handleSpotlightMove}
+                        className="spotlight-card p-8 sm:p-10 flex flex-col justify-between"
+                    >
+                        <div>
+                            <div className="flex items-center justify-between pb-6 border-b border-white/[0.08] mb-6">
+                                <span className="font-mono text-xs text-txt-dim">01 / ARCHITECTURE</span>
+                                <FiMonitor className="w-6 h-6 text-accent" />
+                            </div>
+
+                            <h3 className="font-display text-2xl sm:text-3xl font-bold text-txt-primary mb-4">
+                                Full-Stack Web Development
+                            </h3>
+
+                            <p className="text-sm text-txt-secondary leading-relaxed mb-8">
+                                Building performant, responsive web applications engineered for speed, clean UX, and search engine optimization. Specializing in modern React, Next.js, scalable Node.js services, and REST/GraphQL APIs.
+                            </p>
+
+                            <div className="space-y-3 mb-8">
+                                {[
+                                    "Enterprise Full-Stack Web Apps (Next.js & MERN)",
+                                    "Custom API Design, Authentication & Security",
+                                    "Payment Gateway Integrations (Stripe, Cashfree)",
+                                    "95+ Google Lighthouse Performance & SEO Optimization"
+                                ].map((item, idx) => (
+                                    <div key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-txt-primary">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                        <span>{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="pt-6 border-t border-white/[0.08] flex items-center justify-between">
+                            <span className="font-mono text-xs text-txt-muted">Next.js • Node.js • Supabase</span>
+                            <Link
+                                to="/service-web-development"
+                                data-cursor="pointer"
+                                className="inline-flex items-center gap-1.5 font-mono text-xs text-accent font-semibold hover:underline"
+                            >
+                                Details &amp; Scope
+                                <FiArrowUpRight className="w-3.5 h-3.5" />
                             </Link>
                         </div>
                     </div>
-                </motion.div>
+
+                    {/* Service 02: Mobile Engineering */}
+                    <div
+                        onMouseMove={handleSpotlightMove}
+                        className="spotlight-card p-8 sm:p-10 flex flex-col justify-between"
+                    >
+                        <div>
+                            <div className="flex items-center justify-between pb-6 border-b border-white/[0.08] mb-6">
+                                <span className="font-mono text-xs text-txt-dim">02 / CROSS-PLATFORM</span>
+                                <FiSmartphone className="w-6 h-6 text-accent" />
+                            </div>
+
+                            <h3 className="font-display text-2xl sm:text-3xl font-bold text-txt-primary mb-4">
+                                Mobile App Engineering
+                            </h3>
+
+                            <p className="text-sm text-txt-secondary leading-relaxed mb-8">
+                                Developing production-ready mobile applications for iOS and Android using React Native and Expo. Crafted for native-feel gesture fidelity, instant response times, and store readiness.
+                            </p>
+
+                            <div className="space-y-3 mb-8">
+                                {[
+                                    "Cross-Platform Apps for Google Play & Apple App Store",
+                                    "Real-time Data Sync, Firebase & Supabase Cloud",
+                                    "In-App Purchases, Payment Systems & Monetization",
+                                    "Background Tasks, Offline Caching & Push Notifications"
+                                ].map((item, idx) => (
+                                    <div key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-txt-primary">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                        <span>{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="pt-6 border-t border-white/[0.08] flex items-center justify-between">
+                            <span className="font-mono text-xs text-txt-muted">React Native • Expo • Cloud</span>
+                            <Link
+                                to="/service-app-development"
+                                data-cursor="pointer"
+                                className="inline-flex items-center gap-1.5 font-mono text-xs text-accent font-semibold hover:underline"
+                            >
+                                Details &amp; Scope
+                                <FiArrowUpRight className="w-3.5 h-3.5" />
+                            </Link>
+                        </div>
+                    </div>
+                </div>
             </section>
+
+
+            {/* ========== 5. TECHNICAL ARSENAL (CLEAN ARCHITECTURAL MATRIX) ========== */}
+            <section
+                id="arsenal"
+                className="py-24 sm:py-32 px-6 sm:px-10 max-w-7xl mx-auto border-b border-white/[0.08]"
+            >
+                <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span className="font-mono text-xs uppercase tracking-widest text-accent mb-3 block">
+                            / Technical Stack
+                        </span>
+                        <h2 className="font-display text-3xl sm:text-5xl font-bold text-txt-primary">
+                            Tools &amp; Technologies
+                        </h2>
+                    </div>
+                    <span className="font-mono text-xs text-txt-muted">
+                        Production-Tested Tooling
+                    </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {TECH_GROUPS.map((group, idx) => (
+                        <div
+                            key={idx}
+                            onMouseMove={handleSpotlightMove}
+                            className="spotlight-card p-6 sm:p-8"
+                        >
+                            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.08]">
+                                <h3 className="font-mono text-xs uppercase tracking-wider text-txt-primary font-semibold">
+                                    {group.domain}
+                                </h3>
+                                <span className="font-mono text-xs text-txt-dim">0{idx + 1}</span>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-2.5">
+                                {group.skills.map((skill, sIdx) => (
+                                    <div
+                                        key={sIdx}
+                                        className="flex items-center justify-between p-3 rounded-lg border border-white/[0.04] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-200"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-lg">{skill.icon}</span>
+                                            <span className="text-xs sm:text-sm font-medium text-txt-primary">
+                                                {skill.name}
+                                            </span>
+                                        </div>
+                                        <span className="font-mono text-[10px] text-txt-dim">ACTIVE</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+
+            {/* ========== 6. ABOUT / PHILOSOPHY ========== */}
+            <section
+                id="about"
+                className="py-24 sm:py-32 px-6 sm:px-10 max-w-7xl mx-auto border-b border-white/[0.08]"
+            >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    {/* Left: Framed Portrait */}
+                    <div className="lg:col-span-5 flex justify-center">
+                        <div className="relative w-full max-w-sm rounded-2xl border border-white/[0.1] bg-surface-secondary p-4 overflow-hidden shadow-2xl">
+                            <div className="aspect-[4/5] rounded-xl overflow-hidden bg-surface-tertiary">
+                                <img
+                                    src="/Aman_DP_2.png"
+                                    alt="Aman Kumar"
+                                    className="w-full h-full object-cover object-top filter grayscale contrast-110 hover:grayscale-0 transition-all duration-500"
+                                />
+                            </div>
+                            <div className="mt-4 flex items-center justify-between font-mono text-xs text-txt-muted px-2">
+                                <span>Aman Kumar</span>
+                                <span className="text-accent">Engineer / Lead</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right: Editorial Bio */}
+                    <div className="lg:col-span-7 space-y-6">
+                        <span className="font-mono text-xs uppercase tracking-widest text-accent block">
+                            / Background &amp; Approach
+                        </span>
+
+                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-txt-primary leading-tight">
+                            Driven by clarity, performance, and craftsmanship.
+                        </h2>
+
+                        <p className="text-base sm:text-lg text-txt-secondary leading-relaxed font-body">
+                            I am a software engineer focused on building clean, high-performance digital products. My work balances visual precision with resilient engineering—bridging the gap between creative design and robust system logic.
+                        </p>
+
+                        <p className="text-sm sm:text-base text-txt-secondary leading-relaxed font-body">
+                            Whether architecting full-stack web platforms using Next.js and Supabase, or engineering native-feel mobile applications on the Google Play Store and App Store, I focus on tangible outcomes: rapid load times, intuitive navigation, and clean, scalable code.
+                        </p>
+
+                        <div className="pt-6 flex flex-wrap items-center gap-4">
+                            <MagneticButton
+                                as="a"
+                                href="/Aman_Kumar_Resume.pdf"
+                                download="Aman_Kumar_Resume.pdf"
+                                className="inline-flex items-center gap-2 rounded-full bg-txt-primary px-6 py-3 text-sm font-semibold text-surface transition-all duration-300 hover:bg-accent hover:text-white"
+                            >
+                                <FiDownload className="w-4 h-4" />
+                                Download Full Resume (PDF)
+                            </MagneticButton>
+
+                            <MagneticButton
+                                as="a"
+                                href="https://github.com/AmanKumar9958"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-surface-secondary px-6 py-3 text-sm font-semibold text-txt-primary hover:border-white/30 transition-all"
+                            >
+                                <FaGithub className="w-4 h-4" />
+                                GitHub Profile
+                            </MagneticButton>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ========== 7. DIRECT INTERACTIVE CONTACT SECTION ========== */}
+            <section
+                id="contact"
+                className="py-24 sm:py-32 px-6 sm:px-10 max-w-7xl mx-auto"
+            >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                    {/* Left: Contact Info & Quick Copy */}
+                    <div className="lg:col-span-5 space-y-8">
+                        <div>
+                            <span className="font-mono text-xs uppercase tracking-widest text-accent mb-3 block">
+                                // Available for Collaboration
+                            </span>
+                            <h2 className="font-display text-4xl sm:text-5xl font-bold text-txt-primary">
+                                Let&apos;s build something exceptional.
+                            </h2>
+                            <p className="text-sm sm:text-base text-txt-secondary mt-4 leading-relaxed font-body">
+                                Have an upcoming product launch, mobile app idea, or engineering challenge? Send a direct message or reach out via email.
+                            </p>
+                        </div>
+
+                        {/* Interactive Email Copy Module */}
+                        <div className="rounded-2xl border border-white/[0.08] bg-surface-secondary p-6 space-y-4">
+                            <span className="font-mono text-xs uppercase tracking-wider text-txt-muted block">
+                                Direct Contact Email
+                            </span>
+                            <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-white/[0.06] bg-surface-tertiary">
+                                <span className="font-mono text-xs sm:text-sm text-txt-primary select-all truncate">
+                                    amanchaurasia1652@gmail.com
+                                </span>
+                                <button
+                                    onClick={handleCopyEmail}
+                                    data-cursor="pointer"
+                                    title="Copy Email"
+                                    className="p-2 rounded-lg bg-white/5 hover:bg-accent text-txt-primary hover:text-white transition-colors duration-200 flex-shrink-0"
+                                >
+                                    {emailCopied ? (
+                                        <FiCheck className="w-4 h-4 text-emerald-400" />
+                                    ) : (
+                                        <FiCopy className="w-4 h-4" />
+                                    )}
+                                </button>
+                            </div>
+                            {emailCopied && (
+                                <span className="font-mono text-xs text-emerald-400 block">
+                                    ✓ Email address copied to clipboard!
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Social Links */}
+                        <div className="space-y-3">
+                            <span className="font-mono text-xs uppercase tracking-wider text-txt-muted block">
+                                Profiles
+                            </span>
+                            <div className="flex flex-wrap gap-3">
+                                <MagneticButton
+                                    as="a"
+                                    href="https://github.com/AmanKumar9958"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-surface-secondary px-5 py-2.5 text-xs font-mono text-txt-secondary hover:text-white hover:border-white/20 transition-all"
+                                >
+                                    <FaGithub className="w-4 h-4" />
+                                    GitHub
+                                </MagneticButton>
+
+                                <MagneticButton
+                                    as="a"
+                                    href="https://linkedin.com/in/aman-kumar-47407823b"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-surface-secondary px-5 py-2.5 text-xs font-mono text-txt-secondary hover:text-white hover:border-white/20 transition-all"
+                                >
+                                    <FaLinkedin className="w-4 h-4 text-sky-400" />
+                                    LinkedIn
+                                </MagneticButton>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right: Working Web3Forms Contact Form */}
+                    <div className="lg:col-span-7">
+                        <form
+                            onSubmit={handleContactSubmit}
+                            className="rounded-3xl border border-white/[0.1] bg-surface-secondary p-8 sm:p-10 space-y-6 shadow-2xl"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                        Your Name *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        required
+                                        placeholder="Alex Mercer"
+                                        className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                        Your Email *
+                                    </label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        required
+                                        placeholder="alex@company.com"
+                                        className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                    Project / Subject
+                                </label>
+                                <input
+                                    type="text"
+                                    name="subject"
+                                    placeholder="New web platform / mobile app project"
+                                    className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                    Project Brief &amp; Goals *
+                                </label>
+                                <textarea
+                                    name="message"
+                                    rows="5"
+                                    required
+                                    placeholder="Describe your vision, requirements, timeline, or questions..."
+                                    className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors resize-none"
+                                />
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                                <MagneticButton
+                                    as="button"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-hover disabled:opacity-50"
+                                >
+                                    <FiSend className="w-4 h-4" />
+                                    {isSubmitting ? "Transmitting..." : "Send Message"}
+                                </MagneticButton>
+
+                                {formStatus && (
+                                    <span className="font-mono text-xs text-accent">
+                                        {formStatus}
+                                    </span>
+                                )}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
         </div>
     );
 };

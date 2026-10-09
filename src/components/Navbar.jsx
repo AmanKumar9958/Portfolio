@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiArrowUpRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -8,9 +8,10 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef(null);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
+        const handleScroll = () => setScrolled(window.scrollY > 40);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -31,168 +32,169 @@ const Navbar = () => {
     }, [location.pathname]);
 
     const navItems = [
-        { path: '/', name: 'Home' },
-        { path: '/projects', name: 'Projects' },
-        { path: '/service', name: 'Services' },
-        { path: '/contact', name: 'Contact' },
+        { path: '/', sectionId: 'hero', name: 'Index' },
+        { path: '/projects', sectionId: 'projects', name: 'Work' },
+        { path: '/service', sectionId: 'services', name: 'Services' },
+        { path: '/contact', sectionId: 'contact', name: 'Contact' },
     ];
 
-    const isActivePath = (item) => {
-        if (item.path === '/projects') {
-            return ['/projects', '/projects-web-development', '/projects-app-development'].includes(location.pathname);
+    const handleNavClick = (e, item) => {
+        if (location.pathname === '/' && item.sectionId) {
+            e.preventDefault();
+            const el = document.getElementById(item.sectionId);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
         }
-        if (item.path === '/service') {
-            return ['/service', '/service-web-development', '/service-app-development', '/web-development-info', '/app-development-info'].includes(location.pathname);
-        }
-        return location.pathname === item.path;
+    };
+
+    const isActive = (item) => {
+        if (item.path === '/') return location.pathname === '/';
+        return location.pathname.startsWith(item.path);
     };
 
     return (
         <>
-            <motion.nav
-                initial={{ y: -100, opacity: 0 }}
+            <motion.header
+                initial={{ y: -80, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 80, damping: 20, delay: 0.2 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-                    scrolled
-                        ? 'py-3'
-                        : 'py-5'
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    scrolled ? 'py-3' : 'py-5 sm:py-6'
                 }`}
             >
-                <div className={`mx-auto max-w-6xl px-6 transition-all duration-500`}>
-                    <div className={`flex items-center justify-between rounded-2xl px-6 py-3 transition-all duration-500 ${
-                        scrolled
-                            ? 'glass shadow-glass'
-                            : 'bg-transparent'
-                    }`}>
-                        {/* Logo */}
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                    <div
+                        className={`flex items-center justify-between rounded-full px-5 py-2.5 transition-all duration-300 ${
+                            scrolled
+                                ? 'bg-surface-secondary/85 backdrop-blur-md border border-white/10 shadow-card'
+                                : 'bg-surface-secondary/40 backdrop-blur-sm border border-white/[0.06]'
+                        }`}
+                    >
+                        {/* Logo / Brand Mark */}
                         <Link
                             to="/"
-                            className="group relative font-display text-xl font-bold tracking-tight text-txt-primary"
+                            className="group flex items-center gap-2 font-display text-base sm:text-lg font-bold tracking-tight text-txt-primary"
+                            data-cursor="pointer"
                         >
-                            <span className="relative z-10 transition-all duration-300 group-hover:text-gradient">
-                                Aman
-                            </span>
-                            <span className="text-gradient ml-1">.</span>
+                            <span className="w-2 h-2 rounded-full bg-accent group-hover:scale-125 transition-transform duration-300" />
+                            <span>AMAN KUMAR</span>
+                            <span className="font-mono text-xs text-txt-muted hidden sm:inline font-normal">/ 2026</span>
                         </Link>
 
-                        {/* Desktop Nav */}
-                        <div className="hidden md:flex items-center gap-1">
+                        {/* Desktop Navigation */}
+                        <nav className="hidden md:flex items-center gap-1">
                             {navItems.map((item) => {
-                                const active = isActivePath(item);
+                                const active = isActive(item);
                                 return (
                                     <NavLink
                                         key={item.path}
                                         to={item.path}
-                                        className="relative px-4 py-2 font-body text-sm font-medium transition-all duration-300 group"
+                                        onClick={(e) => handleNavClick(e, item)}
+                                        data-cursor="pointer"
+                                        className="relative px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors duration-200"
                                     >
-                                        <span className={`relative z-10 transition-colors duration-300 ${
-                                            active ? 'text-white' : 'text-txt-secondary group-hover:text-txt-primary'
-                                        }`}>
+                                        <span
+                                            className={`relative z-10 ${
+                                                active ? 'text-txt-primary font-semibold' : 'text-txt-secondary hover:text-txt-primary'
+                                            }`}
+                                        >
                                             {item.name}
                                         </span>
                                         {active && (
                                             <motion.div
-                                                layoutId="activeTab"
-                                                className="absolute inset-0 rounded-lg bg-white/[0.06] border border-white/[0.08]"
-                                                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                                layoutId="navbarActiveIndicator"
+                                                className="absolute inset-0 rounded-full bg-white/[0.08] border border-white/10"
+                                                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                                             />
                                         )}
                                     </NavLink>
                                 );
                             })}
+                        </nav>
 
-                            {/* CTA */}
+                        {/* Right: Quick CTA & Availability */}
+                        <div className="hidden md:flex items-center gap-4">
+                            <span className="flex items-center gap-2 font-mono text-[11px] text-txt-muted uppercase tracking-wider">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                Available
+                            </span>
                             <Link
                                 to="/contact"
-                                className="ml-4 inline-flex items-center gap-1.5 rounded-full bg-accent-gradient px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:shadow-glow hover:scale-105"
+                                data-cursor="pointer"
+                                className="inline-flex items-center gap-1.5 rounded-full bg-txt-primary px-4 py-1.5 text-xs font-semibold text-surface transition-all duration-300 hover:bg-accent hover:text-white"
                             >
                                 Let&apos;s Talk
-                                <FiArrowUpRight className="w-4 h-4" />
+                                <FiArrowUpRight className="w-3.5 h-3.5" />
                             </Link>
                         </div>
 
-                        {/* Mobile Toggle */}
+                        {/* Mobile Toggle Button */}
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="md:hidden p-2 rounded-lg text-txt-primary hover:bg-white/5 transition-colors"
+                            data-cursor="pointer"
+                            aria-label="Toggle Navigation"
+                            className="md:hidden p-2 text-txt-primary hover:text-accent transition-colors"
                         >
-                            {isMobileMenuOpen ? (
-                                <FiX className="w-6 h-6" />
-                            ) : (
-                                <FiMenu className="w-6 h-6" />
-                            )}
+                            {isMobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
                         </button>
                     </div>
                 </div>
-            </motion.nav>
+            </motion.header>
 
-            {/* Mobile Menu */}
+            {/* Mobile Navigation Drawer */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        ref={menuRef}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 z-40 flex items-start justify-center pt-28 px-6 md:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 z-40 bg-surface/95 backdrop-blur-xl flex flex-col justify-between p-8 pt-28 md:hidden"
                     >
-                        {/* Backdrop */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-surface/80 backdrop-blur-sm"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        />
-
-                        {/* Menu Card */}
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.95, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="relative w-full max-w-sm glass rounded-2xl p-6 shadow-glass"
-                        >
-                            <nav className="flex flex-col gap-2">
-                                {navItems.map((item, index) => {
-                                    const active = isActivePath(item);
-                                    return (
-                                        <motion.div
-                                            key={item.path}
-                                            initial={{ x: -20, opacity: 0 }}
-                                            animate={{ x: 0, opacity: 1 }}
-                                            transition={{ delay: index * 0.08 }}
-                                        >
-                                            <NavLink
-                                                to={item.path}
-                                                onClick={() => setIsMobileMenuOpen(false)}
-                                                className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
-                                                    active
-                                                        ? 'bg-accent-violet/10 text-accent-violet'
-                                                        : 'text-txt-secondary hover:text-txt-primary hover:bg-white/5'
-                                                }`}
-                                            >
-                                                {item.name}
-                                                <FiArrowUpRight className={`w-4 h-4 transition-colors ${active ? 'text-accent-violet' : 'text-txt-muted'}`} />
-                                            </NavLink>
-                                        </motion.div>
-                                    );
-                                })}
-                            </nav>
-
-                            <div className="mt-4 pt-4 border-t border-white/5">
-                                <Link
-                                    to="/contact"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="flex items-center justify-center gap-2 w-full rounded-xl bg-accent-gradient px-5 py-3 text-sm font-semibold text-white"
-                                >
-                                    Let&apos;s Talk
-                                    <FiArrowUpRight className="w-4 h-4" />
-                                </Link>
+                        <div className="space-y-6">
+                            <span className="font-mono text-xs uppercase tracking-widest text-txt-muted">
+                                // Navigation
+                            </span>
+                            <div className="flex flex-col space-y-4">
+                                {navItems.map((item, idx) => (
+                                    <Link
+                                        key={item.path}
+                                        to={item.path}
+                                        onClick={(e) => {
+                                            handleNavClick(e, item);
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                        className="group flex items-baseline justify-between py-2 border-b border-white/[0.06]"
+                                    >
+                                        <span className="font-display text-3xl font-bold text-txt-primary group-hover:text-accent transition-colors">
+                                            {item.name}
+                                        </span>
+                                        <span className="font-mono text-xs text-txt-muted">
+                                            0{idx + 1}
+                                        </span>
+                                    </Link>
+                                ))}
                             </div>
-                        </motion.div>
+                        </div>
+
+                        <div className="pt-8 border-t border-white/10 flex flex-col gap-4">
+                            <div className="flex items-center justify-between text-xs font-mono text-txt-muted">
+                                <span>STATUS</span>
+                                <span className="text-emerald-400 flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                    Available for Q2 2026
+                                </span>
+                            </div>
+                            <Link
+                                to="/contact"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-accent py-3 text-sm font-semibold text-white"
+                            >
+                                Get In Touch
+                                <FiArrowUpRight className="w-4 h-4" />
+                            </Link>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

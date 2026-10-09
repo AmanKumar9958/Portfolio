@@ -1,210 +1,229 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiSend, FiMail, FiMapPin } from 'react-icons/fi';
+import { FiSend, FiMail, FiMapPin, FiCheck, FiCopy } from 'react-icons/fi';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import GradientOrbs from './GradientOrbs';
-import TextReveal from './TextReveal';
 import MagneticButton from './MagneticButton';
 
 const Contact = () => {
     const [result, setResult] = useState('');
     const [sending, setSending] = useState(false);
+    const [emailCopied, setEmailCopied] = useState(false);
+
+    const handleCopyEmail = () => {
+        navigator.clipboard.writeText("amanchaurasia1652@gmail.com");
+        setEmailCopied(true);
+        setTimeout(() => setEmailCopied(false), 2400);
+    };
 
     const onSubmit = async (event) => {
         event.preventDefault();
         setSending(true);
-        setResult("Sending...");
+        setResult("Transmitting message...");
 
-        const formData = new FormData(event.target);
-        formData.append("access_key", "cc329a4e-142d-45e5-90c3-b964aa88f312");
+        try {
+            const formData = new FormData(event.target);
+            formData.append("access_key", "cc329a4e-142d-45e5-90c3-b964aa88f312");
 
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (data.success) {
-            setResult("Message sent successfully! ✨");
-            setTimeout(() => setResult(""), 3000);
-            event.target.reset();
-        } else {
-            console.error("Error:", data);
-            setResult(data.message);
-            setTimeout(() => setResult(""), 3000);
+            if (data.success) {
+                setResult("Message successfully sent! I will respond promptly.");
+                event.target.reset();
+            } else {
+                setResult(data.message || "Submission failed. Please email directly.");
+            }
+        } catch (err) {
+            setResult("An error occurred. Please contact via email directly.");
+        } finally {
+            setSending(false);
+            setTimeout(() => setResult(""), 4500);
         }
-        setSending(false);
     };
 
     return (
-        <section className="w-full min-h-screen bg-surface px-6 py-28 relative overflow-hidden">
-            <GradientOrbs variant="default" />
-            <div className="absolute inset-0 grid-pattern" />
-
-            <div className="relative z-10 max-w-5xl mx-auto">
+        <section className="w-full min-h-screen bg-surface px-6 sm:px-10 py-32 sm:py-40 relative">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    className="max-w-3xl mb-16 sm:mb-20"
                 >
-                    <span className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-txt-muted mb-4">
-                        Get In Touch
+                    <span className="font-mono text-xs uppercase tracking-widest text-accent mb-4 block">
+                        // Direct Contact &amp; Inquiries
                     </span>
-                    <TextReveal className="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
-                        Let&apos;s Talk
-                    </TextReveal>
-                    <p className="text-lg text-txt-secondary max-w-xl mx-auto">
-                        Have a project in mind? Let&apos;s build something amazing together.
+                    <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-txt-primary">
+                        Initiate A Conversation.
+                    </h1>
+                    <p className="mt-6 text-base sm:text-lg text-txt-secondary leading-relaxed font-body">
+                        Have an engineering requirement, mobile application, or product launch? Fill out the brief below or reach out directly via email.
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     {/* Left: Contact Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="lg:col-span-2 space-y-6"
-                    >
-                        {/* Info Cards */}
-                        <div className="glass-card p-6 space-y-6">
-                            <div className="flex items-start gap-4">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent-violet/10 text-accent-violet flex-shrink-0">
-                                    <FiMail className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h3 className="font-display text-sm font-bold text-txt-primary mb-1">Email</h3>
-                                    <p className="text-sm text-txt-secondary">amanchaurasia1652@gmail.com</p>
-                                </div>
+                    <div className="lg:col-span-5 space-y-6">
+                        {/* Direct Email Card */}
+                        <div className="rounded-2xl border border-white/[0.08] bg-surface-secondary p-6 sm:p-8 space-y-4">
+                            <span className="font-mono text-xs uppercase tracking-wider text-txt-muted block">
+                                Primary Email
+                            </span>
+                            <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-white/[0.06] bg-surface-tertiary">
+                                <span className="font-mono text-xs sm:text-sm text-txt-primary select-all truncate">
+                                    amanchaurasia1652@gmail.com
+                                </span>
+                                <button
+                                    onClick={handleCopyEmail}
+                                    data-cursor="pointer"
+                                    title="Copy Email"
+                                    className="p-2 rounded-lg bg-white/5 hover:bg-accent text-txt-primary hover:text-white transition-colors flex-shrink-0"
+                                >
+                                    {emailCopied ? (
+                                        <FiCheck className="w-4 h-4 text-emerald-400" />
+                                    ) : (
+                                        <FiCopy className="w-4 h-4" />
+                                    )}
+                                </button>
                             </div>
+                            {emailCopied && (
+                                <span className="font-mono text-xs text-emerald-400 block">
+                                    ✓ Email address copied to clipboard!
+                                </span>
+                            )}
+                        </div>
 
-                            <div className="flex items-start gap-4">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent-cyan/10 text-accent-cyan flex-shrink-0">
-                                    <FiMapPin className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h3 className="font-display text-sm font-bold text-txt-primary mb-1">Location</h3>
-                                    <p className="text-sm text-txt-secondary">India</p>
-                                </div>
+                        {/* Location & Status */}
+                        <div className="rounded-2xl border border-white/[0.08] bg-surface-secondary p-6 sm:p-8 space-y-4">
+                            <div className="flex items-center gap-3">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                <span className="font-mono text-xs uppercase tracking-wider text-txt-primary font-semibold">
+                                    Current Status: Available
+                                </span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-txt-secondary leading-relaxed font-body">
+                                Taking on full-stack web architectures, mobile application contracts, and consulting projects for Q2 2026.
+                            </p>
+                            <div className="pt-2 font-mono text-xs text-txt-muted flex items-center gap-2">
+                                <FiMapPin className="w-3.5 h-3.5 text-accent" />
+                                <span>Based in New Delhi, India • Remote worldwide</span>
                             </div>
                         </div>
 
-                        {/* Social Links */}
-                        <div className="glass-card p-6">
-                            <h3 className="font-display text-sm font-bold text-txt-primary mb-4">Connect With Me</h3>
-                            <div className="flex gap-3">
+                        {/* Social Profiles */}
+                        <div className="rounded-2xl border border-white/[0.08] bg-surface-secondary p-6 sm:p-8 space-y-4">
+                            <span className="font-mono text-xs uppercase tracking-wider text-txt-muted block">
+                                Verified Profiles
+                            </span>
+                            <div className="flex flex-wrap gap-3">
                                 <MagneticButton
                                     as="a"
                                     href="https://github.com/AmanKumar9958/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center justify-center w-11 h-11 rounded-xl border border-white/[0.06] bg-white/[0.02] hover:border-accent-violet/30 hover:bg-accent-violet/5 transition-all duration-300"
+                                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-surface-tertiary px-5 py-2.5 font-mono text-xs text-txt-secondary hover:text-white hover:border-white/20 transition-all"
                                 >
-                                    <FaGithub className="w-5 h-5 text-txt-secondary" />
+                                    <FaGithub className="w-4 h-4" />
+                                    GitHub
                                 </MagneticButton>
+
                                 <MagneticButton
                                     as="a"
-                                    href="https://www.linkedin.com/in/aman-kumar-39a7b7292/"
+                                    href="https://www.linkedin.com/in/aman-kumar-47407823b"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center justify-center w-11 h-11 rounded-xl border border-white/[0.06] bg-white/[0.02] hover:border-accent-cyan/30 hover:bg-accent-cyan/5 transition-all duration-300"
+                                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-surface-tertiary px-5 py-2.5 font-mono text-xs text-txt-secondary hover:text-white hover:border-white/20 transition-all"
                                 >
-                                    <FaLinkedin className="w-5 h-5 text-txt-secondary" />
+                                    <FaLinkedin className="w-4 h-4 text-sky-400" />
+                                    LinkedIn
                                 </MagneticButton>
                             </div>
                         </div>
-
-                        {/* Availability */}
-                        <div className="glass-card p-6">
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                                <h3 className="font-display text-sm font-bold text-txt-primary">Currently Available</h3>
-                            </div>
-                            <p className="text-sm text-txt-secondary">
-                                Open for freelance projects and full-time opportunities.
-                            </p>
-                        </div>
-                    </motion.div>
+                    </div>
 
                     {/* Right: Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
-                        className="lg:col-span-3"
-                    >
-                        <div className="glass-card p-8">
-                            <form onSubmit={onSubmit} className="space-y-6">
-                                {/* Name */}
-                                <div className="space-y-2">
-                                    <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-txt-muted">
-                                        Your Name
+                    <div className="lg:col-span-7">
+                        <form
+                            onSubmit={onSubmit}
+                            className="rounded-3xl border border-white/[0.1] bg-surface-secondary p-8 sm:p-12 space-y-6 shadow-2xl"
+                        >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                        Your Name *
                                     </label>
                                     <input
-                                        name="name"
                                         type="text"
+                                        name="name"
                                         required
-                                        className="w-full px-4 py-3.5 bg-white/[0.03] border border-white/[0.06] rounded-xl text-txt-primary placeholder-txt-muted text-sm font-body focus:border-accent-violet/40 focus:outline-none focus:ring-1 focus:ring-accent-violet/20 transition-all duration-300"
-                                        placeholder="John Doe"
+                                        placeholder="Alex Mercer"
+                                        className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
                                     />
                                 </div>
 
-                                {/* Email */}
-                                <div className="space-y-2">
-                                    <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-txt-muted">
-                                        Email Address
+                                <div>
+                                    <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                        Your Email *
                                     </label>
                                     <input
-                                        name="email"
                                         type="email"
+                                        name="email"
                                         required
-                                        className="w-full px-4 py-3.5 bg-white/[0.03] border border-white/[0.06] rounded-xl text-txt-primary placeholder-txt-muted text-sm font-body focus:border-accent-violet/40 focus:outline-none focus:ring-1 focus:ring-accent-violet/20 transition-all duration-300"
-                                        placeholder="john@example.com"
+                                        placeholder="alex@company.com"
+                                        className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
                                     />
                                 </div>
+                            </div>
 
-                                {/* Message */}
-                                <div className="space-y-2">
-                                    <label className="block text-xs font-semibold uppercase tracking-[0.16em] text-txt-muted">
-                                        Your Message
-                                    </label>
-                                    <textarea
-                                        name="message"
-                                        required
-                                        rows="5"
-                                        className="w-full px-4 py-3.5 bg-white/[0.03] border border-white/[0.06] rounded-xl text-txt-primary placeholder-txt-muted text-sm font-body focus:border-accent-violet/40 focus:outline-none focus:ring-1 focus:ring-accent-violet/20 transition-all duration-300 resize-none"
-                                        placeholder="Tell me about your project..."
-                                    />
-                                </div>
+                            <div>
+                                <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                    Project Scope / Subject
+                                </label>
+                                <input
+                                    type="text"
+                                    name="subject"
+                                    placeholder="Next.js web app / React Native mobile project"
+                                    className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors"
+                                />
+                            </div>
 
-                                <input type="hidden" name="access_key" value="cc329a4e-142d-45e5-90c3-b964aa88f312" />
+                            <div>
+                                <label className="font-mono text-xs uppercase tracking-wider text-txt-muted block mb-2">
+                                    Project Requirements &amp; Timeline *
+                                </label>
+                                <textarea
+                                    name="message"
+                                    rows="6"
+                                    required
+                                    placeholder="Describe your technical requirements, goals, preferred timeline, or questions..."
+                                    className="w-full px-4 py-3 rounded-xl border border-white/[0.08] bg-surface-tertiary text-txt-primary text-sm focus:border-accent focus:outline-none transition-colors resize-none"
+                                />
+                            </div>
 
-                                {/* Submit */}
-                                <button
+                            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                                <MagneticButton
+                                    as="button"
                                     type="submit"
                                     disabled={sending}
-                                    className="w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl bg-accent-gradient text-white font-semibold shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-hover disabled:opacity-50"
                                 >
                                     <FiSend className="w-4 h-4" />
-                                    {sending ? 'Sending...' : 'Send Message'}
-                                </button>
+                                    {sending ? "Transmitting..." : "Send Message"}
+                                </MagneticButton>
 
-                                {/* Result */}
                                 {result && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="p-4 text-center rounded-xl bg-accent-violet/10 border border-accent-violet/20 text-accent-hover text-sm font-medium"
-                                    >
+                                    <span className="font-mono text-xs text-accent">
                                         {result}
-                                    </motion.div>
+                                    </span>
                                 )}
-                            </form>
-                        </div>
-                    </motion.div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

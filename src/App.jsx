@@ -29,7 +29,7 @@ const App = () => {
         <SmoothScroll />
         <CustomCursor />
         <ScrollProgress />
-        <HandAnimation delay={2000} />
+        <HandAnimation delay={450} />
         <Navbar />
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const MagneticButton = ({ children, className = '', as = 'button', href, ...props }) => {
+const MagneticButton = ({ children, className = '', as = 'button', href, strength = 0.22, ...props }) => {
     const ref = useRef(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -10,8 +10,8 @@ const MagneticButton = ({ children, className = '', as = 'button', href, ...prop
         const rect = ref.current.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const deltaX = (e.clientX - centerX) * 0.15;
-        const deltaY = (e.clientY - centerY) * 0.15;
+        const deltaX = (e.clientX - centerX) * strength;
+        const deltaY = (e.clientY - centerY) * strength;
         setPosition({ x: deltaX, y: deltaY });
     };
 
@@ -27,9 +27,10 @@ const MagneticButton = ({ children, className = '', as = 'button', href, ...prop
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             animate={{ x: position.x, y: position.y }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15, mass: 0.2 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 18, mass: 0.15 }}
             className={className}
             href={href}
+            data-cursor="pointer"
             {...props}
         >
             {children}
